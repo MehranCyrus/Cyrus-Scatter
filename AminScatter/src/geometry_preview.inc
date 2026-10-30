@@ -12,7 +12,7 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  if(rows.size()>1000000||sources->size>512)throw RuntimeError(_T("Mesh preview input exceeds 1,000,000 placements or 512 sources"));
  const int wanted=limit?std::min(limit,int(rows.size())):int(rows.size());
  const auto groupBytes=std::size_t(sources->size)*(sizeof(cyrus::PreviewGeometry)+2*sizeof(Box3));
- auto storage=cyrus::reserveMeshMemory({sizeof(cyrus::MeshSnapshot)+groupBytes+std::size_t(wanted)*(sizeof(Matrix3)+1),0});
+ auto storage=cyrus::reserveMeshMemory({sizeof(cyrus::MeshSnapshot)+groupBytes+std::size_t(wanted)*(sizeof(Matrix3)+1+sizeof(std::uint32_t)),0});
  auto staging=cyrus::reserveMeshMemory({rows.size()+std::size_t(sources->size)*sizeof(std::size_t)+4096,0});
  auto markerStaging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,std::size_t(wanted)*2*(sizeof(Point3)+1)+sources->size*256+4096);
  std::size_t inspectedFaces=0;
@@ -21,9 +21,10 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  std::vector<std::uint8_t> bandSlots;bandSlots.reserve(rows.size());
  for(std::size_t i=0;i<rows.size();++i)bandSlots.push_back(rows.band(i,*palette));
  std::vector<AminPointCache::Geometry> geometry(sources->size);std::vector<AminPointCache::Group> markers(sources->size);
+ std::vector<std::shared_ptr<std::vector<std::uint32_t>>> pickRows(sources->size);
  std::vector<std::size_t> sourceCounts(sources->size,0);
  for(int k=0;k<wanted;++k){const auto i=std::size_t(k)*rows.size()/wanted;++sourceCounts[rows.source(i)-1];}
- for(int i=0;i<sources->size;++i){geometry[i].instances.reserve(sourceCounts[i]);geometry[i].bandSlots.reserve(sourceCounts[i]);}
+ for(int i=0;i<sources->size;++i){pickRows[i]=std::make_shared<std::vector<std::uint32_t>>();pickRows[i]->reserve(sourceCounts[i]);geometry[i].pickRows=pickRows[i];geometry[i].instances.reserve(sourceCounts[i]);geometry[i].bandSlots.reserve(sourceCounts[i]);}
  storage->commit(storage->cost().cpu-sizeof(cyrus::MeshSnapshot)-std::size_t(sources->size)*2*sizeof(Box3));staging->commit();
  const auto time=GetCOREInterface()->GetTime();
  for(int i=0;i<sources->size;++i){auto& dst=geometry[i];dst.color=palette->sourceColors[i];markers[i].color=dst.color;
@@ -80,13 +81,13 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
   if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());markers[src].bandSlots.push_back(bandSlots[i]);++shown;}continue;}
   // Retain the bounded instance stream. Controller-wide draw admission chooses
   // full meshes or boxes without erasing an entire source from the preview.
-  group.instances.push_back(tm);group.bandSlots.push_back(bandSlots[i]);faces+=group.faces.size();++shown;
+  pickRows[src]->push_back(std::uint32_t(i));group.instances.push_back(tm);group.bandSlots.push_back(bandSlots[i]);faces+=group.faces.size();++shown;
  }
  auto out=std::make_unique<AminPointCache>();
  // Proxy shapes use the same immutable source geometry and instance transforms
  // as Mesh. Expanding every proxy face on the CPU defeats retained instancing.
  // GraphicsWindow fallback can still read these snapshots through the accessors.
- out->meshSnapshot=std::make_shared<cyrus::MeshSnapshot>(std::move(geometry),std::move(storage));
+ auto snapshot=std::make_shared<cyrus::MeshSnapshot>(std::move(geometry),std::move(storage));snapshot->pickView=rows.pickView();out->meshSnapshot=std::move(snapshot);
  out->pointSnapshot=std::make_shared<cyrus::PointSnapshot>(std::move(markers));
  out->palette=palette;out->size=shown;out->faceCount=faces;out->geometryMode=mode;return out.release();
  });

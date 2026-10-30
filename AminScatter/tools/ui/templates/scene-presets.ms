@@ -55,7 +55,7 @@ fn CyrusScenePresetNodes root = (
 )
 fn CyrusScenePresetSave root name metadata image original:"" expected:"" = (
     CyrusRequireAuthor()
-    if cyrusScenePresetVersion==undefined or cyrusScenePresetVersion()!=1 or cyrusEditSceneRemap==undefined do throw "Install the complete CyrusScatter 0.87.6 package and restart Max."
+    if cyrusScenePresetVersion==undefined or cyrusScenePresetVersion()!=1 or cyrusEditSceneRemap==undefined do throw "Install the complete CyrusScatter 0.87.6.7 package and restart Max."
     if (maxVersion())[1]/1000+1998!=2027 do throw "Scene presets currently require Max 2027."
     if theHold.Holding() or CyrusBrushSessionLayer!=undefined do throw "Finish the current operation before saving a scene preset."
     name=trimRight (trimLeft name)

@@ -24,13 +24,19 @@ stem::Json selectedOnlyAuthoring(const Snapshot& source,const Pieces& pieces,con
 stem::Json canonicalAuthoring(const Snapshot& s,const Pieces& pieces,const stem::Json& input){
     using J=stem::Json;const auto hash=fingerprint(s);J result={{"version",1},{"fingerprint",hash},{"parts",J::array()}};
     if(input.is_null()||input.empty())return result;
-    if(!input.is_object()||input.value("version",0)!=1||input.value("fingerprint",std::string{})!=hash||!input.contains("parts")||!input["parts"].is_array()||input["parts"].size()>pieces.parts.size())throw std::runtime_error("Authored preparation is stale or incompatible; original edits retained");
+    if(!input.is_object()||(input.value("version",0)!=1&&input.value("version",0)!=2)||input.value("fingerprint",std::string{})!=hash||!input.contains("parts")||!input["parts"].is_array()||input["parts"].size()>pieces.parts.size())throw std::runtime_error("Authored preparation is stale or incompatible; original edits retained");
     std::map<unsigned,J> rows;
     for(const auto& r:input["parts"]){
         unsigned id=r.at("part").get<unsigned>();int role=r.value("role",0);
         if(id>=pieces.parts.size()||role<0||role>3||rows.contains(id))throw std::runtime_error("Invalid or duplicate authored piece");
         J clean={{"part",id},{"role",role}};
-        for(auto it=r.begin();it!=r.end();++it)if(it.key()!="part"&&it.key()!="role"&&it.key()!="parent"&&it.key()!="root_vertex"&&it.key()!="flip"&&it.key()!="nodes")throw std::runtime_error("Unknown authored preparation field");
+        for(auto it=r.begin();it!=r.end();++it)if(it.key()!="part"&&it.key()!="role"&&it.key()!="parent"&&it.key()!="root_vertex"&&it.key()!="flip"&&it.key()!="nodes"&&it.key()!="profile"&&it.key()!="points")throw std::runtime_error("Unknown authored preparation field");
+        if(r.contains("profile")||r.contains("points")){
+            if(input.at("version")!=2)throw std::runtime_error("Guide profiles/detail require authored preparation version 2");
+            result["version"]=2;
+        }
+        if(r.contains("profile")){const auto& value=r["profile"];if(!value.is_number_integer())throw std::runtime_error("Invalid piece profile");int profile=value.get<int>();if(profile<1||profile>3||(profile==3?role!=2:role!=1))throw std::runtime_error("Piece profile and behavior disagree");clean["profile"]=profile;}
+        if(r.contains("points")){const auto& value=r["points"];if(!value.is_number_integer()||value.get<int>()<3||value.get<int>()>16||role==2||role==3)throw std::runtime_error("Guide detail supports 3 to 16 points on bending pieces");clean["points"]=value;}
         if(r.contains("parent")){int parent=r["parent"].get<int>();if(parent < -1||parent>=int(pieces.parts.size())||parent==int(id))throw std::runtime_error("Invalid parent piece");clean["parent"]=parent;}
         if(r.contains("root_vertex")){auto v=r["root_vertex"].get<unsigned>();if(v>=pieces.labels.size()||pieces.labels[v]!=id)throw std::runtime_error("Root seed belongs to another piece");clean["root_vertex"]=v;}
         if(r.value("flip",false))clean["flip"]=true;

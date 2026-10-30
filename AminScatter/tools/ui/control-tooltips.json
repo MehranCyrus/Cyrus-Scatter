@@ -244,7 +244,7 @@
     "bandScaleMode": "Multiply the random Band size by the effective density curve shape or an independent Custom scale curve. Density % is not a size multiplier.",
     "bandScaleEdit": "Size multiplier across this Band. 100% preserves size; zero collapses size without deleting the placement. Edit in Custom mode.",
     "bandCurveEdit": "Edit this Band by its captured identity. Changes apply on drag release, Apply or Close.",
-    "bandColor": "Identification color belongs to this Band. It never changes placements or source materials.",
+    "bandColor": "Used by Color by Bands and band previews. List badges show assigned model colors. This never changes placements or source materials.",
     "fieldFalloffCheck": "Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts.",
     "fieldBoundaryCheck": "Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers.",
     "fieldView": "Selected Band shows its contribution. Combined shows capped total occupancy.",

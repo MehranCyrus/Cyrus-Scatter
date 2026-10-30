@@ -1,0 +1,30 @@
+{
+  "epoch": 2,
+  "group": [
+    2,
+    0,
+    0
+  ],
+  "streams": [
+    1,
+    312960,
+    19200,
+    65600,
+    192,
+    3,
+    0,
+    0,
+    0
+  ],
+  "pending_amount": 217,
+  "generated": 200,
+  "enabled": "Enabled",
+  "visible": "Visible",
+  "radio_labels": [
+    "Random mix",
+    "Clusters",
+    "Spline bands",
+    "Surface Analyzer",
+    ""
+  ]
+}

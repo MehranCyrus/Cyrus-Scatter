@@ -1,0 +1,12 @@
+{
+  "input": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.6.1-20261029\\Scenes\\Terraces_Garden_0.87.6.1_Max2027.max",
+    "sha256": "bd41e91c6da20aa5184693535f86899350f44fb11946bb7b9fdaf2aa3085c132",
+    "copy_sha256": "bd41e91c6da20aa5184693535f86899350f44fb11946bb7b9fdaf2aa3085c132"
+  },
+  "selection08762/garden_pick.py": "complete",
+  "selection08762/garden_navigation.py": "complete",
+  "review08763/garden_drag.py": "complete",
+  "original_unchanged": true,
+  "status": "complete"
+}

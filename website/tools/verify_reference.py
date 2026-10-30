@@ -35,18 +35,40 @@ def main():
         assert sha((REPO/path).read_bytes())==fingerprint,'Source changed; review public wording: '+path
     release_text=(REPO/'docs/Release_Versioning.md').read_text(encoding='utf-8')
     release_ui=re.search(r'\| Scatter UI \| ([0-9.]+) \|',release_text).group(1)
-    assert data['developmentVersion']==catalog['development_version']==release_ui
+    source_ui=re.search(r'fn uiVersion = "([0-9.]+)"',(REPO/'AminScatter/tools/ui/templates/unified-core.ms').read_text(encoding='utf-8')).group(1)
+    assert data['developmentVersion']==catalog['development_version']==source_ui
     release=json.loads((SITE/'content/release.json').read_text(encoding='utf-8'))
     assert release['version']==data['developmentVersion']
+    qualification=json.loads((REPO/manifest['qualificationReceipt']).read_text(encoding='utf-8'))
+    assert release['qualifiedVersion']==qualification['version']==release_ui
+    assert release['qualificationPending']==(release['version']!=release['qualifiedVersion'])
+    assert qualification['max_year']==2027
+    if qualification.get('schema')=='cyrus.scatter.scoped-delivery/1':
+        assert qualification['status']=='qualified-for-artist-testing'
+        assert all(h['status']=='pass' for h in qualification['checks']['hosts'].values())
+    else:
+        assert qualification['status']=='scoped_pass'
     assert release['analyzer']['version']==data['analyzerVersion']
-    assert release['analyzer']['included'] is True
-    assert release['installer']['path']=='downloads/'+release['installer']['filename']
-    assert release['installer']['filename']==f'CyrusScatter-{release["version"]}-Setup.exe'
-    assert re.fullmatch('[0-9a-f]{64}',release['installer']['sha256'])
+    assert release['analyzer']['included'] is False
+    assert release['maxYears']==[2024,2026,2027]
+    assert release['runtimeTestedYears']==[2027]
+    if release['installer'] is not None:
+        assert release['installer']['path']=='downloads/'+release['installer']['filename']
+        assert release['installer']['filename']==f'CyrusScatter-{release["version"]}-Setup.exe'
+        assert release['installer']['format']=='EXE'
+        assert re.fullmatch('[0-9a-f]{64}',release['installer']['sha256'])
+    else:
+        assert not [p for p in (SITE/'public').rglob('*') if p.suffix.lower() in {'.exe','.mzp','.zip','.dll','.dlx','.dlh','.dlm','.max'}], 'Downloads are unpublished'
     assert release['content']['included'] is False
     assert len(data['documents'])==len(manifest['documents'])==5
     assert len(data['controls'])==len(catalog['controls'])==len(editorial)
     assert len(data['features'])==len(catalog['features'])==37
+    layout=json.loads((REPO/'AminScatter/tools/ui/approved-layout-manifest.json').read_text(encoding='utf-8'))
+    section_source=(SITE/'src/content/controlSections.ts').read_text(encoding='utf-8')
+    id_block=section_source.split('const ids:',1)[1].split('\n',1)[0]
+    section_names={section['name'] for section in layout['sections']}
+    assert set(re.findall(r'(\w+UI):',id_block))==section_names,'Every plugin section needs a working website destination'
+    assert set(re.findall(r'^  (\w+UI): \{ summary:',section_source,re.M))==section_names,'Every plugin section needs an explanation'
     assert len({c['id'] for c in data['controls']})==len(catalog['controls'])
     assert len({c['sourceKey'] for c in data['controls']})==len(catalog['controls'])
     feature_ids={f['feature_id'] for f in data['features']}

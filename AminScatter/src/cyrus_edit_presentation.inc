@@ -34,7 +34,7 @@ static void installEditPresentation(Array* mods,int key,std::shared_ptr<const Ed
     for(int i=0;i<mods->size;++i)edit(mods->data[i])->status();
 }
 def_visible_primitive(cyrusEditVersion,"cyrusEditVersion");
-Value* cyrusEditVersion_cf(Value**,int count){check_arg_count(cyrusEditVersion,0,count);return Integer::intern(4);}
+Value* cyrusEditVersion_cf(Value**,int count){check_arg_count(cyrusEditVersion,0,count);return Integer::intern(5);}
 def_visible_primitive(cyrusEditPublishPresentation,"cyrusEditPublishPresentation");
 Value* cyrusEditPublishPresentation_cf(Value** a,int count){
     check_arg_count(cyrusEditPublishPresentation,4,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);

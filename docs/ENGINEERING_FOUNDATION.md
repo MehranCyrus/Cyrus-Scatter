@@ -159,11 +159,14 @@ Host API access/publication stay on the host thread; workers consume owned numer
 
 Shared views bind owner records. Unchanged warm display reuses placement/preparation and ready buffers. Display edits may rebuild changed layers without applying Manual recipes. Measure avoided work separately from output equality.
 
-Edit gesture feedback may derive a live handle/gizmo matrix from the current
-authored delta and proven committed input while full geometry remains published
-on release. Feedback must not consume pending Manual changes or let an older
+Edit gesture feedback derives from the current authored delta and proven
+committed input. It must not consume pending Manual changes or let an older
 retained presentation clear a newer gesture. The [0.86.9.1 evidence](plans/edit-instances/DELIVERY_08691.md)
-qualifies this path in Max 2027 only; it does not establish production FPS.
+qualified live handles with release-time geometry. The [0.87.6.7 successor](plans/edit-preparation-08767-20261029/DELIVERY.md)
+adds bounded selected Mesh/Proxy transform patches over retained geometry,
+published through the complete display/feedback transaction. Point Cloud and
+larger selections retain their preceding update path. These scoped Max 2027
+checks establish neither physical input latency nor production FPS.
 
 The 0.87.5.6 contact path separately presents ready poses during held input. Its bounded per-ticket redraw requests do not consume pending placements or restage geometry. [Scoped held-input ticket measurements](plans/drag-response-08756-20261028/QUALIFICATION_08756.json) establish that path; they do not establish physical gesture latency or general FPS.
 

@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "target": "http://127.0.0.1:4889",
+  "checks": [
+    {
+      "deployment": "root",
+      "filename": "CyrusScatter-0.87.6.5-Setup.exe",
+      "sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe",
+      "download": "passed"
+    },
+    {
+      "deployment": "subfolder",
+      "filename": "CyrusScatter-0.87.6.5-Setup.exe",
+      "sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe",
+      "download": "passed"
+    },
+    {
+      "mobileWidth": 390,
+      "downloadButton": "visible and contained",
+      "horizontalOverflow": false
+    }
+  ],
+  "errors": [],
+  "httpFailures": []
+}

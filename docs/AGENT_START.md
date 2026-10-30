@@ -10,8 +10,12 @@ not another qualification or authorization document.
 - Check branch, HEAD, tracked changes and untracked files. Read the relevant
   source before editing; generated UI fixes belong in templates/generators.
 - Get explicit delivered facts with `python -B tools/rag/context.py facts`.
-  The current UI/settings delivery is 0.87.6 / scene 65 / Interactions 15, with
-  scoped Max 2027 runtime qualification and older-host compile/package checks.
+  The current Edit/preparation/UI delivery is 0.87.6.7 / scene 65 / Interactions 17,
+  viewport selection 2 / Edit capability 5 / Edit storage 4 / authored Edit
+  payload 2 within recipe envelope 9, prepared envelope/source 3 / intent 2,
+  with scoped Max 2027 qualification and its exact MZP. The user-requested
+  0.87.6.7 EXE also contains separate Max 2024/2026 SDK-build/package-only payloads.
+  The preceding 0.87.6.5 EXE retains its separate older-host build-only scope.
   The interaction performance baseline remains 0.87.5.6; Library 0.87.5.1 retains
   its separate qualification. The command separately observes the working-tree version. Newer source
   labels and a successful knowledge lookup do not qualify a plugin build.
@@ -27,7 +31,7 @@ not another qualification or authorization document.
 - On missing/stale evidence, inspect the original source directly and label it.
   Do not switch generations, repair historical hashes or rebuild automatically.
 
-Current interaction delivery: [0.87.5.6 responsive bending](plans/drag-response-08756-20261028/DELIVERY_08756.md). For performance work read the [preservation baseline](PERFORMANCE_BASELINE.md): it records the user's endorsed interaction feel, measured causes, required boundaries and unimplemented follow-ups. Read exact qualification for package identities and host limits. Library and independent-product evidence retain their own scope.
+Current pinned Edit, held Mesh/Proxy movement, caption repaint and Band badges: [0.87.6.7](plans/edit-preparation-08767-20261029/DELIVERY.md). Preceding mesh hover and persistent selection: [0.87.6.5](plans/instance-selection-08765-20261029/DELIVERY.md). The [0.87.6.4 click-to-Edit routing](plans/instance-selection-08764-20261029/DELIVERY.md) and [0.87.6.3 review repairs](plans/interaction-review-08763-20261029/DELIVERY.md) retain their original evidence. The [0.87.6.2 selection/shared controls](plans/viewport-selection-08762-20261029/DELIVERY.md) and [0.87.6.1 Terraces campaign](plans/terraces-performance-20261029/DELIVERY.md) retain their separate evidence. For performance work read the [preservation baseline](PERFORMANCE_BASELINE.md): it records the user's endorsed 0.87.5.6 interaction feel, measured follow-ups and remaining investigations. Read exact qualification for package identities and host limits. Library and independent-product evidence retain their own scope.
 
 ## Read only the relevant owners
 

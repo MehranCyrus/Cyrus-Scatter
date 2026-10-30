@@ -41,7 +41,7 @@ struct Layout {
 struct Statistics {
     std::size_t plants=0,obstacles=0,affected=0,posed=0,covered=0,hiddenRoots=0,retainedCoveredRoots=0,
         fittedGuides=0,queries=0,coverageQueries=0,separationQueries=0,iterations=0,hinges=0,reusedPoses=0,restored=0,meshRefinements=0,meshRefinementWork=0,qualityCheckedGuides=0,qualityWarningGuides=0,
-        layoutPayloadBytes=0,indexPayloadBytes=0,obstacleIndexPayloadBytes=0,transientObstacleIndexPayloadBytes=0,obstacleQueryScratchBoundBytes=0,exactMeshScratchBoundBytes=0,posePayloadBytes=0;
+        layoutPayloadBytes=0,indexPayloadBytes=0,obstacleIndexPayloadBytes=0,transientObstacleIndexPayloadBytes=0,transientReactorIndexPayloadBytes=0,obstacleQueryScratchBoundBytes=0,exactMeshScratchBoundBytes=0,posePayloadBytes=0;
     std::size_t exactMeshChecks=0,exactPointTests=0,exactFaceTests=0,exactTransformedVertices=0,exactInverseVertices=0;
     double indexMs=0,queryMs=0,fitMs=0,totalMs=0,workerCoverageMs=0,workerMeshCheckMs=0,workerMeshTransformMs=0,workerMeshPointMs=0,workerMeshFaceMs=0,workerEdgeQualityMs=0,maximumCheckedStemEdgeChange=0;
     unsigned participants=1;bool threadFallback=false;

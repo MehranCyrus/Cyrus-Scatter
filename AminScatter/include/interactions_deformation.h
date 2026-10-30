@@ -16,8 +16,8 @@ struct DeformationSource {
 std::shared_ptr<const DeformationSource> deformationSource(std::shared_ptr<const Source>);
 std::vector<DeformationWord> deformationPose(const DeformationSource&,const Pose&);
 Bounds deformationBounds(const DeformationSource&,const std::vector<DeformationWord>&);
-Vec deformationPoint(const DeformationSource&,const std::vector<DeformationWord>&,unsigned face,unsigned corner);
-bool deformationVisible(const DeformationSource&,const std::vector<DeformationWord>&,unsigned face);
+Vec deformationPoint(const DeformationSource&,const std::vector<DeformationWord>&,unsigned face,unsigned corner,unsigned offset=0);
+bool deformationVisible(const DeformationSource&,const std::vector<DeformationWord>&,unsigned face,unsigned offset=0);
 // Small open-addressed table keyed by stable source instance slot. Records have
 // a header and4 transform rows. Zero key is empty; disabled records remain explicit.
 struct DeformationChange {unsigned slot=0,pose=0;bool enabled=true;std::array<float,12> transform;};

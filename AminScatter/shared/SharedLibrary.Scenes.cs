@@ -43,7 +43,7 @@ namespace Cyrus.Content {
                         var sha=ContentObjects.Hash(image);thumbnail=Descriptor("thumbnail-"+sha+".png",sha,bytes);CopyImmutable(image,Child(save.Directory,S(D(thumbnail)["file"])),sha,bytes);
                     }
                     var document=M("format","cyrus.scene-preset","version",1,"id",idValue,"revision",revision,"name",name,
-                        "maxYear",2027,"scatterVersion","0.87.5.5","metersPerUnit",metersPerUnit,"nodeCount",nodeCount,
+                        "maxYear",2027,"scatterVersion",typeof(SharedLibrary).Assembly.GetName().Version.ToString(),"metersPerUnit",metersPerUnit,"nodeCount",nodeCount,
                         "layers",A(LibraryJson.Parse(layers)),"scene",Descriptor("scene.max",ContentObjects.Hash(scene),sceneBytes),"assets",assets,
                         "presentation",M("metadata",D(LibraryJson.Parse(metadata)),"thumbnail",thumbnail,"capture",null));
                     NewText(save.RecipePath,LibraryJson.Write(document));ValidateRecipe(save.RecipePath);
@@ -59,7 +59,7 @@ namespace Cyrus.Content {
                 var directory=Path.GetDirectoryName(LibraryLocation.Full(entry));
                 Attachments(d,p=>{check();ContentObjects.Verify(Child(directory,S(p["file"])),S(p["sha256"]),N(p["bytes"]));});
                 var stage=Child(Root,"staging/scene-load-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(stage);
-                try{var copy=Child(stage,"scene.max");File.Copy(Child(directory,"scene.max"),copy,false);ContentObjects.Verify(copy,S(D(d["scene"])["sha256"]),N(D(d["scene"])["bytes"]));check();return copy;}
+                try{MarkStage(stage);var copy=Child(stage,"scene.max");File.Copy(Child(directory,"scene.max"),copy,false);ContentObjects.Verify(copy,S(D(d["scene"])["sha256"]),N(D(d["scene"])["bytes"]));check();return copy;}
                 catch{Directory.Delete(stage,true);throw;}
             });
         }

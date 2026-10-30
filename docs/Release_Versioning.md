@@ -1,5 +1,19 @@
 # Release and saved-data versioning
 
+**30 October compatibility packaging:** the user explicitly requested a combined **0.87.6.7** EXE for Max 2024/2026/2027 and the website upload ZIP. Separate older-host SDK payloads have build/package scope; the original Max 2027 MZP and runtime evidence remain unchanged. [Compatibility delivery](plans/edit-preparation-08767-20261029/COMPATIBILITY_08767.md). No plugin version bump.
+
+**29 October user-selected delivery: 0.87.6.7, Max 2027 only.** The user explicitly selected this four-part version for pinned edited instances, held Mesh/Proxy presentation, panel repaint, assigned-model Band badges and selected-piece preparation profiles/detail. It supersedes the unpublished 0.87.7 candidate label despite the feature-sized scope. It also repairs Scene-load recovery and stale provenance/captions. Edit capability **5**, storage **4**, authored Edit payload **2**, Interactions **17**, prepared envelope/source **3** and authored preparation intent **2** guard the changed contracts. Scene **65**, recipe envelope **9**, viewport selection **2** and independent products retain their versions. Exact script/native/managed bytes ship in a Max 2027 MZP. [Delivery and limitations](plans/edit-preparation-08767-20261029/DELIVERY.md). This is a testing delivery, not 1.0 publication readiness.
+
+**29 October user-selected presentation patch: 0.87.6.5.** Restores mesh-shaped hover on one instance and adds persistent selected outlines suppressed during native transform gestures. Cached, bounded overlay presentation changes no saved format, placement, contact or authored selection semantics. Viewport selection **2**, scene **65**, recipe **9**, Interactions **16** and Edit capability/storage **4/3** remain. The requested EXE includes distinct Max 2024/2026/2027 builds; focused runtime qualification is Max 2027 only. [Delivery](plans/instance-selection-08765-20261029/DELIVERY.md).
+
+**29 October user-selected patch: 0.87.6.4.** Individual cheap hover and click-to-instance entry repair the selection workflow. Viewport selection capability is **2**; scene **65**, recipe **9**, Interactions **16** and Edit capability/storage **4/3** remain. The user requests one EXE for Max 2024/2026/2027; only Max 2027 is runtime checked. [Delivery](plans/instance-selection-08764-20261029/DELIVERY.md).
+
+**29 October user-selected review patch: 0.87.6.3, Max 2027 only.** Repairs reviewed role/hiding/visibility/bounds defects and reduces edited-placement and viewport-pose work without changing the artist controls or saved formats. Native Interactions capability **16** requires its matching script/native pair. Scene **65**, recipe **9**, source transform/Undo **2/2**, Edit capability/storage **4/3**, viewport selection **1** and independent products remain unchanged. Deliver the qualified Max 2027 MZP for user testing; no EXE or older-host build is authorized in this pass. [Delivery and evidence](plans/interaction-review-08763-20261029/DELIVERY.md).
+
+**29 October user-selected patch: 0.87.6.2.** The user selects this four-part version for shared controller viewport/Update/Enable controls and displayed-mesh picking in object mode and the separate Cyrus Scatter Edit modifier. Native viewport selection capability **1** guards the exact new script/native pair. Scene **65**, Interactions **15**, source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and Scene metadata **1** remain unchanged. One EXE contains matching Max 2024/2026/2027 packages; only Max 2027 is runtime tested. [Delivery and exact scope](plans/viewport-selection-08762-20261029/DELIVERY.md). No solver change or independent-product version change.
+
+**29 October user-selected patch: 0.87.6.1.** This four-part patch fixes Point/Band refresh and mounted-panel reuse, skips contact work that cannot bend/trim and delivers the Terraces landscape campaign. Scene **65**, Interactions **15**, source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and Scene metadata **1** are unchanged. Separate Max 2024/2026/2027 payloads are in one EXE; runtime qualification is Max 2027 only. [Exact delivery](plans/terraces-performance-20261029/DELIVERY.md). Independent products keep their versions; the initial campaign folder label `0877` is not a released version.
+
 **28 October user-selected UI/settings delivery: 0.87.6.** This three-part increment covers the all-panel control audit, Point source repair, contextual layout and painting/preview feedback. Scene **65**, Interactions **15**, source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and Scene metadata **1** remain. Matched native/managed/script payloads are packaged for Max 2024, 2026 and 2027; runtime UI qualification is Max 2027 only. The 0.87.5.6 performance reference remains immutable. [Delivery](plans/ui-settings-0876-20261028/DELIVERY.md).
 
 **28 October 0.87.5.6 compatibility packaging follow-up:** the user now explicitly
@@ -45,12 +59,13 @@ The original performance campaign below retains its Max 2027-only scope.
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.87.5.6 | Responsive artistic bending and trunk/falloff controls |
-| Scatter native/package | 0.87.5.6 / Max 2024, 2026, 2027 MZPs and combined EXE | Original Max 2027 scripted viewport evidence retained; 2024/2026 compilation/package only |
-| Native Interactions capability | 15 | Layer trunk/falloff payload, fast artistic response, scene colliders and visibility masks |
+| Scatter UI | 0.87.6.7 | Pinned edits, held mesh transforms, panel repairs and preparation profiles/detail |
+| Scatter native/package | 0.87.6.7 / Max 2027 MZP | Exact qualified Max 2027 pair; preceding older-host packages retain historical scope |
+| Native viewport selection capability | 2 | Separate pick helper and retained click-to-Edit routing; cached mesh outlines suppress during transforms |
+| Native Interactions capability | 17 | Selected-piece profiles/detail; preparation envelope/source 3 and intent 2, with earlier readers retained |
 | Source transform / authored Undo | 2 / 2 | Source scale/Edit binding and bounded source/scene-collider/response commands |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
-| Native Edit capability / storage | 4 / 3 | Source-aware edits and authored recipe/Scene transport |
+| Native Edit capability / storage | 5 / 4 | Sparse pinned bases and authored Edit payload 2 within recipe envelope 9 |
 | Recipe / numeric-settings format and capability | 9 / 3 | Supported authored Edit and preparation transport; separate native Scene preset metadata 1 |
 | Library / portable-package capability | 4 / 3; shared-store 1 | Closed renderer graph 3 and shared static graph 4; standalone model-package 1; lower type/profile bounds remain |
 | Saved MAXScript schema | 65 | Appended trunk/falloff settings; older Detailed responses migrate to Bend |

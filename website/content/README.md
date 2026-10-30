@@ -1,9 +1,30 @@
 # Maintained website content
 
-The 26 October 2026 edition follows **Scatter 0.87.3 / schema 61**. Five curated chapters explain Collider/React source preparation, separate tree colliders, physical units, local contact, shared models/textures and complete static recipes. Exposed-root inference and portable contact authoring remain unavailable; static contact does not imply wind or dynamic physics.
+The 29 October 2026 edition follows the **Scatter 0.87.6.7 testing release**, with 379 semantic
+controls, 14 plugin sections and 37 capability families. Surface Analyzer
+0.14.2, optional plant content 0.86.7 and the packaged MCP 0.73.0 foundation
+retain their independent versions and qualification.
 
-`release.json` pins the exact three-host EXE, byte count and SHA-256. Analyzer 0.14.2 is independently versioned and bundled from its unchanged native/script source. Max 2027 retains scoped runtime checks; 2024/2026 have native checks only for this successor. Content 0.86.7 remains separate and optional. Production staging includes only the exact main EXE.
+`release.json` identifies the documented edition and the exact approved EXE.
+Production builds verify its size, producer receipt and SHA-256 before staging
+it under `downloads/`. The full static upload ZIP includes that verified file;
+no optional plant-content archive or native plugin modules are exposed separately.
 
-`source-manifest.json` records reviewed source fingerprints; `control-explanations.json` covers all 351 source keys, including the 18 Interactions controls. The 37 capability records retain retired/experimental and MCP boundaries. `changelog.json` preserves historical entries and adds 0.87.0–0.87.3, with local evidence stripped from publication.
+`guide-chapters.json` contains curated artist text. It covers instance selection,
+shared setup controls, artistic Bend/Trim, independent root hiding, source-aware
+Edit, Scene presets and the Library. MCP development extensions are labeled
+separately from its packaged release and do not grant general authoring access.
 
-Run `npm run docs:sync`, `npm run docs:check` and `npm run package:cpanel`. Generated public guides contain curated HTML/search text, not raw Markdown, internal source bodies, private content or qualification reports. Source synchronization, a built upload package and live deployment are separate states.
+`control-explanations.json` maps every current semantic key, including Multiple
+Scatters. `source-manifest.json` records reviewed source hashes. Its
+artistWorkflowVersion is the historical poster-reading baseline, not the current
+product version. Historical images and changelog entries retain their dates.
+
+Run `npm run docs:sync`, `npm run docs:check` and `npm run build` from website/.
+Public content excludes raw Markdown, implementation bodies and internal reports.
+Local source updates, a built static site, packaging and live hosting are separate.
+See [current validation](../verification/UPLOAD_08767_20261029.md).
+
+The **0.87.6.7** scoped delivery is complete. Its own receipt records the matching
+Max 2027 runtime checks and build-only Max 2024/2026 payloads. The earlier
+website-only preview receipt remains historical; current packaging evidence is separate.

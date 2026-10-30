@@ -1,8 +1,16 @@
-# Cyrus Scatter 0.87.6 - artist workflow
+# Cyrus Scatter 0.87.6.7 - artist workflow
 
-**Current delivery: [0.87.6 UI and settings](plans/ui-settings-0876-20261028/DELIVERY.md).** Point sources, clearer painting fades, one density-preview toggle and grouped secondary settings. [Find the controls](plans/ui-settings-0876-20261028/ARTIST_GUIDE.md) and [complete control ledger](plans/ui-settings-0876-20261028/CONTROL_LEDGER.md). The EXE contains distinct Max 2024/2026/2027 payloads; runtime checks are Max 2027 only. Close selected hosts for the EXE, or use **Scripting > Run Script** for a matching MZP and restart Max.
+**Current testing delivery: [0.87.6.7 edited instances and panel fixes](plans/edit-preparation-08767-20261029/DELIVERY.md).** Edited items stay fixed through Seed/size changes, with held Mesh/Proxy movement and selected reset. Panel captions survive rearrangement. Band list badges follow assigned models; mixed assignments use a split swatch and unassigned bands have none. [Install and use](plans/edit-preparation-08767-20261029/ARTIST_GUIDE.md). Source preparation adds selected-piece Stem, Leaf and Flower head profiles with adjustable guide detail. Scene-load recovery and version provenance are corrected.
 
-**Performance reference:** the [0.87.5.6 Bend/Trim and trunk controls](plans/drag-response-08756-20261028/ARTIST_GUIDE.md) remain. This UI round does not change the interaction algorithms or rebuild the public website. Detailed contact remains an explicit slower choice.
+**Selection workflow retained from: [0.87.6.5 mesh hover and persistent selection](plans/instance-selection-08765-20261029/DELIVERY.md).** Hover one displayed mesh for yellow mesh edges; click to select its layer and enter **Cyrus Scatter Edit > Instances** with that instance selected. Its outline stays after the pointer leaves, hides during Move/Rotate/Scale, and returns afterward. Dense assets use bounded outline detail; large selections retain center markers beyond the outline budget. Select the SC icon for the scatter settings. [Guide and installation](plans/instance-selection-08765-20261029/ARTIST_GUIDE.md).
+
+The current delivery is a Max 2027 MZP: **Scripting > Run Script**, then restart Max. The preceding 0.87.6.5 EXE retains distinct Max 2024/2026/2027 payloads and its original qualification; older-host builds are not part of 0.87.6.7.
+
+Ctrl multi-selection and **Viewport & render > Multiple Scatters...** retain shared controls. Selecting an instance does not consume pending Manual changes. The [0.87.6.3 interaction review repairs](plans/interaction-review-08763-20261029/DELIVERY.md) remain in this build.
+
+The preceding [Terraces garden and UI work](plans/terraces-performance-20261029/ARTIST_GUIDE.md), [control guide](plans/ui-settings-0876-20261028/ARTIST_GUIDE.md) and [complete ledger](plans/ui-settings-0876-20261028/CONTROL_LEDGER.md) remain applicable. The new shared controls change only the property you edit; use **Update Scatters** to apply pending Manual changes.
+
+**Performance reference:** the [0.87.5.6 Bend/Trim and trunk controls](plans/drag-response-08756-20261028/ARTIST_GUIDE.md) remain. The follow-up preserves those responses while skipping work that cannot change the result. Detailed contact remains an explicit slower choice. The public website was not rebuilt in this campaign.
 
 **Earlier 0.87.5.5 package.** The [combined EXE and matched MZPs](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md) fix the 0.87.5.4 application callback error. Close selected hosts for the EXE, or use **Scripting > Run Script** for a matching MZP, then restart Max. Max 2027 is runtime tested; Max 2024/2026 are compiled and packaged without host testing. Existing Library content and Surface Analyzer remain independent.
 
@@ -583,43 +591,45 @@ Rounded corners. No unbounded geometry refinement is triggered by size editing.
 
 From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.
 
-## Edit instances in 0.86.9
+## Edit instances in 0.87.6.7
 
 **Cyrus Scatter Edit > Instances** uses **Viewport & render > Color by**:
-Model, Layer or Bands. Selected handles keep a colour accent with contrasting
-selection marks. A handle marks the source pivot at its final accepted position;
-it does not mark the trunk or automatically recenter a model. The library Orange
-Tree has geometry offset from its pivot, so its trunk can remain beside a correct
-handle. Changing the source pivot intentionally changes placement semantics.
+Model, Layer or Bands. A handle marks the source pivot at its accepted position;
+it does not recenter offset model geometry. Move, rotate or scale an instance
+to pin its authored transform and source choice. It then stays fixed when you
+change **Amount > Seed** or procedural size variation. Other instances follow
+the changed settings. Copies are independent pins; deletion remains authored.
 
-In **0.86.9.2**, the selected handle and Move gizmo follow your drag immediately.
-The complete scatter display commits after release, so heavy geometry can still
-take time to finish presenting. The previous complete display may remain briefly
-while that work finishes. Undo, Redo and Cancel preserve their existing behavior;
-you do not need to delete and recreate Edit to receive this feedback fix.
+**Reset selected edits** returns selected generated instances to the current
+procedural result and removes selected copies. **Reset all edits** clears the
+modifier. Both support Undo. Use the instance gizmo to adjust a pin further.
 
-Remove sources through **Models & Points**. Edits belonging to the removed model
-remain saved and inactive. Matching surviving instances keep their edits; a
-replacement model cannot inherit them merely by taking the same list position.
-Undo restores the original compatible setup. Re-adding the original scene node
-can recover its history when the generation and source settings still match;
-a different node with the same name is a different source. Point and gap entries
-also retain identity when another row is removed.
+Ordinary Mesh/Proxy instances now follow held movement through sparse transform
+patches over retained source geometry. Up to 4,096 selected instances use this
+preview. Larger selections and Point Cloud keep their preceding update path;
+prepared Interactions retain their separate live path. Selected outlines and
+unselected markers are suppressed during the gesture. This is not a general
+FPS guarantee. See the [scoped measurements](plans/edit-preparation-08767-20261029/DELIVERY.md).
 
-In Manual mode, removal changes the authored list while the previous result
-stays visible until **Update scatter**. In Live mode the normal update runs.
-Per-instance radius values keep their own saved ownership, including inactive
-values. Seed or receiver-geometry changes still require the matching setup;
-the plugin will not guess where old edits belong. **Reset all edits** clears
-the whole modifier and supports Undo. It is not required for ordinary removal.
+Removing a source or receiver suspends its saved history. Returning the same
+compatible owner restores it; a different node with the same name is different.
+Receiver geometry changes remain guarded. Separate per-instance radius overrides
+retain their existing generation compatibility rules. Pins still participate in
+spacing, Interactions and rendering. Moving a pin does not apply pending Manual
+settings; **Update scatter** remains the explicit action.
 
-If a viewport successor fails, the complete preceding display and its handles
-stay together. Refresh the display or restore the matching setup before making
-another instance transform or selected-radius change.
+Failed successors keep the preceding complete display and feedback. Refresh the
+display or restore the compatible setup before another authored gesture.
+Supported older edits acquire pins from matching generation inputs. If an older
+scene was saved after an incompatible Seed change, restore its previous Seed
+once; the missing old placement cannot be guessed. Save an upgraded copy and keep
+the original: native Edit storage 4 needs 0.87.6.7 or later. Scene schema 65 and
+recipe envelope 9 remain; portable authored Edit payload is 2.
 
-Existing supported scenes load without an automatic reset. Save a new upgraded
-copy and keep the original: source-aware Edit data saved by 0.86.9 requires
-0.86.9 or later. See the [current delivery evidence and limits](plans/edit-instances/DELIVERY_08692.md) and [original source-aware Edit qualification](plans/edit-instances/DELIVERY_0869.md).
+[Current artist guide](plans/edit-preparation-08767-20261029/ARTIST_GUIDE.md) and
+[qualification](plans/edit-preparation-08767-20261029/QUALIFICATION.json) describe the exact
+Max 2027 package. Earlier [source-aware Edit evidence](plans/edit-instances/DELIVERY_0869.md)
+retains its historical build and host scope.
 
 ## Copy and recipe variation (0.84.0)
 

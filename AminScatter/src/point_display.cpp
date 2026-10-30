@@ -1,8 +1,11 @@
 #include "point_preview.h"
 #include "deformation_preview.h"
+#include "viewport_plan.h"
 #include "diagnostics.h"
 #include "render_publication.h"
 #include "edit_feedback.h"
+#include "viewport_pick.h"
+#include <Graphics/HitTestContext.h>
 #include <iparamb2.h>
 #include <SingleWeakRefMaker.h>
 #include <Graphics/CustomRenderItemHandle.h>
@@ -22,6 +25,9 @@
 #include <atomic>
 #include <cmath>
 #include <cstring>
+#include <cfloat>
+#include <tuple>
+#include <maxscript/foundation/3dmath.h>
 #include <mutex>
 #include <stdexcept>
 #include <string>
@@ -103,6 +109,7 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<Pr
     for(const auto& group:groups)cpuBytes=viewport_memory::add(cpuBytes,viewport_memory::add(
         viewport_memory::multiply(group.faces.capacity(),sizeof(group.faces[0])),viewport_memory::add(
         viewport_memory::multiply(group.instances.capacity(),sizeof(Matrix3)),group.bandSlots.capacity())));
+    for(const auto& group:groups)if(group.pickRows&&!group.sharedInstances)cpuBytes=viewport_memory::add(cpuBytes,group.pickRows->capacity()*sizeof(std::uint32_t));
     // The staging vectors moved into this snapshot; transfer their lease rather
     // than charging the same storage twice. A distinct successor keeps its own.
     memory=std::move(storage);
@@ -232,41 +239,25 @@ struct Generation {
         try{recordPreviewFailure(reason);}catch(...){} // diagnostics must not escape SDK realization
     }
     std::string failure() const { std::lock_guard<std::mutex> lock(failureMutex);return failureText.data(); }
-    struct DrawGroup { ViewportQuota idle,navigation;bool full=false; };
+    using DrawGroup=ViewportDrawGroup;
     std::vector<std::vector<DrawGroup>> pointPlan,meshPlan;
     Box3 bounds;
     void plan(bool boxes) {
-        pointPlan.clear();meshPlan.clear();
-        pointPlan.resize(layers.size());meshPlan.resize(layers.size());
-        for(std::size_t l=0;l<layers.size();++l) {
-            pointPlan[l].resize(layers[l].snapshot->groups.size());
-            if(layers[l].mesh)meshPlan[l].resize(layers[l].mesh->groups.size());
-        }
-        for(int mode=0;mode<3;++mode) {
-            std::vector<ViewportDemand> input;std::vector<std::pair<std::size_t,std::size_t>> owners;
-            ViewportLimits limits;
-            for(std::size_t l=0;l<layers.size();++l) {
-                const auto& layer=layers[l];if(layer.snapshot->lines)continue;
-                limits=layer.limits;
-                if(mode==0) for(std::size_t g=0;g<layer.snapshot->groups.size();++g) {
-                    input.push_back({layer.snapshot->groups[g].points.size(),1});owners.emplace_back(l,g);
-                }
-                if(layer.mesh && ((mode==2 && layer.geometryMode==4)||(mode==1 && layer.geometryMode!=4)))
-                    for(std::size_t g=0;g<layer.mesh->groups.size();++g) {
-                        const auto& group=layer.mesh->groups[g];
-                        input.push_back({group.faceData().empty()?0:group.instanceCount(),mode==2?group.faceData().size():1});owners.emplace_back(l,g);
-                    }
-            }
-            auto idle=viewportQuotas(input,limits.values[mode*2],mode==2,boxes);
-            auto active=viewportQuotas(input,limits.values[mode*2+1],mode==2,boxes);
-            for(std::size_t i=0;i<owners.size();++i) {
-                const auto [l,g]=owners[i];auto& p=mode==0?pointPlan[l][g]:meshPlan[l][g];
-                if(mode==2 && layers[l].mesh->groups[g].reducedBox)idle[i].box=active[i].box=true;
-                p={idle[i],active[i],mode!=0 && ((!idle[i].box && idle[i].count)||(!active[i].box && active[i].count))};
+        meshPlan=viewportMeshPlan(viewportMeshDemands(layers),boxes);
+        pointPlan.clear();pointPlan.resize(layers.size());
+        std::vector<ViewportDemand> input;std::vector<std::pair<std::size_t,std::size_t>> owners;
+        ViewportLimits limits;
+        for(std::size_t l=0;l<layers.size();++l){
+            const auto& layer=layers[l];pointPlan[l].resize(layer.snapshot->groups.size());
+            if(layer.snapshot->lines)continue;limits=layer.limits;
+            for(std::size_t g=0;g<layer.snapshot->groups.size();++g){
+                input.push_back({layer.snapshot->groups[g].points.size(),1});owners.emplace_back(l,g);
             }
         }
+        auto idle=viewportQuotas(input,limits.values[0]);auto active=viewportQuotas(input,limits.values[1]);
+        for(std::size_t i=0;i<owners.size();++i){const auto [l,g]=owners[i];pointPlan[l][g]={idle[i],active[i],false};}
         for(std::size_t l=0;l<layers.size();++l)if(layers[l].snapshot->lines)
-            for(std::size_t g=0;g<pointPlan[l].size();++g) {
+            for(std::size_t g=0;g<pointPlan[l].size();++g){
                 const auto n=layers[l].snapshot->groups[g].points.size()/2;
                 pointPlan[l][g]={{n,1,false},{n,1,false},false};
             }
@@ -502,8 +493,22 @@ public:
     void HitTest(HitTestContext&,DrawContext&) override {}
 };
 
+struct PickState;
+static std::unordered_map<AnimHandle,AnimHandle> pickDisplays;
+class PointDisplay;
+int pickDisplay(PointDisplay&,TimeValue,INode*,int,int,int,IPoint2*,ViewExp*);
 class PointDisplay final : public HelperObject {
 public:
+    std::shared_ptr<PickState> pickState;
+    // A second disposable helper is pick-only. Nitrous preselection ignores
+    // DoOwnSelectHilite for custom items, so it must not own the garden's items.
+    // Anim handles are weak, checked on every use; no second geometry owner.
+    std::uint64_t pickTarget=0;
+    std::uint64_t pickBoundsTicket=0;
+    PointDisplay* pickDisplayTarget() const {
+        auto* value=pickTarget?Animatable::GetAnimByHandle(pickTarget):nullptr;
+        return value&&value!=this&&value->ClassID()==displayID?static_cast<PointDisplay*>(value):nullptr;
+    }
     std::uint64_t displayHandle(){return Animatable::GetHandleByAnim(this);}
     ControllerWatch controller;
     const std::shared_ptr<RenderPublication> presentation=controller.presentation;
@@ -511,6 +516,7 @@ public:
     bool presentationRefreshRequested=false;
     std::uint64_t revision=0,prepares=0,nodeUpdates=0;
     ~PointDisplay() override {
+        for(auto it=pickDisplays.begin();it!=pickDisplays.end();)if(it->second==displayHandle())it=pickDisplays.erase(it);else ++it;
         presentation->stop();
         if(candidate)cyrusReleaseEditFeedback(candidate->generation->editFeedback);
         if(retained)cyrusReleaseEditFeedback(retained->generation->editFeedback);
@@ -534,6 +540,7 @@ public:
         auto* out=new PointDisplay;BaseClone(this,out,remap);return out;
     }
     Box3 worldBounds() const {
+        if(pickTarget){auto* target=pickDisplayTarget();if(target)return target->worldBounds();Box3 empty;empty.Init();return empty;}
         Box3 bounds;bounds.Init();bool any=false;
         for(const auto& bundle:{candidate,retained})if(bundle&&bundle->generation->groups){bounds+=bundle->generation->bounds;any=true;}
         return any?bounds:Box3(Point3(-.001f,-.001f,-.001f),Point3(.001f,.001f,.001f));
@@ -542,7 +549,10 @@ public:
     void GetWorldBoundBox(TimeValue,INode*,ViewExp*,Box3& box) override { box=worldBounds(); }
     void GetDeformBBox(TimeValue,Box3& box,Matrix3* tm,BOOL) override { box=worldBounds();if(tm)box=box**tm; }
     int Display(TimeValue,INode*,ViewExp*,int) override { return 0; }
-    int HitTest(TimeValue,INode*,int,int,int,IPoint2*,ViewExp*) override { return 0; }
+    // A helper owns every layer's render items. Max's object-wide highlight
+    // would redraw the entire garden; the bounded instance overlay owns it.
+    int DoOwnSelectHilite() override { return 1; }
+    int HitTest(TimeValue t,INode* n,int type,int crossing,int flags,IPoint2* p,ViewExp* v) override { auto* target=pickDisplayTarget();return target?pickDisplay(*target,t,n,type,crossing,flags,p,v):0; }
     void Snap(TimeValue,INode*,SnapInfo*,IPoint2*,ViewExp*) override {}
     unsigned long GetObjectDisplayRequirement() const override { return 0; }
     bool PrepareDisplay(const UpdateDisplayContext&) override {
@@ -574,6 +584,7 @@ public:
 #include "point_publication.inc"
 };
 
+#include "viewport_pick.inc"
 PointDisplay* owner(INode* node) {
     auto* object=node?node->GetObjectRef():nullptr;
     if(!object || object->ClassID()!=displayID) throw RuntimeError(_T("Expected an unmodified Cyrus point display owner"));
@@ -594,7 +605,10 @@ public:
 }
 bool publishPoints(INode* helper,INode* controller,std::vector<PointLayer> layers) {
     if(!controller || !IsRetainedModeEnabled()) return false;
-    return owner(helper)->publish(controller,std::move(layers));
+    auto* display=owner(helper);
+    const bool result=display->publish(controller,std::move(layers));
+    if(result){pickDisplays[Animatable::GetHandleByAnim(controller)]=display->displayHandle();if(_tcscmp(helper->GetName(),controller->GetName())!=0)helper->SetName(controller->GetName());}
+    return result;
 }
 bool pointsMatch(INode* helper,const std::vector<PointLayer>& layers) {
     auto* display=owner(helper);display->requestPresentationUpdate();const auto gen=display->visibleGeneration();
@@ -605,6 +619,8 @@ bool pointsMatch(INode* helper,const std::vector<PointLayer>& layers) {
         gen->submitted.load();
 }
 }
+
+#include "edit_viewport.inc"
 
 bool cyrusRequestReadyPointDisplay(std::uint64_t displayHandle,std::uint64_t controllerHandle)noexcept{
     try{
@@ -838,3 +854,5 @@ Value* cyrusOwnedPreviewFault_cf(Value** args,int count) {
     return &ok;
 }
 #endif
+
+#include "viewport_pick_bridge.inc"

@@ -1,0 +1,50 @@
+{
+  "python": {
+    "command": [
+      "build/mcp-venv/Scripts/python.exe",
+      "-m",
+      "pytest",
+      "tools/tests/test_build_inputs.py",
+      "tools/tests/test_build_only_receipt.py",
+      "tools/tests/test_package_version.py",
+      "tools/tests/test_recipe_contract.py",
+      "CyrusMCP/tests/test_feature_catalog.py",
+      "-q"
+    ],
+    "exit_code": 0,
+    "log_sha256": "6a91c2aebbd0c951789683710b2b79284c4b65dfa0f5403f5d357289f23f50fb",
+    "explicit_test_sources": {
+      "tools/tests/test_build_inputs.py": "1d82989982e76eac2539c10a0287318ea241b14d030a62f69bae98e872cd92cf",
+      "tools/tests/test_build_only_receipt.py": "be3040479980ab45559bd5cbefa6cf360e9a0f023e6ebea0c0727245fd16d90d",
+      "tools/tests/test_package_version.py": "029aff0444b2baa8076db493638de266d17546597af4d780ed9889ec1d5897b9",
+      "tools/tests/test_recipe_contract.py": "f97eecb5c2e0dbabb2710c5e3f109dc921276a634a677c6afc0173f9ab8ac5a7",
+      "CyrusMCP/tests/test_feature_catalog.py": "8d9ebe08f12e5fda6b10ba14322ab6455cc22a3fc4a7f9f571b6303fe5d3b43c"
+    }
+  },
+  "ui": {
+    "command": [
+      "node",
+      "--test",
+      "AminScatter/tools/ui/approved-layout.test.cjs",
+      "AminScatter/tools/ui/assemble-template.test.cjs"
+    ],
+    "exit_code": 1,
+    "log_sha256": "fcc3ddf38b93a44e4cc7b90a49fa23cb8567a59a350b337c1461ee4034ea8e89",
+    "explicit_test_sources": {
+      "AminScatter/tools/ui/approved-layout.test.cjs": "5c25c664922ab9d5db53c7fdaaca5f1e5645ae9af8b79c4d3765e9cd0d3af375",
+      "AminScatter/tools/ui/assemble-template.test.cjs": "3047b2db89998469efa55428e56f38ca8c6937d88d351d7bc28067694542607c"
+    }
+  },
+  "ui_corrected": {
+    "command": [
+      "node",
+      "--test",
+      "tools/ui/approved-layout.test.cjs",
+      "tools/ui/assemble-template.test.cjs"
+    ],
+    "cwd": "AminScatter",
+    "exit_code": 0,
+    "log_sha256": "8bfed272c47ee8cb5769c7af08a1485663732ccd02690220e7f3b33fcae8dca8",
+    "supersedes": "ui: invocation had repository-root cwd, while this test requires AminScatter"
+  }
+}

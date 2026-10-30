@@ -12,7 +12,6 @@ const markup=template.replaceAll('{{developmentVersion}}',reference.developmentV
   .replaceAll('{{releaseVersion}}',currentRelease.version)
   .replaceAll('{{modelCount}}',String(currentRelease.models))
   .replaceAll('{{releaseHosts}}',currentRelease.maxYears.join(' / '))
-  .replaceAll('{{installerSize}}',decimalSize(currentRelease.installerBytes))
   .replaceAll('{{contentSize}}',decimalSize(currentRelease.contentBytes))
   .replace('{{landingSpecimens}}',landingSpecimens)
 

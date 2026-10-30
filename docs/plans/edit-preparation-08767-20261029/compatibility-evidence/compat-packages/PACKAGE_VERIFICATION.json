@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "version": "0.87.6.7",
+  "exe_sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+  "exe_bytes": 8584192,
+  "packages": {
+    "CyrusScatter-0.87.6.7-Max2024.mzp": "a659a48e835406141d0ad91ae7eaaaa33eaec292b2a05d3e9f47fe6f1406a785",
+    "CyrusScatter-0.87.6.7-Max2026.mzp": "baf67483d7f0beb22d2d6d970b65f179923a715e388726c6277ac6329982ebcb",
+    "CyrusScatter-0.87.6.7-Max2027.mzp": "92eb40e16751c0f3fdf4bef63001959e70f8b9290e77b9f45d93c3e05321eefa"
+  },
+  "embedded_resources": {
+    "Cyrus.Payload.2024.mzp": "a659a48e835406141d0ad91ae7eaaaa33eaec292b2a05d3e9f47fe6f1406a785",
+    "Cyrus.Payload.2026.mzp": "baf67483d7f0beb22d2d6d970b65f179923a715e388726c6277ac6329982ebcb",
+    "Cyrus.Payload.2027.mzp": "92eb40e16751c0f3fdf4bef63001959e70f8b9290e77b9f45d93c3e05321eefa"
+  },
+  "builds": {
+    "2024": {
+      "receipt_sha256": "7f0d0a3c31c5f0d62fd6dbdb1a3ed8c8a42f0f1cf036ac20bd12245d3729c37b",
+      "native": {
+        "AminScatter.dlx": "841a8ba78baeaad9657572736148a4e66108c857fa3a6e75f1743c5051b9a52b",
+        "CyrusScatterEdit.dlm": "66e86c1ef0f2f366739743a3cc73fd1fa2f433f7d95c58a60494e26524852e3f",
+        "CyrusBrush.dlx": "6ba2898e3fb71e379311f5ec06f63c873f5843ccfb6e72b156e9bb1c86bae77b",
+        "CyrusBrushStorage.dlh": "34a1aef5b5e8d24056a3ca1d6ce7ebc309967a9acc3290acba976016fe34c3dc"
+      },
+      "host_tested": false
+    },
+    "2026": {
+      "receipt_sha256": "46ecb651edab36fa6729cce2ccd871a148d98b427b40f82892e1e5acbf9bba0a",
+      "native": {
+        "AminScatter.dlx": "e2efeded874693716407611f2113992f7f77333fc8bb7158f5325ab403ff3566",
+        "CyrusScatterEdit.dlm": "fb58d7061f95cbe8b92c9af956251b96d6aced59229944e4a8c077f0839a3c87",
+        "CyrusBrush.dlx": "2396a5298fdb1ff64971deea2ea708c70961dbc07dba5e284864f9eca162621f",
+        "CyrusBrushStorage.dlh": "2498d8f5ef7adceec011af929b2a743393887125e07d32cbc305b8333375a7a8"
+      },
+      "host_tested": false
+    },
+    "2027": {
+      "receipt_sha256": "d95a00481a9902f384ed59ceca4833053e775cfacd63072d087fa8dee142a8fc",
+      "native": {
+        "AminScatter.dlx": "0f133728457e18cac499307e94f0141fd6ac7ec2e1bbfc1d1cd8cd0e42423a20",
+        "CyrusScatterEdit.dlm": "d8c638ba9bd54d247bccb3ea945e26f883abe86ddf7d6a4abda817b9d2fc8804",
+        "CyrusBrush.dlx": "f7bda93ebedb800d91d771cbb3311fcaf01e4fdc0379bfe0de7988af66a22183",
+        "CyrusBrushStorage.dlh": "c79464a787c0b33f0adfd771e86c12a3389357bca975e0f61a694aab0c02670b"
+      },
+      "host_tested": true
+    }
+  },
+  "scope": "Exact-source native SDK builds and ZIP/EXE payload integrity. Max 2027 native and owned-host evidence is separate. Max 2024/2026 were not launched. Installer was not executed in artist profiles.",
+  "content": "Existing shared library and independently installed Surface Analyzer are retained; optional content ZIP is not embedded."
+}

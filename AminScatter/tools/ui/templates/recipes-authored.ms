@@ -56,7 +56,7 @@ fn CyrusRecipeRestoreAuthored owner record authored bindings = (
 fn CyrusRecipeRestoreEdits root document identityMap = (
     local authored=CyrusRecipeGet document "authored",stacks=CyrusRecipeGet authored "edits"
     if stacks.count==0 do return true
-    if cyrusEditVersion()!=4 do throw "Edited recipes require the matched Cyrus Scatter 0.87.6 Edit module. Restart Max after installing."
+    if cyrusEditVersion()!=5 do throw "Edited recipes require the matched Cyrus Scatter 0.87.6.7 Edit module. Restart Max after installing."
     local editMods=root.procModifiers(),hasContacts=false
     for leaf in root.layerObjects where leaf.interactionCollider or leaf.interactionReact do hasContacts=true
     if hasContacts and (stacks.count>1 or editMods.count>1) do throw "Interactions support one Cyrus Edit modifier per setup. Save/load this edited interaction recipe with one modifier."

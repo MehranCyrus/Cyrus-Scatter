@@ -21,7 +21,7 @@ double arcLength(const std::vector<V>& p){double arc=0;for(unsigned k=1;k<p.size
 double toCurve(V p,const std::vector<V>& curve){double distance=1e100;for(unsigned k=1;k<curve.size();++k){auto d=sub(curve[k],curve[k-1]);double u=std::clamp(dot(sub(p,curve[k-1]),d)/std::max(1e-20,dot(d,d)),0.,1.);distance=std::min(distance,length(sub(p,add(curve[k-1],mul(d,u)))));}return distance;}
 std::vector<Segment> segments(const std::vector<Guide>& guides){std::vector<Segment> s;for(unsigned g=0;g<guides.size();++g)for(unsigned k=1;k<guides[g].nodes.size();++k)s.push_back({guides[g].nodes[k-1],guides[g].nodes[k],g,k-1});return s;}
 }
-Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_bool& cancel,std::atomic_int& progress,const Json& authoring){
+Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_bool& cancel,std::atomic_int& progress,const Json& authoring,const Analysis* automatic){
     const auto started=std::chrono::steady_clock::now();validate(s,settings);Work work{0,std::uint64_t(settings.limits.workMillions)*1000000,cancel};
     if(cancel.load())throw std::runtime_error("Analysis cancelled; previous preparation retained.");
     std::vector<unsigned> parents(s.positions.size());std::iota(parents.begin(),parents.end(),0u);
@@ -36,7 +36,9 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
     if(parts.size()>settings.limits.parts)throw std::runtime_error("Connected pieces: "+std::to_string(parts.size())+"; increase Parts in Preparation limits.");
     const auto edits=authoringRows(authoring);
     auto role=[&](unsigned id){auto it=edits.find(id);return it==edits.end()?0:it->second.value("role",0);};
-    auto eligible=[&](unsigned id){return role(id)!=2&&role(id)!=3;};
+    auto profile=[&](unsigned id){auto it=edits.find(id);return it==edits.end()?0:it->second.value("profile",0);};
+    auto pointCount=[&](unsigned id,unsigned automatic){auto it=edits.find(id);return it==edits.end()?automatic:it->second.value("points",automatic);};
+    auto eligible=[&](unsigned id){if(role(id)==2||role(id)==3)return false;if(role(id)==1||!automatic)return true;return automatic->metadata.at("parts").at(id).at("stem").get<bool>();};
     if(!edits.empty()&&std::none_of(out.labels.begin(),out.labels.end(),eligible))throw std::runtime_error("No bending stems remain. Restore a Bend/Automatic piece.");
     for(unsigned fi=0;fi<s.faces.size();++fi){auto& p=parts[out.labels[s.faces[fi][0]]];if(p.faces.empty())p.material=s.materials[fi];else p.mixed|=p.material!=s.materials[fi];p.faces.push_back(fi);}
     std::sort(edges.begin(),edges.end());std::vector<std::vector<unsigned>> boundaryAdj(s.positions.size());
@@ -49,8 +51,19 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
     }
     progress=25;std::vector<Guide> guides;std::vector<int> partGuide(parts.size(),-1);std::vector<int> distance(s.positions.size(),-1);
     auto addGuide=[&](Guide g){if(guides.size()>=settings.limits.guides)throw std::runtime_error("Guide count reached "+std::to_string(settings.limits.guides)+"; increase Guides in Preparation limits.");partGuide[g.component]=int(guides.size());guides.push_back(std::move(g));};
+    std::map<unsigned,const Json*> retained,retainedLinks;
+    if(automatic)for(const auto& prior:automatic->metadata.at("guides")){
+        const auto ci=prior.at("component").get<unsigned>();auto edit=edits.find(ci);
+        if(edit==edits.end()||(eligible(ci)&&profile(ci)!=2&&!edit->second.contains("parent")&&!edit->second.contains("root_vertex")&&!edit->second.contains("flip")&&!edit->second.contains("nodes")))retainedLinks[ci]=&prior;
+        if(edit!=edits.end())continue;
+        Guide g{ci,parts[ci].boundary.size()!=1};for(const auto& p:prior.at("nodes"))g.nodes.push_back({p[0].get<double>(),-p[2].get<double>(),p[1].get<double>()});
+        g.base=prior.at("root_ring_vertices").get<std::vector<unsigned>>();
+        unsigned first=parts[ci].vertices.front(),last=first;double d0=1e100,d1=1e100;
+        for(auto v:parts[ci].vertices){auto p=point(s,v);double a=length(sub(p,g.nodes.front())),b=length(sub(p,g.nodes.back()));if(a<d0){d0=a;first=v;}if(b<d1){d1=b;last=v;}g.radius=std::max(g.radius,toCurve(p,g.nodes));work.charge(g.nodes.size());}
+        if(g.base.empty())g.base={first};g.tip={last};g.radius=std::min(.03,g.radius);addGuide(std::move(g));retained[ci]=&prior;
+    }
     // Boundary-to-boundary graph rings are invariant to the imported vertex order.
-    for(unsigned ci=0;ci<parts.size();++ci){const auto& p=parts[ci];if(!eligible(ci)||p.nonmanifold||(p.mixed&&role(ci)!=1)||p.boundary.size()!=2||p.boundary[0].size()<3||p.boundary[1].size()<3||p.boundary[0].size()>64||p.boundary[1].size()>64)continue;
+    for(unsigned ci=0;ci<parts.size();++ci){const auto& p=parts[ci];if(partGuide[ci]>=0||!eligible(ci)||p.nonmanifold||(p.mixed&&role(ci)!=1)||p.boundary.size()!=2||p.boundary[0].size()<3||p.boundary[1].size()<3||p.boundary[0].size()>64||p.boundary[1].size()>64)continue;
         auto centre=[&](const std::vector<unsigned>& v){V c{};for(auto i:v)c=add(c,point(s,i));return mul(c,1./v.size());};
         unsigned base=centre(p.boundary[1])[2]<centre(p.boundary[0])[2]?1:0;std::queue<unsigned> queue;
         for(unsigned v:p.boundary[base]){distance[v]=0;queue.push(v);}int max=0;
@@ -59,7 +72,7 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
         if(max<2)continue;for(unsigned k=0;k<rings.size();++k)rings[k]=mul(rings[k],1./counts[k]);double arc=arcLength(rings);if(arc<settings.minimumLength)continue;
         double radius=0;for(auto v:p.boundary[base])radius=std::max(radius,length(sub(point(s,v),rings.front())));
         if(radius<1e-7||radius>.15||arc<4*radius)continue;
-        auto nodes=resample(rings,std::clamp(unsigned(std::ceil(arc/.04))+1,3u,16u));if(nodes.empty())continue;
+        auto nodes=resample(rings,pointCount(ci,std::clamp(unsigned(std::ceil(arc/.04))+1,3u,16u)));if(nodes.empty())continue;
         addGuide({ci,true,std::move(nodes),p.boundary[base],p.boundary[1-base],std::min(.03,radius),{}});
     }
     unsigned tubes=unsigned(guides.size());Forest forest;
@@ -69,17 +82,36 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
     auto geodesic=[&](const Part& p,unsigned seed,std::vector<double>& distances){for(auto v:p.vertices)distances[v]=1e100;using Item=std::pair<double,unsigned>;std::priority_queue<Item,std::vector<Item>,std::greater<Item>> queue;distances[seed]=0;queue.emplace(0,seed);unsigned far=seed;
         while(!queue.empty()){auto [d,a]=queue.top();queue.pop();work.charge();if(d!=distances[a])continue;if(d>distances[far]||(d==distances[far]&&point(s,a)<point(s,far)))far=a;for(auto b:adjacency[a]){double next=d+length(sub(point(s,a),point(s,b)));if(next<distances[b]){distances[b]=next;queue.emplace(next,b);}}}return far;};
     std::vector<Guide> ribbons;
+    // Explicit leaves may be broad and elevated. Prove source cross-section
+    // ordering before using it; never invent a petiole or promote petals by
+    // material/shape guessing. The default Automatic detector stays unchanged.
+    for(unsigned ci=0;ci<parts.size();++ci){const auto& p=parts[ci];if(profile(ci)!=2||partGuide[ci]>=0||p.nonmanifold||p.boundary.size()!=1)continue;
+        for(unsigned width:{2u,3u,4u,5u,7u,9u}){
+            const unsigned count=unsigned(p.vertices.size()),rings=count/width,tip=count%width;
+            if(rings<3||rings>512||tip>1||p.faces.size()!=(rings-1)*2*(width-1)+(tip?width-1:0))continue;
+            std::unordered_map<unsigned,unsigned> rank;for(unsigned k=0;k<count;++k)rank.emplace(p.vertices[k],k/width);
+            bool ordered=true;for(auto fi:p.faces){unsigned lo=UINT_MAX,hi=0;for(auto v:s.faces[fi]){lo=std::min(lo,rank.at(v));hi=std::max(hi,rank.at(v));}work.charge();if(hi!=lo+1){ordered=false;break;}}
+            if(!ordered)continue;
+            std::vector<V> centres;std::vector<unsigned> base,tipVertices;
+            for(unsigned row=0;row<rings;++row){V centre{};for(unsigned side=0;side<width;++side){auto v=p.vertices[row*width+side];centre=add(centre,point(s,v));if(row==0)base.push_back(v);if(row+1==rings)tipVertices.push_back(v);work.charge();}centres.push_back(mul(centre,1./width));}
+            if(tip){centres.push_back(point(s,p.vertices.back()));tipVertices={p.vertices.back()};}
+            const double arc=arcLength(centres);if(arc<settings.minimumLength)continue;
+            if(centres.back()[2]<centres.front()[2]){std::reverse(centres.begin(),centres.end());std::swap(base,tipVertices);}
+            auto nodes=resample(centres,pointCount(ci,std::clamp(unsigned(std::ceil(arc/.02))+1,3u,16u)));if(nodes.empty())continue;
+            Guide g{ci,false,std::move(nodes),std::move(base),std::move(tipVertices),.001,{}};g.crown=true;addGuide(std::move(g));break;
+        }
+    }
     // A geodesic chart reconstructs ordinary two-rail and irregular triangulated ribbons.
     for(unsigned ci=0;ci<parts.size();++ci){const auto& p=parts[ci];if(!eligible(ci)||partGuide[ci]>=0||p.nonmanifold||(p.mixed&&role(ci)!=1)||p.boundary.size()!=1||p.vertices.size()<6)continue;
         unsigned seed=p.vertices.front();for(auto v:p.vertices)if(point(s,v)<point(s,seed))seed=v;
         Near attachment;unsigned attachmentVertex=seed;
         if(tubes)for(auto v:p.vertices){auto hit=stems.nearest(point(s,v));if(hit.distance<attachment.distance){attachment=hit;attachmentVertex=v;}}
         unsigned a,b;if(tubes&&attachment.distance<.15){a=attachmentVertex;b=geodesic(p,a,distA);geodesic(p,b,distB);}else{b=geodesic(p,seed,distA);a=geodesic(p,b,distB);geodesic(p,a,distA);}double diameter=distA[b];if(diameter<settings.minimumLength)continue;
-        unsigned stations=std::clamp(unsigned(std::ceil(diameter/.02))+1,3u,16u);std::vector<V> chart(stations);std::vector<unsigned> count(stations),base,tip;
+        unsigned stations=pointCount(ci,std::clamp(unsigned(std::ceil(diameter/.02))+1,3u,16u));std::vector<V> chart(stations);std::vector<unsigned> count(stations),base,tip;
         for(auto v:p.vertices){double t=std::clamp((distA[v]-distB[v]+diameter)/(2*diameter),0.,1.);unsigned bin=std::min(stations-1,unsigned(std::round(t*(stations-1))));chart[bin]=add(chart[bin],point(s,v));++count[bin];if(bin==0)base.push_back(v);if(bin+1==stations)tip.push_back(v);}
         std::vector<V> path;for(unsigned k=0;k<stations;++k)if(count[k])path.push_back(mul(chart[k],1./count[k]));if(path.size()<2||base.empty()||tip.empty())continue;
         auto nodes=resample(path,stations);if(nodes.empty())continue;double arc=arcLength(nodes),width=0;for(auto v:p.vertices)width=std::max(width,toCurve(point(s,v),nodes));
-        if(arc<(role(ci)==1?settings.minimumLength:std::max(settings.minimumLength,(top-ground)*.08))||arc<3*width)continue;
+        if(arc<(role(ci)==1?settings.minimumLength:std::max(settings.minimumLength,(top-ground)*.08))||(profile(ci)!=2&&arc<3*width))continue;
         const bool structural=p.vertices.size()>32;
         ribbons.push_back({ci,false,std::move(nodes),std::move(base),std::move(tip),structural?std::min(.03,std::max(.001,width)):.0003,{}});
         ribbons.back().attachment=attachment;ribbons.back().attachmentVertex=attachmentVertex;
@@ -116,7 +148,7 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
         const auto& edit=it->second;bool reverse=edit.value("flip",false);
         if(edit.contains("root_vertex")){const auto seed=point(s,edit["root_vertex"].get<unsigned>());reverse^=length(sub(seed,g.nodes.back()))<length(sub(seed,g.nodes.front()));}
         if(reverse){std::reverse(g.nodes.begin(),g.nodes.end());std::swap(g.base,g.tip);}
-        if(edit.contains("nodes")){g.nodes.clear();for(const auto& p:edit["nodes"])g.nodes.push_back({p[0].get<double>(),p[1].get<double>(),p[2].get<double>()});}
+        if(edit.contains("nodes")){g.nodes.clear();for(const auto& p:edit["nodes"])g.nodes.push_back({p[0].get<double>(),p[1].get<double>(),p[2].get<double>()});if(edit.contains("points"))g.nodes=resample(g.nodes,edit["points"].get<unsigned>());}
         // A supported ring/endpoint remains the actual fixed base; editing a
         // guide does not move the source mesh or invent a new source vertex.
         if(g.base.empty())throw std::runtime_error("Selected guide has no stable root patch");
@@ -127,6 +159,19 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
     std::vector<Tube> raw;for(const auto& g:guides){bool parent=g.tube||parts[g.component].vertices.size()>32;auto radii=std::vector<double>(g.nodes.size(),g.radius);if(!g.tube){radii.front()=std::min(.001,g.radius);radii.back()=std::min(.001,g.radius);}raw.push_back({g.nodes,std::move(radii),tubes==0,parent,g.crown});}
     forest=connect(raw,cancel,settings.limits,settings.connectionReach,.03,guideGround,basalBand);
     for(unsigned k=0;k<guides.size();++k){guides[k].link=forest.links[k];if(forest.links[k].reversed){std::reverse(guides[k].nodes.begin(),guides[k].nodes.end());std::swap(guides[k].base,guides[k].tip);}}
+    // Keep untouched automatic guides and parent identities. Recompute only the
+    // attachment parameter when an authored parent's point count changed.
+    for(auto& g:guides)if(auto it=retainedLinks.find(g.component);it!=retainedLinks.end()){
+        const auto& prior=*it->second;
+        if(retained.contains(g.component)){g.nodes.clear();for(const auto& p:prior.at("nodes"))g.nodes.push_back({p[0].get<double>(),-p[2].get<double>(),p[1].get<double>()});}
+        else{const auto& p=prior.at("nodes").front();V base{p[0].get<double>(),-p[2].get<double>(),p[1].get<double>()};if(length(sub(base,g.nodes.back()))<length(sub(base,g.nodes.front()))){std::reverse(g.nodes.begin(),g.nodes.end());std::swap(g.base,g.tip);}}
+    }
+    for(auto& g:guides)if(auto it=retainedLinks.find(g.component);it!=retainedLinks.end()){
+        const auto& prior=*it->second;
+        const int oldParent=prior.at("parent").get<int>();
+        if(oldParent<0){g.base=prior.at("root_ring_vertices").get<std::vector<unsigned>>();g.link={-1,0,0,0,false,true,true};}
+        else {int parent=partGuide[automatic->metadata.at("guides").at(oldParent).at("component").get<unsigned>()];if(parent>=0){const auto& curve=guides[parent].nodes;Near best;for(unsigned k=0;k+1<curve.size();++k){auto d=sub(curve[k+1],curve[k]);double u=std::clamp(dot(sub(g.nodes.front(),curve[k]),d)/std::max(1e-20,dot(d,d)),0.,1.);double gap=length(sub(g.nodes.front(),add(curve[k],mul(d,u))));if(gap<best.distance)best={unsigned(parent),k,u,gap};}g.link={parent,best.span,best.u,best.distance,false,false,true};}}
+    }
     if(!edits.empty()){
         for(unsigned k=0;k<guides.size();++k)if(auto it=edits.find(guides[k].component);it!=edits.end()&&it->second.contains("parent")){
             int part=it->second["parent"].get<int>();auto& g=guides[k];
@@ -161,11 +206,22 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
         if(fixed)++fixedParts;
         if(flexible)hit.guide=unsigned(guide);else {
             for(unsigned k=0;k<std::min<std::size_t>(32,p.vertices.size());++k){auto candidate=all.nearest(point(s,p.vertices[std::size_t(k)*p.vertices.size()/std::min<std::size_t>(32,p.vertices.size())]));if(candidate.distance<hit.distance)hit=candidate;}
-            if(role(ci)==2){const auto& e=edits.at(ci);if(!e.contains("parent")||e["parent"].get<int>()<0)throw std::runtime_error("Piece "+std::to_string(ci+1)+" needs a stem. Choose Pick stem.");int pg=partGuide[e["parent"].get<unsigned>()];if(pg<0)throw std::runtime_error("Follow parent has no bending guide");hit={};for(unsigned v:p.vertices){const auto& curve=guides[pg].nodes;for(unsigned k=0;k+1<curve.size();++k){auto d=sub(curve[k+1],curve[k]);double u=std::clamp(dot(sub(point(s,v),curve[k]),d)/std::max(1e-20,dot(d,d)),0.,1.);double gap=length(sub(point(s,v),add(curve[k],mul(d,u))));if(gap<hit.distance){hit.guide=pg;hit.span=k;hit.u=u;hit.distance=gap;}}work.charge(curve.size());}}
+            if(automatic&&!edits.contains(ci)){
+                const auto& priorPart=automatic->metadata.at("parts").at(ci);const auto& prior=automatic->metadata.at("guides").at(priorPart.at("guide").get<unsigned>());int parent=partGuide[prior.at("component").get<unsigned>()];
+                if(parent>=0){const auto span=priorPart.at("span").get<unsigned>();const double u=priorPart.at("u").get<double>();auto read=[](const Json& p)->V{return {p[0].get<double>(),-p[2].get<double>(),p[1].get<double>()};};const auto anchor=add(mul(read(prior.at("nodes").at(span)),1-u),mul(read(prior.at("nodes").at(span+1)),u));hit={};const auto& curve=guides[parent].nodes;
+                    for(unsigned k=0;k+1<curve.size();++k){auto d=sub(curve[k+1],curve[k]);double t=std::clamp(dot(sub(anchor,curve[k]),d)/std::max(1e-20,dot(d,d)),0.,1.);double gap=length(sub(anchor,add(curve[k],mul(d,t))));if(gap<hit.distance)hit={unsigned(parent),k,t,gap};work.charge();}
+                }
+            }
+            if(role(ci)==2){const auto& e=edits.at(ci);int parent=e.value("parent",-1);if(parent<0&&profile(ci)!=3)throw std::runtime_error("Piece "+std::to_string(ci+1)+" needs a stem. Choose Pick stem.");int pg=parent<0?-1:partGuide[parent];if(parent>=0&&pg<0)throw std::runtime_error("Follow parent has no bending guide");hit={};
+                // Flower heads prefer tube stems over adjacent leaf blades.
+                // Pick parent remains the authoritative override.
+                for(unsigned gi=0;gi<guides.size();++gi){if(pg>=0?gi!=unsigned(pg):(tubes&&!guides[gi].tube))continue;const auto& curve=guides[gi].nodes;for(unsigned v:p.vertices){for(unsigned k=0;k+1<curve.size();++k){auto d=sub(curve[k+1],curve[k]);double u=std::clamp(dot(sub(point(s,v),curve[k]),d)/std::max(1e-20,dot(d,d)),0.,1.);double gap=length(sub(point(s,v),add(curve[k],mul(d,u))));if(gap<hit.distance){hit.guide=gi;hit.span=k;hit.u=u;hit.distance=gap;}}work.charge(curve.size());}}
+            }
             if(fixed&&hit.guide==~0u){hit.guide=0;hit.span=0;hit.u=0;}
             if(!fixed){maxAttachment=std::max(maxAttachment,hit.distance);if(hit.guide==~0u||hit.distance>(role(ci)==2?settings.connectionReach:.15))++unattached;}
         }
         j["parts"].push_back({{"guide",hit.guide},{"stem",flexible},{"fixed",fixed},{"span",hit.span},{"u",hit.u},{"material",p.material}});
+        if(profile(ci))j["parts"].back()["profile"]=profile(ci);
         // Preserve all source faces and material/corner identities; sample whole components only.
         const unsigned hash=(ci+2402u)*2654435761u;bool selected=double(hash%100000)/100000<std::clamp(settings.foliageFraction,.01,1.);
         if(selected)for(auto fi:p.faces){if(j["preview_triangles"].size()>=settings.limits.previewTriangles)throw std::runtime_error("Preview triangle limit reached; reduce Preview leaves or increase Preview triangles in Preparation limits.");j["preview_triangles"].push_back(s.faces[fi]);j["preview_materials"].push_back(s.materials[fi]);}

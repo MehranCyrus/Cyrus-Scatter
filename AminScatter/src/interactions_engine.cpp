@@ -12,8 +12,13 @@
 namespace cyrus::interactions {
 namespace {
 using Clock=std::chrono::steady_clock;
-double hideReach(const LayerSettings& c){return c.response==0&&c.coverRoots?std::max(c.gap,c.hideMargin):c.gap;}
-Bounds reactRange(Vec centre,double reach,const LayerSettings& c){Bounds b{sub(centre,{reach,reach,reach}),add(centre,{reach,reach,reach})};if(c.response==0&&c.coverRoots&&c.hideUnder)b.hi.y=std::numeric_limits<double>::max()/4;return b;}
+double hideReach(const LayerSettings& c){return c.coverRoots?std::max(c.gap,c.hideMargin):c.gap;}
+Bounds reactRange(Vec centre,double reach,const LayerSettings& c){
+    Bounds b{sub(centre,{reach,reach,reach}),add(centre,{reach,reach,reach})};
+    // Coverage is independent of the selected bending/pruning algorithm.
+    if(c.coverRoots&&c.hideUnder)b.hi.y=std::numeric_limits<double>::max()/4;
+    return b;
+}
 double elapsed(Clock::time_point t){return std::chrono::duration<double,std::milli>(Clock::now()-t).count();}
 Vec toCore(Vec p){return {p.x,p.z,-p.y};}
 Transform relative(const Transform& obstacle,const Transform& plant){Transform result;for(int k=0;k<3;++k)result.rows[k]=plant.inverseVector(obstacle.rows[k]);result.rows[3]=plant.inversePoint(obstacle.rows[3]);return result;}
@@ -50,7 +55,11 @@ struct Engine::Impl {
             unsigned id=unsigned(nodes.size());nodes.emplace_back();Bounds box;
             for(unsigned i=begin;i<end;++i)box.include(bounds[order[i]]);nodes[id].bounds=box;
             if(end-begin<=16){nodes[id].begin=begin;nodes[id].count=end-begin;return id;}
-            Vec d=sub(box.hi,box.lo);unsigned axis=d.x>d.y?(d.x>d.z?0:2):(d.y>d.z?1:2),mid=(begin+end)/2;
+            Vec d=sub(box.hi,box.lo);
+            // Upward footprint coverage is not a useful spatial split axis.
+            const unsigned axis=box.hi.y==std::numeric_limits<double>::max()/4?
+                (d.x>d.z?0:2):(d.x>d.y?(d.x>d.z?0:2):(d.y>d.z?1:2));
+            unsigned mid=(begin+end)/2;
             auto centre=[&](std::size_t i){const auto& b=bounds[i];return axis==0?b.lo.x+b.hi.x:axis==1?b.lo.y+b.hi.y:b.lo.z+b.hi.z;};
             std::nth_element(order.begin()+begin,order.begin()+mid,order.begin()+end,[&](auto a,auto b){double x=centre(a),y=centre(b);return x==y?ids[a]<ids[b]:x<y;});
             auto left=build(begin,mid),right=build(mid,end);nodes[id].left=left;nodes[id].right=right;return id;
@@ -96,6 +105,10 @@ struct Engine::Impl {
         std::sort(result.begin(),result.end());return result;
     }
     const Definition& definition(std::size_t index)const{const auto& p=layout->instances.at(index);return *layout->sources.at(p.layer).at(p.source);}
+    bool neighbor(std::size_t index)const{
+        const auto& settings=layout->layers.at(layout->instances.at(index).layer);
+        return settings.react&&settings.neighbors&&bool(definition(index).rig);
+    }
     std::shared_ptr<const MeshGeometry> obstacleGeometry(std::size_t index)const{return index<layout->instances.size()?definition(index).collider:layout->sceneObstacles.at(index-layout->instances.size()).geometry;}
     Transform obstacleTransform(std::size_t index,const std::map<std::size_t,Transform>& overrides,const std::vector<Transform>& scene)const{
         if(index>=layout->instances.size())return scene.at(index-layout->instances.size());
@@ -115,7 +128,7 @@ Engine::Engine(std::shared_ptr<const Layout> layout){
             if(p->obstacles.size()>=16384)throw std::runtime_error("Interaction obstacle budget: 16384 instances");
             p->obstacles.push_back(i);p->obstacleIndex.add(i,tm.bounds(def.collider->bounds()));}
         if(cfg.react){const double scale=tm.scale();if(!def.rig)throw std::runtime_error("Reacting source is not prepared");p->plants.push_back(i);double reach=def.rig->reach*scale+hideReach(cfg);
-            if(cfg.neighbors&&!p->neighbors.contains(def.rig.get())){const auto estimate=def.rig->rig->guides.size()*20*256ull;if(estimate>128ull*1024*1024-p->base.colliderBakeBytes)throw std::runtime_error("Neighbor branch construction exceeds 128 MiB admission");auto lease=p->layout->reserveGeometry?p->layout->reserveGeometry(estimate):nullptr;auto proxy=branchProxy(*def.rig,std::move(lease));p->base.colliderBakeBytes+=proxy->bytes();if(p->base.colliderBakeBytes>128ull*1024*1024)throw std::runtime_error("Neighbor branch geometry exceeds 128 MiB admission");p->neighbors.emplace(def.rig.get(),std::move(proxy));}
+            if(p->neighbor(i)&&!p->neighbors.contains(def.rig.get())){const auto estimate=def.rig->rig->guides.size()*20*256ull;if(estimate>128ull*1024*1024-p->base.colliderBakeBytes)throw std::runtime_error("Neighbor branch construction exceeds 128 MiB admission");auto lease=p->layout->reserveGeometry?p->layout->reserveGeometry(estimate):nullptr;auto proxy=branchProxy(*def.rig,std::move(lease));p->base.colliderBakeBytes+=proxy->bytes();if(p->base.colliderBakeBytes>128ull*1024*1024)throw std::runtime_error("Neighbor branch geometry exceeds 128 MiB admission");p->neighbors.emplace(def.rig.get(),std::move(proxy));}
             const auto centre=tm.rows[3];Bounds b=reactRange(centre,reach,cfg);p->plantBounds.push_back(b);}}
     for(std::size_t i=0;i<p->layout->sceneObstacles.size();++i){const auto& scene=p->layout->sceneObstacles[i];if(!scene.geometry||scene.identity.empty())throw std::runtime_error("Invalid scene collider");const auto id=p->layout->instances.size()+i;p->obstacles.push_back(id);p->obstacleIndex.add(id,scene.transform.bounds(scene.geometry->bounds()));}
     for(std::size_t i=0;i<p->obstacles.size();++i)p->obstacleSlots.emplace(p->obstacles[i],i);
@@ -147,20 +160,35 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
     for(auto id:impl_->obstacles){const auto slot=impl_->obstacleSlots.at(id);auto raw=impl_->obstacleTransform(id,overrides,scene);auto oldRaw=previous?impl_->obstacleTransform(id,previous->overrides,previous->sceneTransforms):raw;
         next->worldObstacles.push_back(colliderShape(id,impl_->obstacleGeometry(id),raw,previous?&previous->worldObstacles.at(slot):nullptr,previous?&oldRaw:nullptr,next->statistics.colliderBakeBytes,layout().reserveGeometry));}
     std::set<std::size_t> affected;auto queryStart=Clock::now();
+    // Build old/new edited reactor coverage once. A batch edit must not copy
+    // or scan both entire override maps for each changed region or plant.
+    Impl::BoundsIndex editedReactors;
+    auto addEditedReactors=[&](const auto& map){
+        for(const auto& [plant,tm]:map){
+            const auto& cfg=layout().layers[layout().instances[plant].layer];
+            if(!cfg.react)continue;
+            const double reach=impl_->definition(plant).rig->reach*tm.scale()+hideReach(cfg);
+            editedReactors.add(plant,reactRange(tm.rows[3],reach,cfg));
+        }
+    };
+    addEditedReactors(overrides);if(previous)addEditedReactors(previous->overrides);
+    editedReactors.finish();next->statistics.transientReactorIndexPayloadBytes=editedReactors.bytes();
     auto addNear=[&](const Bounds& box){
         for(auto plant:nearby(box))affected.insert(plant);
-        auto edited=[&](const auto& map){for(const auto& [plant,tm]:map){const auto& i=layout().instances[plant];const auto& cfg=layout().layers[i.layer];if(!cfg.react)continue;double r=impl_->definition(plant).rig->reach*tm.scale()+hideReach(cfg);Bounds b=reactRange(tm.rows[3],r,cfg);if(b.overlaps(box))affected.insert(plant);}};
-        edited(overrides);if(previous)edited(previous->overrides);
+        for(auto plant:editedReactors.query(box))affected.insert(plant);
     };
     bool sceneChanged=false;if(previous)for(std::size_t i=0;i<scene.size();++i)sceneChanged|=!same(previous->sceneTransforms[i],scene[i]);
     if(!previous||(changed.empty()&&!sceneChanged)){
         for(const auto& obstacle:next->worldObstacles)addNear(obstacle.transform.bounds(obstacle.geometry->bounds()));
-        for(auto plant:impl_->plants)if(layout().layers[layout().instances[plant].layer].neighbors)affected.insert(plant);
+        for(auto plant:impl_->plants)if(impl_->neighbor(plant))affected.insert(plant);
         if(previous){for(const auto& [plant,pose]:previous->poses){(void)pose;affected.insert(plant);}for(const auto& [plant,count]:previous->retainedRootCounts){(void)count;affected.insert(plant);}}
     }else for(auto stone:changed){
         const auto& instance=layout().instances.at(stone);const auto& cfg=layout().layers[instance.layer];
         if(cfg.obstacle)for(auto box:{tmFor(stone,previous->overrides).bounds(impl_->definition(stone).collider->bounds()),tmFor(stone,overrides).bounds(impl_->definition(stone).collider->bounds())})addNear(box);
-        if(cfg.neighbors)for(const auto& map:{previous->overrides,overrides}){const auto tm=tmFor(stone,map);const double reach=impl_->definition(stone).rig->reach*tm.scale();addNear(reactRange(tm.rows[3],reach,cfg));}
+        if(impl_->neighbor(stone))for(const auto* map:{&previous->overrides,&overrides}){
+            const auto tm=tmFor(stone,*map);const double reach=impl_->definition(stone).rig->reach*tm.scale();
+            addNear(reactRange(tm.rows[3],reach,cfg));
+        }
         if(cfg.react)affected.insert(stone);
     }
     if(previous)for(std::size_t i=0;i<scene.size();++i)if(!same(previous->sceneTransforms[i],scene[i])){
@@ -173,7 +201,7 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
         if(layout().layers[instance.layer].obstacle&&!disabled.contains(index))editedObstacles.add(index,tm.bounds(impl_->definition(index).collider->bounds()));}
     for(std::size_t i=0;i<scene.size();++i)if(!same(scene[i],layout().sceneObstacles[i].transform)){const auto id=layout().instances.size()+i;editedObstacles.add(id,scene[i].bounds(layout().sceneObstacles[i].geometry->bounds()));}
     editedObstacles.finish();next->statistics.transientObstacleIndexPayloadBytes=editedObstacles.bytes();
-    if(next->statistics.layoutPayloadBytes+next->statistics.indexPayloadBytes+next->statistics.transientObstacleIndexPayloadBytes>512ull*1024*1024)throw std::runtime_error("Interaction layout/index payload exceeds 512 MiB admission");
+    if(next->statistics.layoutPayloadBytes+next->statistics.indexPayloadBytes+next->statistics.transientObstacleIndexPayloadBytes+next->statistics.transientReactorIndexPayloadBytes>512ull*1024*1024)throw std::runtime_error("Interaction layout/index payload exceeds 512 MiB admission");
     next->statistics.queryMs=elapsed(queryStart);next->statistics.affected=affected.size();auto fitStart=Clock::now();
     const std::vector<std::size_t> jobs(affected.begin(),affected.end());
     struct Result{std::shared_ptr<Pose> pose;std::exception_ptr error;};std::vector<Result> results(jobs.size());
@@ -195,7 +223,7 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
         64*(2*sizeof(Shape)+MeshWorld::cachedShapeBytes()+2*sizeof(Bounds)+sizeof(InverseTransform)+sizeof(double)+sizeof(void*));
     const bool detailed=std::any_of(jobs.begin(),jobs.end(),[&](auto i){return layout().layers[layout().instances[i].layer].response==0;});
     const auto exactScratchPerWorker=detailed?2*50000*sizeof(Vec)+detail::guideCandidateMemoBytes:0;
-    const auto fixedPayload=next->statistics.layoutPayloadBytes+next->statistics.indexPayloadBytes+next->statistics.transientObstacleIndexPayloadBytes+next->statistics.colliderBakeBytes;
+    const auto fixedPayload=next->statistics.layoutPayloadBytes+next->statistics.indexPayloadBytes+next->statistics.transientObstacleIndexPayloadBytes+next->statistics.transientReactorIndexPayloadBytes+next->statistics.colliderBakeBytes;
     while(workerCount>1&&fixedPayload+std::size_t(workerCount)*(obstacleScratchPerWorker+exactScratchPerWorker)>512ull*1024*1024)--workerCount;
     next->statistics.obstacleQueryScratchBoundBytes=std::size_t(workerCount)*obstacleScratchPerWorker;
     next->statistics.exactMeshScratchBoundBytes=std::size_t(workerCount)*exactScratchPerWorker;
@@ -215,10 +243,10 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
         auto moved=editedObstacles.query(range);candidates.insert(candidates.end(),moved.begin(),moved.end());std::sort(candidates.begin(),candidates.end());
         for(auto obstacle:candidates){if(obstacle==index||disabled.contains(obstacle))continue;const auto& shape=next->worldObstacles.at(impl_->obstacleSlots.at(obstacle));if(!range.overlaps(shape.transform.bounds(shape.geometry->bounds())))continue;
             if(local.size()>=64)throw std::runtime_error("More than 64 relevant colliders for one plant");local.push_back({shape.id,shape.geometry,relative(shape.transform,plantTM),true});}
-        if(cfg.neighbors){auto near=nearby(range);
-            for(const auto& [other,tm]:overrides){const auto& actor=layout().instances[other];if(layout().layers[actor.layer].neighbors&&range.overlaps(tm.bounds(impl_->definition(other).rig->bounds)))near.push_back(other);}
+        if(impl_->neighbor(index)){auto near=nearby(range);
+            auto edited=editedReactors.query(range);near.insert(near.end(),edited.begin(),edited.end());
             std::sort(near.begin(),near.end());near.erase(std::unique(near.begin(),near.end()),near.end());
-            for(auto other:near){if(other==index||disabled.contains(other))continue;const auto& peer=layout().instances[other];if(!layout().layers[peer.layer].neighbors)continue;
+            for(auto other:near){if(other==index||disabled.contains(other)||!impl_->neighbor(other))continue;const auto& peer=layout().instances[other];
                 const auto& current=layout().instances[index];if(std::tie(peer.layer,peer.identity)>=std::tie(current.layer,current.identity))continue;
                 const auto tm=tmFor(other,overrides);const auto& geometry=impl_->neighbors.at(impl_->definition(other).rig.get());if(!range.overlaps(tm.bounds(geometry->bounds())))continue;
                 if(local.size()>=64)throw std::runtime_error("More than 64 nearby obstacle/tree shapes for one plant; increase spacing or separate the adaptation group");local.push_back({other+1,geometry,relative(tm,plantTM),false});
@@ -263,20 +291,20 @@ Json statisticsJson(const Statistics& s){return {{"plants",s.plants},{"obstacles
     {"exact_mesh_checks",s.exactMeshChecks},{"exact_point_tests",s.exactPointTests},{"exact_face_tests",s.exactFaceTests},{"exact_transformed_vertices",s.exactTransformedVertices},{"exact_inverse_vertices",s.exactInverseVertices},
     {"fitted_guides",s.fittedGuides},{"queries",s.queries},{"coverage_queries",s.coverageQueries},{"separation_queries",s.separationQueries},{"iterations",s.iterations},{"hinge_fits",s.hinges},{"mesh_refinements",s.meshRefinements},{"mesh_refinement_work",s.meshRefinementWork},{"compute_participants",s.participants},{"thread_launch_fallback",s.threadFallback},{"reused_poses",s.reusedPoses},{"restored",s.restored},
     {"quality_checked_guides",s.qualityCheckedGuides},{"quality_warning_guides",s.qualityWarningGuides},{"maximum_checked_stem_edge_change",s.maximumCheckedStemEdgeChange},
-    {"layout_payload_bytes",s.layoutPayloadBytes},{"index_payload_bytes",s.indexPayloadBytes},{"obstacle_index_payload_bytes",s.obstacleIndexPayloadBytes},{"transient_obstacle_index_payload_bytes",s.transientObstacleIndexPayloadBytes},{"obstacle_query_scratch_bound_bytes",s.obstacleQueryScratchBoundBytes},{"exact_mesh_scratch_bound_bytes",s.exactMeshScratchBoundBytes},{"pose_payload_bytes",s.posePayloadBytes},
+    {"layout_payload_bytes",s.layoutPayloadBytes},{"index_payload_bytes",s.indexPayloadBytes},{"obstacle_index_payload_bytes",s.obstacleIndexPayloadBytes},{"transient_obstacle_index_payload_bytes",s.transientObstacleIndexPayloadBytes},{"transient_reactor_index_payload_bytes",s.transientReactorIndexPayloadBytes},{"obstacle_query_scratch_bound_bytes",s.obstacleQueryScratchBoundBytes},{"exact_mesh_scratch_bound_bytes",s.exactMeshScratchBoundBytes},{"pose_payload_bytes",s.posePayloadBytes},
     {"index_ms",s.indexMs},{"query_ms",s.queryMs},{"fit_ms",s.fitMs},{"total_ms",s.totalMs},
     {"worker_coverage_ms",s.workerCoverageMs},{"worker_mesh_check_ms",s.workerMeshCheckMs},{"worker_mesh_transform_ms",s.workerMeshTransformMs},{"worker_mesh_point_ms",s.workerMeshPointMs},{"worker_mesh_face_ms",s.workerMeshFaceMs},{"worker_edge_quality_ms",s.workerEdgeQualityMs}};}
 Json Engine::audit(const Snapshot& snapshot,std::size_t triangleBudget)const{
     if(snapshot.layout!=impl_->layout||triangleBudget<1||triangleBudget>20000000)throw std::runtime_error("Invalid full-mesh audit admission");
     auto transform=[&](std::size_t i){auto found=snapshot.overrides.find(i);return found==snapshot.overrides.end()?layout().transform(i):found->second;};
     std::set<std::size_t> plants;for(const auto& obstacle:snapshot.worldObstacles){if(snapshot.disabled.contains(obstacle.id-1))continue;const auto box=obstacle.transform.bounds(obstacle.geometry->bounds());for(auto plant:nearby(box))plants.insert(plant);}
-    for(auto plant:impl_->plants)if(layout().layers[layout().instances[plant].layer].neighbors)plants.insert(plant);
+    for(auto plant:impl_->plants)if(impl_->neighbor(plant))plants.insert(plant);
     for(const auto& [index,tm]:snapshot.overrides){(void)tm;if(layout().layers[layout().instances[index].layer].react)plants.insert(index);}
     Json output={{"scope","Independent complete visible triangles in double precision; renderer float delivery is a separate check"},{"results",Json::array()}};std::size_t remaining=triangleBudget;
     for(auto index:plants){if(snapshot.disabled.contains(index))continue;auto tm=transform(index);const auto& source=*impl_->definition(index).rig;std::vector<Shape> shapes;
         const double reach=source.reach*tm.scale();Bounds bounds{sub(tm.rows[3],{reach,reach,reach}),add(tm.rows[3],{reach,reach,reach})};
         for(const auto& obstacle:snapshot.worldObstacles)if(obstacle.id!=index+1&&!snapshot.disabled.contains(obstacle.id-1)&&bounds.overlaps(obstacle.transform.bounds(obstacle.geometry->bounds())))shapes.push_back({obstacle.id,obstacle.geometry,relative(obstacle.transform,tm)});
-        if(layout().layers[layout().instances[index].layer].neighbors)for(auto other:impl_->plants){if(other==index||snapshot.disabled.contains(other)||!layout().layers[layout().instances[other].layer].neighbors)continue;
+        if(impl_->neighbor(index))for(auto other:impl_->plants){if(other==index||snapshot.disabled.contains(other)||!impl_->neighbor(other))continue;
             const auto& actor=layout().instances[index];const auto& peer=layout().instances[other];if(std::tie(peer.layer,peer.identity)>=std::tie(actor.layer,actor.identity))continue;
             const auto& geometry=impl_->neighbors.at(impl_->definition(other).rig.get());auto otherTM=transform(other);if(bounds.overlaps(otherTM.bounds(geometry->bounds())))shapes.push_back({other+1,geometry,relative(otherTM,tm)});}
         if(shapes.empty())continue;Pose rest;rest.guides.resize(source.rig->guides.size());rest.hiddenRoots.resize(source.rig->guides.size());auto found=snapshot.poses.find(index);const auto& pose=found==snapshot.poses.end()?rest:*found->second;

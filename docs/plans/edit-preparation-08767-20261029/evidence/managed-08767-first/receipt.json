@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "command": [
+    "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\Roslyn\\csc.exe",
+    "/nologo",
+    "/noconfig",
+    "/nostdlib+",
+    "/langversion:latest",
+    "/warnaserror+",
+    "/target:exe",
+    "/platform:x64",
+    "/out:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\managed-08767-first\\StoreTests.exe",
+    "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll",
+    "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.dll",
+    "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Core.dll",
+    "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.IO.Compression.dll",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\ContentObjects.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\LibraryJson.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\LibraryLocation.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\SharedLibrary.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\SharedLibrary.Management.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\SharedLibrary.Models.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\shared\\SharedLibrary.Scenes.cs",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\shared_library_0871\\StoreTests.cs"
+  ],
+  "source_hashes": {
+    "AminScatter\\shared\\ContentObjects.cs": "b71700035fa5289242fb3915042fe1be68db169af48cb84b625d7fdbdf2f0c3f",
+    "AminScatter\\shared\\LibraryJson.cs": "edfb23508ecc8c29b7f2abfd85bb36790ae7ac4d3180b002ebf7a65687bf2349",
+    "AminScatter\\shared\\LibraryLocation.cs": "c80434a501c2640d92bd7abbd4d14ed152191dde7f67316b49d467558ea1fa2d",
+    "AminScatter\\shared\\SharedLibrary.cs": "85317742940e1285690d5b857f5f00b331779f4345dac6f9d31fa92752004820",
+    "AminScatter\\shared\\SharedLibrary.Management.cs": "b5a502c96c3437fa093879efad5344ea8a2910f9f98a0791ffbc773658e5712f",
+    "AminScatter\\shared\\SharedLibrary.Models.cs": "61dd9cd063f5bebebf874adcd39c58a32aa7456e8cee43b2638455d386a9cf9f",
+    "AminScatter\\shared\\SharedLibrary.Scenes.cs": "12aaeda4897c1b3c53fd3a1ed7abdf39b497092432041de372f23d23f2163239",
+    "tools\\shared_library_0871\\StoreTests.cs": "8a2785c443f8d689d64f313723284f173abd1248b98060b79991284fd876c086"
+  },
+  "stdout": "PASS 261 managed transaction checks; native validation is a separately injected fixture boundary.\n",
+  "stderr": ""
+}

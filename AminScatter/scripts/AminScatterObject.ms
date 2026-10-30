@@ -1,7 +1,7 @@
-﻿global CyrusLoadedScriptFingerprint="8181e46461662016ac7d33b6e0996402c55dc120268c4970c705d32244bf37e6"
+﻿global CyrusLoadedScriptFingerprint="ff7e6075a3b8ae61d3b136429a03fbd843c4b5f0fc2494e68fdc69ee618528cc"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
-    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
+    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus Scatter native modules and restart Max."
     if not cyrusLicenseAllows() do throw "Cyrus creation and editing require an active team license. Existing work can still load and render. Open Cyrus > License to activate or renew."
     true
 )
@@ -10,7 +10,7 @@ fn CyrusLicenseCanEdit = (
 )
 fn CyrusOpenLicenseDialog = (
     if CyrusLicenseDialog!=undefined do try(destroyDialog CyrusLicenseDialog)catch()
-    rollout licenseUI "Cyrus 0.80.0 - Team License" width:480 height:240 (
+    rollout licenseUI "Cyrus Scatter - Team License" width:480 height:240 (
         label statusLabel "" pos:[16,16] width:448 height:70
         button requestButton "1. Save activation request..." pos:[16,98] width:218 height:30
         button importButton "2. Import license..." pos:[246,98] width:218 height:30
@@ -18,7 +18,7 @@ fn CyrusOpenLicenseDialog = (
         button refreshButton "Refresh status" pos:[16,205] width:218 height:25
         button closeButton "Close" pos:[246,205] width:218 height:25
         fn refresh = (
-            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching 0.80.0 package."
+            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching Cyrus Scatter package."
             else (
                 local state=cyrusLicenseStatus(),expiry=""
                 if state[4]>0 do (
@@ -74,12 +74,12 @@ fn CyrusSharedProvenance directory = (
 if CyrusSharedSaveJobs==undefined do CyrusSharedSaveJobs=#()
 
 fn CyrusSharedStore = (
-    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.6 package and restart Max."
+    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.6.7 package and restart Max."
     if CyrusSharedLibraryInstance!=undefined do return CyrusSharedLibraryInstance
     local assembly=dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
     if assembly==undefined do throw "The Cyrus shared library assembly could not load."
     local identity=assembly.GetName()
-    if identity.Version.ToString()!="0.87.6.0" do throw "Load the matching CyrusScatter 0.87.6 gallery."
+    if identity.Version.ToString()!="0.87.6.7" do throw "Load the matching CyrusScatter 0.87.6.7 gallery."
     local io=dotNetClass "System.IO.File",root=CyrusSharedLibraryRootOverride
     if root==undefined or root=="" do (
         local config=pathConfig.appendPath ((dotNetClass "System.Environment").GetEnvironmentVariable "LOCALAPPDATA") "CyrusScatter\\personal-library.txt"
@@ -2162,7 +2162,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.87.6"
+fn CyrusLibraryVersion = "0.87.6.7"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -2344,7 +2344,7 @@ fn CyrusRecipeRestoreAuthored owner record authored bindings = (
 fn CyrusRecipeRestoreEdits root document identityMap = (
     local authored=CyrusRecipeGet document "authored",stacks=CyrusRecipeGet authored "edits"
     if stacks.count==0 do return true
-    if cyrusEditVersion()!=4 do throw "Edited recipes require the matched Cyrus Scatter 0.87.6 Edit module. Restart Max after installing."
+    if cyrusEditVersion()!=5 do throw "Edited recipes require the matched Cyrus Scatter 0.87.6.7 Edit module. Restart Max after installing."
     local editMods=root.procModifiers(),hasContacts=false
     for leaf in root.layerObjects where leaf.interactionCollider or leaf.interactionReact do hasContacts=true
     if hasContacts and (stacks.count>1 or editMods.count>1) do throw "Interactions support one Cyrus Edit modifier per setup. Save/load this edited interaction recipe with one modifier."
@@ -2426,7 +2426,7 @@ fn CyrusScenePresetNodes root = (
 )
 fn CyrusScenePresetSave root name metadata image original:"" expected:"" = (
     CyrusRequireAuthor()
-    if cyrusScenePresetVersion==undefined or cyrusScenePresetVersion()!=1 or cyrusEditSceneRemap==undefined do throw "Install the complete CyrusScatter 0.87.6 package and restart Max."
+    if cyrusScenePresetVersion==undefined or cyrusScenePresetVersion()!=1 or cyrusEditSceneRemap==undefined do throw "Install the complete CyrusScatter 0.87.6.7 package and restart Max."
     if (maxVersion())[1]/1000+1998!=2027 do throw "Scene presets currently require Max 2027."
     if theHold.Holding() or CyrusBrushSessionLayer!=undefined do throw "Finish the current operation before saving a scene preset."
     name=trimRight (trimLeft name)
@@ -2692,7 +2692,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.6 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.6.7 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -3306,7 +3306,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.6 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.6.7 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -3483,11 +3483,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.6 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.6.7 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.87.6.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.6 gallery package."
+    if assemblyName.Version.ToString()!="0.87.6.7" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.6.7 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -3809,7 +3809,7 @@ fn CyrusViewportMemoryPreferences = pathConfig.appendPath (getDir #plugcfg) "Cyr
 fn CyrusInitializeViewportMemory = (
     if CyrusViewportMemoryInitialized==true do return true
     if cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined do
-        throw "Install the complete Cyrus 0.87.6 package and restart Max."
+        throw "Install the complete Cyrus 0.87.6.7 package and restart Max."
     local value=0,stored=getINISetting (CyrusViewportMemoryPreferences()) "Memory" "LimitMiB"
     if stored!="" do try(value=stored as integer)catch(value=0)
     if value!=0 and (value<256 or value>65536) do value=0
@@ -3993,7 +3993,8 @@ global CyrusPresetBinding,CyrusPresetBrowser,CyrusPresetOpenBinding,CyrusOpenPre
 global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply,CyrusPresetTransactionVersion
 global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries,CyrusPresetSameValues
 struct CyrusPresetBinding (root,node,owner,ownerID,category,peer=undefined,peerID="",editor=undefined)
-fn CyrusPresetTransactionVersion = 1
+-- Contract 2 includes exact paired-range restoration through native Undo/Redo.
+fn CyrusPresetTransactionVersion = 2
 
 fn CyrusPresetMakeBinding root owner category peer:undefined editor:undefined = (
     if root==undefined or owner==undefined do throw "Select a layer before opening presets."
@@ -4507,6 +4508,7 @@ fn CyrusUIResultText root owner = (
     text
 )
 
+global CyrusOpenSelectionControls
 global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
 global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDetailStatus="",CyrusPointDeletedHandles=#()
 global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true,CyrusPointPresentationPending=false
@@ -5080,6 +5082,8 @@ initialRollupState:0x8
     local cachedAnalyzerRun=-1
     local cachedPointCount=0
     local dirty = true
+    -- Session-only UI validity; never a placement identity or saved schema field.
+    local uiRevision=0L
     local diagnosticCauseID=0L
     -- Session-only validity. Scene identities and publication records are unchanged.
     local procOrientationReceivers=#()
@@ -5098,6 +5102,7 @@ initialRollupState:0x8
         )
     )
     fn markInputDirty = (
+        uiRevision+=1
         if cyrusDiagnosticActive() do try (
             if CyrusActiveActionID>0 or not dirty do diagnosticCauseID=CyrusActiveActionID
             local controller=if this.overlapOwner==undefined then this else this.overlapOwner
@@ -5829,24 +5834,27 @@ initialRollupState:0x8
         movZMinWU type:#worldUnits default:0
         movZMaxWU type:#worldUnits default:0
         on projectMove postSet v do markInputDirty()
-        on rotXMin postSet v do (if not layerTransfer and v>rotXMax do rotXMax=v;markInputDirty())
-        on rotXMax postSet v do (if not layerTransfer and v<rotXMin do rotXMin=v;markInputDirty())
-        on rotYMin postSet v do (if not layerTransfer and v>rotYMax do rotYMax=v;markInputDirty())
-        on rotYMax postSet v do (if not layerTransfer and v<rotYMin do rotYMin=v;markInputDirty())
-        on rotZMin postSet v do (if not layerTransfer and v>rotZMax do rotZMax=v;markInputDirty())
-        on rotZMax postSet v do (if not layerTransfer and v<rotZMin do rotZMin=v;markInputDirty())
-        on sclXMin postSet v do (if not layerTransfer and v>sclXMax do sclXMax=v;markInputDirty())
-        on sclXMax postSet v do (if not layerTransfer and v<sclXMin do sclXMin=v;markInputDirty())
-        on sclYMin postSet v do (if not layerTransfer and v>sclYMax do sclYMax=v;markInputDirty())
-        on sclYMax postSet v do (if not layerTransfer and v<sclYMin do sclYMin=v;markInputDirty())
-        on sclZMin postSet v do (if not layerTransfer and v>sclZMax do sclZMax=v;markInputDirty())
-        on sclZMax postSet v do (if not layerTransfer and v<sclZMin do sclZMin=v;markInputDirty())
-        on movXMinWU postSet v do (if not layerTransfer and v>movXMaxWU do movXMaxWU=v;markInputDirty())
-        on movXMaxWU postSet v do (if not layerTransfer and v<movXMinWU do movXMinWU=v;markInputDirty())
-        on movYMinWU postSet v do (if not layerTransfer and v>movYMaxWU do movYMaxWU=v;markInputDirty())
-        on movYMaxWU postSet v do (if not layerTransfer and v<movYMinWU do movYMinWU=v;markInputDirty())
-        on movZMinWU postSet v do (if not layerTransfer and v>movZMaxWU do movZMaxWU=v;markInputDirty())
-        on movZMaxWU postSet v do (if not layerTransfer and v<movZMinWU do movZMinWU=v;markInputDirty())
+        -- Native history restores the two PB2 values separately. Reciprocal
+        -- clamping would overwrite a restored endpoint with its old partner.
+        -- This existing primitive reads theHold state; it makes no license change.
+        on rotXMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>rotXMax do rotXMax=v;markInputDirty())
+        on rotXMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<rotXMin do rotXMin=v;markInputDirty())
+        on rotYMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>rotYMax do rotYMax=v;markInputDirty())
+        on rotYMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<rotYMin do rotYMin=v;markInputDirty())
+        on rotZMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>rotZMax do rotZMax=v;markInputDirty())
+        on rotZMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<rotZMin do rotZMin=v;markInputDirty())
+        on sclXMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>sclXMax do sclXMax=v;markInputDirty())
+        on sclXMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<sclXMin do sclXMin=v;markInputDirty())
+        on sclYMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>sclYMax do sclYMax=v;markInputDirty())
+        on sclYMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<sclYMin do sclYMin=v;markInputDirty())
+        on sclZMin postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>sclZMax do sclZMax=v;markInputDirty())
+        on sclZMax postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<sclZMin do sclZMin=v;markInputDirty())
+        on movXMinWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>movXMaxWU do movXMaxWU=v;markInputDirty())
+        on movXMaxWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<movXMinWU do movXMinWU=v;markInputDirty())
+        on movYMinWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>movYMaxWU do movYMaxWU=v;markInputDirty())
+        on movYMaxWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<movYMinWU do movYMinWU=v;markInputDirty())
+        on movZMinWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v>movZMaxWU do movZMaxWU=v;markInputDirty())
+        on movZMaxWU postSet v do (if not layerTransfer and not cyrusLicenseRestoring() and v<movZMinWU do movZMinWU=v;markInputDirty())
 
         on advancedAxes preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=advancedAxes and not (cyrusLicenseAllows()) then advancedAxes else value)
         on projectMove preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=projectMove and not (cyrusLicenseAllows()) then projectMove else value)
@@ -6037,7 +6045,7 @@ initialRollupState:0x8
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
     )
     fn sourceCommandBegin label kind = (
-        if cyrusSourceCommandUndoVersion==undefined or cyrusSourceCommandUndoVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source Undo module and restart Max."
+        if cyrusSourceCommandUndoVersion==undefined or cyrusSourceCommandUndoVersion()!=2 do throw "Install the complete Cyrus 0.87.6.7 source Undo module and restart Max."
         local ownHold=not theHold.Holding(),suspended=CyrusPointSuspended,ticket=undefined
         if ownHold do theHold.Begin()
         CyrusPointSuspended=true
@@ -6964,7 +6972,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.87.6"
+    fn uiVersion = "0.87.6.7"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -7579,7 +7587,7 @@ initialRollupState:0x8
     )
     fn interactionsAnalyze node = (
         if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required to prepare a model."
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 do throw "Load the revised matched CyrusScatter 0.87.6 native modules and restart Max."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=17 do throw "Load the revised matched CyrusScatter 0.87.6.7 native modules and restart Max."
         if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current mesh model in this layer."
         if interactionUnitsPending do this.interactionsRepairSettings()
         this.interactionsClearGuides()
@@ -7666,7 +7674,7 @@ initialRollupState:0x8
         for leaf in owners do (local parent=this.logicalParent leaf;if parent.interactionCollider or parent.interactionReact do active=true)
         if not active and previous!=undefined and cyrusInteractionHasEdits!=undefined do active=cyrusInteractionHasEdits previous
         if not active or not cyrusEnabled do return undefined
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 do throw "CyrusScatter 0.87.6 requires its revised matched native interaction modules. Restart after installing."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=17 do throw "CyrusScatter 0.87.6.7 requires its revised matched native interaction modules. Restart after installing."
         local payload=for i=1 to owners.count collect (
             local leaf=owners[i],parent=this.logicalParent leaf
             local role=(if parent.interactionCollider then 1 else 0)+(if parent.interactionReact then 2 else 0)
@@ -7747,7 +7755,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.87.6" on (
+        undo "Upgrade Cyrus scene to 0.87.6.7" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -8296,7 +8304,7 @@ initialRollupState:0x8
     )
     fn procEditKey = (
         local text="ProceduralEdit1"
-        for m in this.procModifiers() do text+="|"+(getHandleByAnim m as string)+":"+(m.enabled as string)+":"+(cyrusEditLocalRevision m as string)
+        for m in this.procModifiers() where not (cyrusEditSelectionPassive m) do text+="|"+(getHandleByAnim m as string)+":"+(m.enabled as string)+":"+(cyrusEditLocalRevision m as string)
         text
     )
     fn procSyncEditVisibility = (
@@ -8929,30 +8937,31 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 65. Create a new Cyrus 0.87.6 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 65. Create a new Cyrus 0.87.6.7 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
-        if cyrusSourceTransformVersion==undefined or cyrusSourceTransformVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source-scale modules and restart Max."
+        if cyrusViewportSelectionVersion==undefined or cyrusViewportSelectionVersion()!=2 do throw "Install the matching 0.87.6.7 viewport selection modules and restart Max."
+        if cyrusSourceTransformVersion==undefined or cyrusSourceTransformVersion()!=2 do throw "Install the complete Cyrus 0.87.6.7 source-scale modules and restart Max."
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.6 requires its revised matched native interaction modules. Restart Max with the complete package."
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=4 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.6 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.6 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.6 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.6 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.6 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.6 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.6 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.6 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=17 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.6.7 requires its revised matched native interaction modules. Restart Max with the complete package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=5 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.6.7 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.6.7 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.6.7 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.6.7 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.6.7 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.6.7 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.6.7 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.6.7 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.6.7 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -9733,10 +9742,14 @@ initialRollupState:0x8
         on flow_layersUI_layerList_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
             local shade=if args.Index<flow_layersUI_layerList_colored_colors.count then flow_layersUI_layerList_colored_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
-            local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
             local inset=(ceil (3*flow_layersUI_layerList_colored_scale)) as integer,swatch=(ceil (10*flow_layersUI_layerList_colored_scale)) as integer
-            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
-            ink.Dispose()
+            local palette=#(shade),swatchHeight=amax 1 (rectangle.Height-2*inset)
+            for band=1 to palette.count do (
+                local colorValue=palette[band],ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (colorValue.r as integer) (colorValue.g as integer) (colorValue.b as integer))
+                local left=floor ((band-1)*swatch/palette.count),right=floor (band*swatch/palette.count)
+                args.Graphics.FillRectangle ink (rectangle.X+inset+left) (rectangle.Y+inset) (amax 1 (right-left)) swatchHeight
+                ink.Dispose()
+            )
             local fullText=view.Items.Item[args.Index] as string,fullName=root.layerCaption flow_layersUI_members[args.Index+1]
             local suffix=substring fullText (fullName.count+1) -1
             local textRenderer=dotNetClass "System.Windows.Forms.TextRenderer",flags=dotNetClass "System.Windows.Forms.TextFormatFlags"
@@ -9783,7 +9796,7 @@ initialRollupState:0x8
                 )
                 local colors=for row=1 to flow_layersUI_layerList.items.count collect (flow_layersUI_members[row].layerIDColor)
                 local colorsChanged=colors.count!=flow_layersUI_layerList_colored_colors.count
-                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=flow_layersUI_layerList_colored_colors[row]
+                if not colorsChanged do colorsChanged=not CyrusPresetSameValues colors flow_layersUI_layerList_colored_colors
                 if colorsChanged do flow_layersUI_layerList_colored_colors=colors
                 for i=0 to flow_layersUI_layerList_colored.Items.Count-1 do (
                     local selected=flow_layersUI_layerList.selection==i+1
@@ -10000,7 +10013,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;managerUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;managerUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "managerUI.layout"
@@ -10451,7 +10464,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;surfacesUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;surfacesUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "surfacesUI.layout"
@@ -11143,10 +11156,14 @@ initialRollupState:0x8
         on sourceUI_plantList_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
             local shade=if args.Index<sourceUI_plantList_colored_colors.count then sourceUI_plantList_colored_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
-            local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
             local inset=(ceil (3*sourceUI_plantList_colored_scale)) as integer,swatch=(ceil (10*sourceUI_plantList_colored_scale)) as integer
-            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
-            ink.Dispose()
+            local palette=#(shade),swatchHeight=amax 1 (rectangle.Height-2*inset)
+            for band=1 to palette.count do (
+                local colorValue=palette[band],ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (colorValue.r as integer) (colorValue.g as integer) (colorValue.b as integer))
+                local left=floor ((band-1)*swatch/palette.count),right=floor (band*swatch/palette.count)
+                args.Graphics.FillRectangle ink (rectangle.X+inset+left) (rectangle.Y+inset) (amax 1 (right-left)) swatchHeight
+                ink.Dispose()
+            )
             local fullText=view.Items.Item[args.Index] as string,fullName=sourceUI_obj.sourceLabel (args.Index+1)
             local suffix=substring fullText (fullName.count+1) -1
             local textRenderer=dotNetClass "System.Windows.Forms.TextRenderer",flags=dotNetClass "System.Windows.Forms.TextFormatFlags"
@@ -11193,7 +11210,7 @@ initialRollupState:0x8
                 )
                 local colors=for row=1 to sourceUI_plantList.items.count collect (sourceUI_obj.sourceIDColor (row))
                 local colorsChanged=colors.count!=sourceUI_plantList_colored_colors.count
-                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=sourceUI_plantList_colored_colors[row]
+                if not colorsChanged do colorsChanged=not CyrusPresetSameValues colors sourceUI_plantList_colored_colors
                 if colorsChanged do sourceUI_plantList_colored_colors=colors
                 for i=0 to sourceUI_plantList_colored.Items.Count-1 do (
                     local selected=sourceUI_plantList.selection[i+1]
@@ -11706,7 +11723,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;modelsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;modelsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "modelsUI.layout"
@@ -12089,7 +12106,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;containersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;containersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "containersUI.layout"
@@ -12143,6 +12160,7 @@ initialRollupState:0x8
         local syncingColorLists=false
         dotNetControl diversityUI_strokesList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
         local diversityUI_strokesList_colored_configured=false,diversityUI_strokesList_colored_colors=#(),diversityUI_strokesList_colored_scale=1.0,diversityUI_strokesList_colored_layoutVisible=false
+        local diversityUI_strokesList_colored_tip=undefined,diversityUI_strokesList_colored_tipRow=-1
         dotNetControl diversityUI_strokeChoices_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
         local diversityUI_strokeChoices_colored_configured=false,diversityUI_strokeChoices_colored_colors=#(),diversityUI_strokeChoices_colored_scale=1.0,diversityUI_strokeChoices_colored_layoutVisible=false
         dropdownlist placementUI_generatorList "" items:#("Surface random","Rectangular","Staggered","Hexagonal") selection:1 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Choose how planting positions are generated. Grids project downward onto the highest world-Z hit of each receiver; source assignment below remains independent."
@@ -12208,8 +12226,8 @@ initialRollupState:0x8
         label diversityUI_bandScaleMode_caption "Scale profile" pos:[6,6] width:(layoutUI.width-12) height:18
         button diversityUI_bandScaleEdit "Edit scale curve" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/101.2))))) tooltip:"Size multiplier across this Band. 100% preserves size; zero collapses size without deleting the placement. Edit in Custom mode." height:22
         button diversityUI_bandCurveEdit "Edit curve" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/93.60000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/93.60000000000001))))) tooltip:"Edit this Band by its captured identity. Changes apply on drag release, Apply or Close." height:22
-        colorpicker diversityUI_bandColor "" color:white pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Identification color belongs to this Band. It never changes placements or source materials."
-        label diversityUI_bandColor_caption "Band color:" pos:[6,6] width:(layoutUI.width-12) height:18
+        colorpicker diversityUI_bandColor "" color:white pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Used by Color by Bands and band previews. List badges show assigned model colors. This never changes placements or source materials."
+        label diversityUI_bandColor_caption "Viewport band color:" pos:[6,6] width:(layoutUI.width-12) height:18
         checkbox diversityUI_fieldFalloffCheck "Show band density" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))) tooltip:"Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts."
         checkbox diversityUI_fieldBoundaryCheck "Show band borders" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))) tooltip:"Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers."
         dropdownlist diversityUI_fieldView "" items:#("Selected Band","Combined density") pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Selected Band shows its contribution. Combined shows capped total occupancy."
@@ -12423,6 +12441,31 @@ initialRollupState:0x8
             undo "Cyrus field display" on setProperty savedOwner key value
             controller.refreshDisplay()
             if diversityUI_obj==savedOwner do diversityUI_refreshFieldInfo()
+        )
+        fn diversityUI_bandAssignmentSources row = (
+            if diversityUI_obj==undefined or row<1 or row>diversityUI_obj.strokeIDs.count do return #()
+            local grouped=diversityUI_obj.strokeModes[row]==1
+            local keys=if grouped then (for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]) else (for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row collect diversityUI_obj.strokeSourceIDs[i])
+            for i=1 to diversityUI_obj.sources.count where (diversityUI_obj.isEmptySource i or diversityUI_obj.usableSource diversityUI_obj.sources[i]) and findItem keys (if grouped then diversityUI_obj.colorKey (diversityUI_obj.sourceColor i) else diversityUI_obj.sourceRowIDs[i])>0 collect i
+        )
+        fn diversityUI_bandAssignmentPalette row = (
+            local palette=#()
+            -- Bounded display-only swatches; assignment groups and authored
+            -- viewport Band colours retain their separate ownership.
+            for source in (diversityUI_bandAssignmentSources row) while palette.count<4 do (
+                local shade=diversityUI_obj.sourceIDColor source
+                if findItem palette shade==0 do append palette shade
+            )
+            palette
+        )
+        fn diversityUI_bandAssignmentTip row = (
+            local sources=diversityUI_bandAssignmentSources row,stream=stringStream ""
+            if sources.count==0 do return "No available models assigned."
+            format "Assigned models (%):" sources.count to:stream
+            for i=1 to amin 12 sources.count do format "\n%" (diversityUI_obj.sourceLabel sources[i]) to:stream
+            if sources.count>12 do format "\n..." to:stream
+            format "\nBadge uses model colours; mixed assignments show up to four." to:stream
+            stream as string
         )
         fn diversityUI_choiceColor index = (
             if index<1 or index>diversityUI_choiceValues.count do return (color 128 128 128)
@@ -12998,11 +13041,15 @@ initialRollupState:0x8
         )
         fn diversityUI_setBandChoices indices = (
             if not diversityUI_controlsReady or diversityUI_binding or diversityUI_loadingStroke or diversityUI_obj==undefined do return false
-            local savedOwner=diversityUI_obj,row=diversityUI_selectedStroke()
+            local savedOwner=diversityUI_obj,savedPanel=diversityUI_parentView,row=diversityUI_selectedStroke()
             if row<1 do return false
             CyrusRequireAuthor()
             local values=for i in indices where i>0 and i<=diversityUI_choiceValues.count collect diversityUI_choiceValues[i]
             undo "Cyrus Band assignment" on savedOwner.setStrokeSelection row savedOwner.strokeModes[row] values
+            -- The colored list also calls this method directly. Queue the two
+            -- shared views after its selection event, rather than rebinding a
+            -- managed list while it is still delivering SelectedIndexChanged.
+            if savedPanel!=undefined do savedPanel.queuePages #(3,5,1,12)
             CyrusViewportRedraw();true
         )
         on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (
@@ -13144,6 +13191,15 @@ initialRollupState:0x8
             )
             height
         )
+        on diversityUI_strokesList_colored MouseMove view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
+            local row=view.IndexFromPoint args.Location
+            if row!=diversityUI_strokesList_colored_tipRow do (
+                diversityUI_strokesList_colored_tipRow=row
+                if diversityUI_strokesList_colored_tip==undefined do diversityUI_strokesList_colored_tip=dotNetObject "System.Windows.Forms.ToolTip"
+                diversityUI_strokesList_colored_tip.SetToolTip view (if row>=0 then diversityUI_bandAssignmentTip diversityUI_strokeRows[row+1] else "")
+            )
+        )
+        on diversityUI_strokesList_colored HandleDestroyed view args do (if diversityUI_strokesList_colored_tip!=undefined do (diversityUI_strokesList_colored_tip.Dispose();diversityUI_strokesList_colored_tip=undefined);diversityUI_strokesList_colored_tipRow=-1)
         on diversityUI_strokesList_colored SelectedIndexChanged view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
             local action=CyrusBeginAction root "diversityUI_strokesList_colored.selection"
             try (
@@ -13156,10 +13212,14 @@ initialRollupState:0x8
         on diversityUI_strokesList_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
             local shade=if args.Index<diversityUI_strokesList_colored_colors.count then diversityUI_strokesList_colored_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
-            local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
             local inset=(ceil (3*diversityUI_strokesList_colored_scale)) as integer,swatch=(ceil (10*diversityUI_strokesList_colored_scale)) as integer
-            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
-            ink.Dispose()
+            local palette=if classof shade==Array then shade else #(),swatchHeight=amax 1 (rectangle.Height-2*inset)
+            for band=1 to palette.count do (
+                local colorValue=palette[band],ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (colorValue.r as integer) (colorValue.g as integer) (colorValue.b as integer))
+                local left=floor ((band-1)*swatch/palette.count),right=floor (band*swatch/palette.count)
+                args.Graphics.FillRectangle ink (rectangle.X+inset+left) (rectangle.Y+inset) (amax 1 (right-left)) swatchHeight
+                ink.Dispose()
+            )
             (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*diversityUI_strokesList_colored_scale))) rectangle.Y) args.ForeColor
             args.DrawFocusRectangle()
         )
@@ -13175,10 +13235,14 @@ initialRollupState:0x8
         on diversityUI_strokeChoices_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
             local shade=if args.Index<diversityUI_strokeChoices_colored_colors.count then diversityUI_strokeChoices_colored_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
-            local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
             local inset=(ceil (3*diversityUI_strokeChoices_colored_scale)) as integer,swatch=(ceil (10*diversityUI_strokeChoices_colored_scale)) as integer
-            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
-            ink.Dispose()
+            local palette=#(shade),swatchHeight=amax 1 (rectangle.Height-2*inset)
+            for band=1 to palette.count do (
+                local colorValue=palette[band],ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (colorValue.r as integer) (colorValue.g as integer) (colorValue.b as integer))
+                local left=floor ((band-1)*swatch/palette.count),right=floor (band*swatch/palette.count)
+                args.Graphics.FillRectangle ink (rectangle.X+inset+left) (rectangle.Y+inset) (amax 1 (right-left)) swatchHeight
+                ink.Dispose()
+            )
             (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*diversityUI_strokeChoices_colored_scale))) rectangle.Y) args.ForeColor
             args.DrawFocusRectangle()
         )
@@ -13215,15 +13279,15 @@ initialRollupState:0x8
                     try(diversityUI_strokesList_colored.Items.Clear();for value in diversityUI_strokesList.items do diversityUI_strokesList_colored.Items.Add value)catch(diversityUI_strokesList_colored.EndUpdate();throw())
                     diversityUI_strokesList_colored.EndUpdate()
                 )
-                local colors=for row=1 to diversityUI_strokesList.items.count collect (diversityUI_obj.strokeDisplayColors[diversityUI_strokeRows[row]])
+                local colors=for row=1 to diversityUI_strokesList.items.count collect (diversityUI_bandAssignmentPalette diversityUI_strokeRows[row])
                 local colorsChanged=colors.count!=diversityUI_strokesList_colored_colors.count
-                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=diversityUI_strokesList_colored_colors[row]
+                if not colorsChanged do colorsChanged=not CyrusPresetSameValues colors diversityUI_strokesList_colored_colors
                 if colorsChanged do diversityUI_strokesList_colored_colors=colors
                 for i=0 to diversityUI_strokesList_colored.Items.Count-1 do (
                     local selected=diversityUI_strokesList.selection==i+1
                     if (diversityUI_strokesList_colored.GetSelected i)!=selected do diversityUI_strokesList_colored.SetSelected i selected
                 )
-                if colorsChanged or itemsChanged do (diversityUI_strokesList_colored.Invalidate())
+                if colorsChanged or itemsChanged do (diversityUI_strokesList_colored_tipRow=-1;diversityUI_strokesList_colored.Invalidate())
                 -- The native list is always hidden after synchronization. Only
                 -- a completed geometry layout supplies new visibility intent.
                 if layoutChanged do diversityUI_strokeChoices_colored_layoutVisible=diversityUI_strokeChoices.visible
@@ -13254,7 +13318,7 @@ initialRollupState:0x8
                 )
                 local colors=for row=1 to diversityUI_strokeChoices.items.count collect (diversityUI_choiceColor (row))
                 local colorsChanged=colors.count!=diversityUI_strokeChoices_colored_colors.count
-                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=diversityUI_strokeChoices_colored_colors[row]
+                if not colorsChanged do colorsChanged=not CyrusPresetSameValues colors diversityUI_strokeChoices_colored_colors
                 if colorsChanged do diversityUI_strokeChoices_colored_colors=colors
                 for i=0 to diversityUI_strokeChoices_colored.Items.Count-1 do (
                     local selected=diversityUI_strokeChoices.selection[i+1]
@@ -14062,7 +14126,7 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_edgeRotZSpin_caption.width=cellWidth-78) else (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_edgeRotZSpin_caption.width=cellWidth);diversityUI_edgeRotZSpin_caption.enabled=diversityUI_edgeRotZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;layoutUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;layoutUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "layoutUI.layout"
@@ -15444,7 +15508,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;populationUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;populationUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "populationUI.layout"
@@ -16316,7 +16380,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;coverageUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;coverageUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "coverageUI.layout"
@@ -17416,7 +17480,7 @@ initialRollupState:0x8
                 if not stackedCaption then (areaUI_aaRadius_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_aaRadius_caption.width=cellWidth-78) else (areaUI_aaRadius_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_aaRadius_caption.width=cellWidth);areaUI_aaRadius_caption.enabled=areaUI_aaRadius.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;areasUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;areasUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "areasUI.layout"
@@ -18377,7 +18441,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;transformsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;transformsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "transformsUI.layout"
@@ -19250,7 +19314,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;spacingUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;spacingUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "spacingUI.layout"
@@ -19332,6 +19396,7 @@ initialRollupState:0x8
         label flow_previewUI_navigationFacesSpin_caption "Navigating triangles:" pos:[6,6] width:(displayUI.width-12) height:18
         label flow_previewUI_limitsHint "Controller totals; 0 = unlimited" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         button flow_previewUI_fastNavigationButton "Fast navigation" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/96))))) height:22
+        button flow_previewUI_sharedViewportButton "Multiple Scatters..." pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/122))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/122))))) height:22
         button flow_previewUI_memoryButton "Viewport memory..." pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/111.60000000000001))))) tooltip:"Choose Automatic or a custom memory allowance for this Max installation. Changing it does not calculate scatter." height:22
         spinner flow_previewUI_pointsSpin "" range:[10,10000,80] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))) pos:[8,8]
         label flow_previewUI_pointsSpin_caption "Points/plant: " pos:[6,6] width:(displayUI.width-12) height:18
@@ -19521,6 +19586,15 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
+        on flow_previewUI_sharedViewportButton pressed do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_sharedViewportButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
+            try (CyrusOpenSelectionControls()
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on flow_previewUI_memoryButton pressed do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
             local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_memoryButton"
             if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
@@ -19590,7 +19664,7 @@ initialRollupState:0x8
             flow_previewUI_binding=true;flow_previewUI_controlsReady=false
             if flow_previewUI_obj!=next do ()
             flow_previewUI_obj=next;flow_previewUI_parentView=(CyrusContainerPanel flow_previewUI_root)
-            for c in #(flow_previewUI_previewCheck,flow_previewUI_displayModeDrop,flow_previewUI_proxyShapeDrop,flow_previewUI_instancesLimitSpin,flow_previewUI_faceLimitSpin,flow_previewUI_identificationDrop,flow_previewUI_pointColorRadio,flow_previewUI_solidColorPicker,flow_previewUI_budgetSpin,flow_previewUI_navigationPointsSpin,flow_previewUI_navigationInstancesSpin,flow_previewUI_navigationFacesSpin,flow_previewUI_limitsHint,flow_previewUI_fastNavigationButton,flow_previewUI_memoryButton,flow_previewUI_pointsSpin,flow_previewUI_radiusLimitSpin,flow_previewUI_radiusMetricDrop,flow_previewUI_radiusAllCheck,flow_previewUI_radiusHint,flow_previewUI_iconSpin,flow_previewUI_refreshButton,flow_previewUI_autoRenderCheck,flow_previewUI_clearBakedButton,flow_previewUI_status) do c.enabled=true
+            for c in #(flow_previewUI_previewCheck,flow_previewUI_displayModeDrop,flow_previewUI_proxyShapeDrop,flow_previewUI_instancesLimitSpin,flow_previewUI_faceLimitSpin,flow_previewUI_identificationDrop,flow_previewUI_pointColorRadio,flow_previewUI_solidColorPicker,flow_previewUI_budgetSpin,flow_previewUI_navigationPointsSpin,flow_previewUI_navigationInstancesSpin,flow_previewUI_navigationFacesSpin,flow_previewUI_limitsHint,flow_previewUI_fastNavigationButton,flow_previewUI_sharedViewportButton,flow_previewUI_memoryButton,flow_previewUI_pointsSpin,flow_previewUI_radiusLimitSpin,flow_previewUI_radiusMetricDrop,flow_previewUI_radiusAllCheck,flow_previewUI_radiusHint,flow_previewUI_iconSpin,flow_previewUI_refreshButton,flow_previewUI_autoRenderCheck,flow_previewUI_clearBakedButton,flow_previewUI_status) do c.enabled=true
             try (undo off ((flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=if flow_previewUI_obj.identificationMode==4 then 1 else flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;flow_previewUI_controlsReady=true;(flow_previewUI_previewCheck.checked=flow_previewUI_obj.showPoints;flow_previewUI_pointsSpin.value=flow_previewUI_obj.pointsPerPlant;flow_previewUI_iconSpin.value=flow_previewUI_obj.iconSize)))) catch(flow_previewUI_binding=false;flow_previewUI_controlsReady=true;throw())
             flow_previewUI_controlsReady=true;flow_previewUI_binding=false
         )
@@ -19714,7 +19788,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(flow_previewUI_displayModeDrop.selection==1 or flow_previewUI_displayModeDrop.selection==4),(flow_previewUI_displayModeDrop.selection==2),(flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5),(flow_previewUI_displayModeDrop.selection!=5),(flow_previewUI_pointColorRadio.state==1),flow_previewUI_previewCheck.text,flow_previewUI_pointColorRadio.text,flow_previewUI_limitsHint.text,flow_previewUI_fastNavigationButton.text,flow_previewUI_memoryButton.text,flow_previewUI_radiusAllCheck.text,flow_previewUI_radiusHint.text,flow_previewUI_refreshButton.text,flow_previewUI_autoRenderCheck.text,flow_previewUI_clearBakedButton.text,flow_previewUI_status.text,flow_previewUI_displayModeDrop_caption.text,flow_previewUI_proxyShapeDrop_caption.text,flow_previewUI_instancesLimitSpin_caption.text,flow_previewUI_faceLimitSpin_caption.text,flow_previewUI_identificationDrop_caption.text,flow_previewUI_pointColorRadio_caption.text,flow_previewUI_solidColorPicker_caption.text,flow_previewUI_budgetSpin_caption.text,flow_previewUI_navigationPointsSpin_caption.text,flow_previewUI_navigationInstancesSpin_caption.text,flow_previewUI_navigationFacesSpin_caption.text,flow_previewUI_pointsSpin_caption.text,flow_previewUI_radiusLimitSpin_caption.text,flow_previewUI_radiusMetricDrop_caption.text,flow_previewUI_iconSpin_caption.text,flow_previewUI_previewCheck.visible,flow_previewUI_displayModeDrop.visible,flow_previewUI_proxyShapeDrop.visible,flow_previewUI_instancesLimitSpin.visible,flow_previewUI_faceLimitSpin.visible,flow_previewUI_identificationDrop.visible,flow_previewUI_pointColorRadio.visible,flow_previewUI_solidColorPicker.visible,flow_previewUI_budgetSpin.visible,flow_previewUI_navigationPointsSpin.visible,flow_previewUI_navigationInstancesSpin.visible,flow_previewUI_navigationFacesSpin.visible,flow_previewUI_limitsHint.visible,flow_previewUI_fastNavigationButton.visible,flow_previewUI_memoryButton.visible,flow_previewUI_pointsSpin.visible,flow_previewUI_radiusLimitSpin.visible,flow_previewUI_radiusMetricDrop.visible,flow_previewUI_radiusAllCheck.visible,flow_previewUI_radiusHint.visible,flow_previewUI_iconSpin.visible,flow_previewUI_refreshButton.visible,flow_previewUI_autoRenderCheck.visible,flow_previewUI_clearBakedButton.visible,flow_previewUI_status.visible,flow_previewUI_limitsHint.height,flow_previewUI_radiusHint.height,flow_previewUI_status.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(flow_previewUI_displayModeDrop.selection==1 or flow_previewUI_displayModeDrop.selection==4),(flow_previewUI_displayModeDrop.selection==2),(flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5),(flow_previewUI_displayModeDrop.selection!=5),(flow_previewUI_pointColorRadio.state==1),flow_previewUI_previewCheck.text,flow_previewUI_pointColorRadio.text,flow_previewUI_limitsHint.text,flow_previewUI_fastNavigationButton.text,flow_previewUI_sharedViewportButton.text,flow_previewUI_memoryButton.text,flow_previewUI_radiusAllCheck.text,flow_previewUI_radiusHint.text,flow_previewUI_refreshButton.text,flow_previewUI_autoRenderCheck.text,flow_previewUI_clearBakedButton.text,flow_previewUI_status.text,flow_previewUI_displayModeDrop_caption.text,flow_previewUI_proxyShapeDrop_caption.text,flow_previewUI_instancesLimitSpin_caption.text,flow_previewUI_faceLimitSpin_caption.text,flow_previewUI_identificationDrop_caption.text,flow_previewUI_pointColorRadio_caption.text,flow_previewUI_solidColorPicker_caption.text,flow_previewUI_budgetSpin_caption.text,flow_previewUI_navigationPointsSpin_caption.text,flow_previewUI_navigationInstancesSpin_caption.text,flow_previewUI_navigationFacesSpin_caption.text,flow_previewUI_pointsSpin_caption.text,flow_previewUI_radiusLimitSpin_caption.text,flow_previewUI_radiusMetricDrop_caption.text,flow_previewUI_iconSpin_caption.text,flow_previewUI_previewCheck.visible,flow_previewUI_displayModeDrop.visible,flow_previewUI_proxyShapeDrop.visible,flow_previewUI_instancesLimitSpin.visible,flow_previewUI_faceLimitSpin.visible,flow_previewUI_identificationDrop.visible,flow_previewUI_pointColorRadio.visible,flow_previewUI_solidColorPicker.visible,flow_previewUI_budgetSpin.visible,flow_previewUI_navigationPointsSpin.visible,flow_previewUI_navigationInstancesSpin.visible,flow_previewUI_navigationFacesSpin.visible,flow_previewUI_limitsHint.visible,flow_previewUI_fastNavigationButton.visible,flow_previewUI_sharedViewportButton.visible,flow_previewUI_memoryButton.visible,flow_previewUI_pointsSpin.visible,flow_previewUI_radiusLimitSpin.visible,flow_previewUI_radiusMetricDrop.visible,flow_previewUI_radiusAllCheck.visible,flow_previewUI_radiusHint.visible,flow_previewUI_iconSpin.visible,flow_previewUI_refreshButton.visible,flow_previewUI_autoRenderCheck.visible,flow_previewUI_clearBakedButton.visible,flow_previewUI_status.visible,flow_previewUI_limitsHint.height,flow_previewUI_radiusHint.height,flow_previewUI_status.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -19822,6 +19896,15 @@ initialRollupState:0x8
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(flow_previewUI_sharedViewportButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/122))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -19989,7 +20072,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;displayUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;displayUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "displayUI.layout"
@@ -20393,7 +20476,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;statisticsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;statisticsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "statisticsUI.layout"
@@ -21557,7 +21640,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;interactionsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;interactionsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "interactionsUI.layout"
@@ -21874,7 +21957,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;collidersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;collidersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "collidersUI.layout"
@@ -21919,19 +22002,28 @@ initialRollupState:0x8
     )
         collidersUI
     )
-    rollout mainUI "Cyrus Scatter 0.87.6" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.87.6.7" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.87.6" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.87.6.7" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
         timer pageTimer interval:16 active:false
-        local mountQueue=#(),deferBodies=false
+        timer repaintTimer interval:16 active:false
+        fn requestRepaint = (if controlsReady do repaintTimer.active=true;true)
+        on repaintTimer tick do (
+            repaintTimer.active=false
+            if not controlsReady or not mainUI.isDisplayed do return false
+            cyrusRepaintRolloutButtons mainUI.hwnd
+            for i=1 to editors.count where slots[i].open and editors[i].isDisplayed do cyrusRepaintRolloutButtons editors[i].hwnd
+            true
+        )
+        local mountQueue=#(),deferBodies=false,pageRevisions=#()
         local bind,requestBind,eventPage=0,eventDepth=0,eventRefresh=false,pendingPages=#(),pendingAll=false,pendingOwner=undefined
         fn beginPageEdit section refresh:true = (
             eventDepth+=1
@@ -21953,6 +22045,13 @@ initialRollupState:0x8
             else for index in #(eventPage,1,2,12) where findItem pendingPages index==0 do append pendingPages index
             pendingOwner=owner;true
         )
+        fn queuePages indices = (
+            if not controlsReady do return false
+            for index in indices where index>0 and index<=editors.count and findItem pendingPages index==0 do append pendingPages index
+            pendingOwner=owner
+            if eventDepth==0 do bindTimer.active=true
+            true
+        )
         fn layoutPanels = (for i=1 to editors.count where editors[i].controlsReady and slots[i].open do editors[i].layout();true)
         fn resizeSection index = (
             if resizing or index>editors.count do return false
@@ -21965,7 +22064,7 @@ initialRollupState:0x8
                 -- actual available width in logical UI units at the current DPI.
                 local available=amax 64 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
                 if section.controlsReady and section.lastLayoutWidth!=available do section.layout()
-                resizing=false;true
+                resizing=false;requestRepaint();true
             )catch(resizing=false;throw())
         )
         fn rememberViews = (
@@ -21986,7 +22085,7 @@ initialRollupState:0x8
             if root.statisticsUI.controlsReady and slots[12].open do if root.statisticsUI.detailsUI_refreshStats() do root.statisticsUI.layout()
             root.syncBrushAvailability();true
         )
-        fn bindSection section = (
+        fn bindSection section refresh:true = (
             if not controlsReady or root==undefined do return false
             local index=findItem editors section
             if index==0 do return false
@@ -22014,13 +22113,18 @@ initialRollupState:0x8
                     if index<=view.uiPresentationState.count do section.restoreView view.uiPresentationState[index]
                 )
                 resizeSection index
-                section.bind owner
+                local revision=#(root.uiRevision,if owner==undefined then -1L else owner.uiRevision)
+                if refresh or mounted or not section.controlsReady or index>pageRevisions.count or not CyrusPresetSameValues pageRevisions[index] revision do (
+                    section.bind owner
+                    if pageRevisions.count<editors.count do pageRevisions.count=editors.count
+                    pageRevisions[index]=#(root.uiRevision,if owner==undefined then -1L else owner.uiRevision)
+                )
                 -- Lazy bodies have their own native/Qt rollup containers. Route
                 -- their background navigation to this slot's owning column,
                 -- once after mounting; ordinary controls keep their own input.
                 if mounted do if cyrusBindRolloutScroll slots[index].hwnd==0 do throw "Cannot bind Cyrus panel navigation. Restart Max with the complete matching package."
-            ) else section.controlsReady=false
-            true
+            ) else if refresh do section.controlsReady=false
+            requestRepaint();true
         )
         fn bindEditors pages:undefined = (
             if not controlsReady or layerBinding do return false
@@ -22073,7 +22177,8 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.6 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.6.7 native plugin and restart Max."
+            if cyrusRepaintRolloutButtons==undefined do throw "Load the complete Cyrus 0.87.6.7 UI module and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -22105,8 +22210,8 @@ initialRollupState:0x8
             cyrusSetRolloutVisible mainUI.hwnd true 0
         )
         on mainUI close do (
-            controlsReady=false;statusTimer.active=false;mountTimer.active=false;bindTimer.active=false;pageTimer.active=false
-            mountQueue=#();deferBodies=false
+            controlsReady=false;statusTimer.active=false;mountTimer.active=false;bindTimer.active=false;pageTimer.active=false;repaintTimer.active=false
+            mountQueue=#();deferBodies=false;pageRevisions=#()
             pendingPages=#();pendingAll=false;pendingOwner=undefined;eventPage=0;eventDepth=0;eventRefresh=false
             for slot in slots do cyrusReleaseRolloutScroll slot.hwnd
             for r in editors do (r.controlsReady=false;r.root=undefined;r.owner=undefined;r.obj=undefined)
@@ -22158,7 +22263,7 @@ initialRollupState:0x8
         on managerUISlot open do view=this
         on managerUISlot close do view=undefined
         on managerUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[1]
+            view.mainUI.bindSection view.mainUI.editors[1] refresh:false
             view.mainUI.rememberViews()
         )
         on managerUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 1
@@ -22170,7 +22275,7 @@ initialRollupState:0x8
         on surfacesUISlot open do view=this
         on surfacesUISlot close do view=undefined
         on surfacesUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[2]
+            view.mainUI.bindSection view.mainUI.editors[2] refresh:false
             view.mainUI.rememberViews()
         )
         on surfacesUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 2
@@ -22182,7 +22287,7 @@ initialRollupState:0x8
         on modelsUISlot open do view=this
         on modelsUISlot close do view=undefined
         on modelsUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[3]
+            view.mainUI.bindSection view.mainUI.editors[3] refresh:false
             view.mainUI.rememberViews()
         )
         on modelsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 3
@@ -22194,7 +22299,7 @@ initialRollupState:0x8
         on containersUISlot open do view=this
         on containersUISlot close do view=undefined
         on containersUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[4]
+            view.mainUI.bindSection view.mainUI.editors[4] refresh:false
             view.mainUI.rememberViews()
         )
         on containersUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 4
@@ -22206,7 +22311,7 @@ initialRollupState:0x8
         on layoutUISlot open do view=this
         on layoutUISlot close do view=undefined
         on layoutUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[5]
+            view.mainUI.bindSection view.mainUI.editors[5] refresh:false
             view.mainUI.rememberViews()
         )
         on layoutUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 5
@@ -22218,7 +22323,7 @@ initialRollupState:0x8
         on populationUISlot open do view=this
         on populationUISlot close do view=undefined
         on populationUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[6]
+            view.mainUI.bindSection view.mainUI.editors[6] refresh:false
             view.mainUI.rememberViews()
         )
         on populationUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 6
@@ -22230,7 +22335,7 @@ initialRollupState:0x8
         on coverageUISlot open do view=this
         on coverageUISlot close do view=undefined
         on coverageUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[7]
+            view.mainUI.bindSection view.mainUI.editors[7] refresh:false
             view.mainUI.rememberViews()
         )
         on coverageUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 7
@@ -22242,7 +22347,7 @@ initialRollupState:0x8
         on areasUISlot open do view=this
         on areasUISlot close do view=undefined
         on areasUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[8]
+            view.mainUI.bindSection view.mainUI.editors[8] refresh:false
             view.mainUI.rememberViews()
         )
         on areasUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 8
@@ -22254,7 +22359,7 @@ initialRollupState:0x8
         on transformsUISlot open do view=this
         on transformsUISlot close do view=undefined
         on transformsUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[9]
+            view.mainUI.bindSection view.mainUI.editors[9] refresh:false
             view.mainUI.rememberViews()
         )
         on transformsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 9
@@ -22266,7 +22371,7 @@ initialRollupState:0x8
         on spacingUISlot open do view=this
         on spacingUISlot close do view=undefined
         on spacingUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[10]
+            view.mainUI.bindSection view.mainUI.editors[10] refresh:false
             view.mainUI.rememberViews()
         )
         on spacingUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 10
@@ -22278,7 +22383,7 @@ initialRollupState:0x8
         on displayUISlot open do view=this
         on displayUISlot close do view=undefined
         on displayUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[11]
+            view.mainUI.bindSection view.mainUI.editors[11] refresh:false
             view.mainUI.rememberViews()
         )
         on displayUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 11
@@ -22290,7 +22395,7 @@ initialRollupState:0x8
         on statisticsUISlot open do view=this
         on statisticsUISlot close do view=undefined
         on statisticsUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[12]
+            view.mainUI.bindSection view.mainUI.editors[12] refresh:false
             view.mainUI.rememberViews()
         )
         on statisticsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 12
@@ -22302,7 +22407,7 @@ initialRollupState:0x8
         on interactionsUISlot open do view=this
         on interactionsUISlot close do view=undefined
         on interactionsUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[13]
+            view.mainUI.bindSection view.mainUI.editors[13] refresh:false
             view.mainUI.rememberViews()
         )
         on interactionsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 13
@@ -22314,7 +22419,7 @@ initialRollupState:0x8
         on collidersUISlot open do view=this
         on collidersUISlot close do view=undefined
         on collidersUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[14]
+            view.mainUI.bindSection view.mainUI.editors[14] refresh:false
             view.mainUI.rememberViews()
         )
         on collidersUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 14
@@ -22461,6 +22566,7 @@ fn AminScatterObjectDraw = (
             )
         )
     )
+    if cyrusViewportHoverDraw!=undefined do cyrusViewportHoverDraw()
     gw.enlargeUpdateRect #whole
 )
 registerRedrawViewsCallback AminScatterObjectDraw
@@ -22811,7 +22917,11 @@ fn CyrusPointClear = (
     CyrusPointPending=false;CyrusPointPresentationPending=false
     CyrusViewportRecords=#();CyrusViewportAnalyzers=#();CyrusViewportRecordsDirty=true
     local old=CyrusPointOwners;CyrusPointOwners=#()
-    if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
+    if old!=undefined do for pair in old do (
+        local helpers=#()
+        for i=2 to pair.count do append helpers pair[i]
+        CyrusPointDelete helpers
+    )
 )
 fn CyrusPointSync retainedOwner:undefined = (
     if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or (retainedOwner==undefined and CyrusInteractionHeld()) do return false
@@ -22821,7 +22931,11 @@ fn CyrusPointSync retainedOwner:undefined = (
         local surviving=#()
         for pair in CyrusPointOwners do (
             if isValidNode pair[1] and classof pair[1].baseObject==AminScatterObject and isValidNode pair[2] then append surviving pair
-            else CyrusPointDelete #(pair[2])
+            else (
+                local helpers=#()
+                for i=2 to pair.count do append helpers pair[i]
+                CyrusPointDelete helpers
+            )
         )
         CyrusPointOwners=surviving
         for n in CyrusTimeOwners where isValidNode n and classof n.baseObject==AminScatterObject do (
@@ -22871,6 +22985,15 @@ fn CyrusPointSync retainedOwner:undefined = (
                         local materialStatus=cyrusMaterialPreviewStatus cache
                         if materialStatus!="" do detailStatus=materialStatus
                     )
+                )
+                for pair in CyrusPointOwners where pair[2]==owner do (
+                    if pair.count<3 or not isValidNode pair[3] do (
+                        local wasDirty=getSaveRequired(),picker
+                        undo off picker=cyrusViewportCreatePicker owner n
+                        if isValidNode picker do (setTransformLockFlags picker #all;if pair.count<3 then append pair picker else pair[3]=picker)
+                        if not wasDirty do setSaveRequired false
+                    )
+                    if pair.count>=3 and isValidNode pair[3] do cyrusViewportSyncPicker pair[3]
                 )
             )
             append records #(n,owner,caches,styles,fallback,2)
@@ -23360,3 +23483,152 @@ fn CyrusContainerSceneOpened = (
 )
 callbacks.removeScripts id:#CyrusSourceContainers
 callbacks.addScript #filePostOpen "CyrusContainerSceneOpened()" id:#CyrusSourceContainers persistent:false
+
+-- Shared controls bind existing Scatter controllers. No second recipe model.
+global CyrusSelectionUI,CyrusSelectionRefresh,CyrusSelectionChanged,CyrusSelectionBusy=false,CyrusSelectionClosedKey="",CyrusSelectionTimer
+global CyrusOpenSelectionControls,CyrusSelectionApply,CyrusSelectionTargets
+global CyrusSelectionPending=undefined
+fn CyrusSelectionEnterInstance request = (
+    local node=request[1]
+    if not isValidNode node or selection.count!=1 or selection[1]!=node do return false
+    if not (cyrusViewportSelectionValid node request[4]) do return false
+    local root=node.baseObject,edit=undefined
+    for m in node.modifiers where edit==undefined and classof m==CyrusScatterEdit and m.enabled do edit=m
+    if edit==undefined do (
+        if not CyrusLicenseCanEdit() do return false
+        -- Capture only the complete retained result. No source mesh query,
+        -- placement solve, contact fit or preview publication on selection.
+        local retained=for i=1 to root.procPublishedOwners.count collect (
+            local leaf=root.procPublishedOwners[i]
+            #(leaf.editLayerKey,root.groupSnapshotRows[i],leaf.procBindingKey,(leaf.procPreviewPalette root.procPublishedMetadata[i]),(root.visibleLayer (findItem root.layerObjects leaf)))
+        )
+        edit=CyrusScatterEdit()
+        cyrusEditAttachDisplayed edit node retained
+        undo "Enable Cyrus instance editing" on addModifier node edit
+    )
+    local key=cyrusEditSelectViewport edit node request[2] request[3]
+    if key==undefined do return false
+    for leaf in root.layerObjects where leaf.editLayerKey==key do (
+        local parent=root.logicalParent leaf
+        undo off root.selectLayer (findItem root.layerObjects parent)
+    )
+    max modify mode
+    modPanel.setCurrentObject edit
+    subObjectLevel=1
+    redrawViews();true
+)
+fn CyrusSelectionTargets all:false = (
+    local nodes=if all then CyrusTimeOwners else (selection as array)
+    for n in nodes where isValidNode n and classof n.baseObject==AminScatterObject collect n
+)
+fn CyrusSelectionApply nodes property value = (
+    if not CyrusLicenseCanEdit() do return false
+    -- Capture owners before callbacks can alter the Modify panel or selection.
+    local owners=for n in nodes where isValidNode n and classof n.baseObject==AminScatterObject collect n.baseObject
+    undo "Cyrus shared viewport" on (
+        for owner in owners do (
+            case property of (
+                #display: (
+                    if value==5 then owner.identificationMode=4 else if owner.identificationMode==4 do owner.identificationMode=1
+                    owner.setGroupDisplay (if value==5 then 3 else value)
+                )
+                #enabled: (owner.cyrusEnabled=value;owner.invalidateGroups())
+                #update: owner.refreshAll()
+                default: (
+                    if findItem #(#viewportNavigationFaces,#viewportFaces,#showPoints) property==0 do throw "Unsupported shared viewport setting."
+                    setProperty owner property value
+                    if property!=#showPoints do owner.refreshDisplay()
+                )
+            )
+        )
+    )
+    CyrusViewportRedraw();true
+)
+rollout CyrusSelectionUI "Cyrus Scatter - selected setups" width:290 height:360 (
+    local binding=false,nodes=#()
+    dropdownlist scope "Apply to" items:#("Selected Scatters","All Scatters") selection:1 pos:[12,8] width:266
+    label summary "" pos:[12,58] width:266 height:34
+    button updateButton "Update Scatters" pos:[12,96] width:266
+    button enableButton "Enable" pos:[12,124] width:130
+    button disableButton "Disable" pos:[148,124] width:130
+    dropdownlist display "Viewport display" items:#("Mixed / choose...","Point Cloud","Proxy","Mesh","Centers","Textured mesh") pos:[12,155] width:266
+    spinner navigation "Moving triangles:" type:#integer range:[0,2147483647,500000] pos:[12,210] width:266 fieldWidth:110
+    spinner idle "Idle triangles:" type:#integer range:[0,2147483647,2000000] pos:[12,238] width:266 fieldWidth:110
+    button showButton "Show previews" pos:[12,268] width:130
+    button hideButton "Hide previews" pos:[148,268] width:130
+    label hint "Only the control you change is applied. Mixed budgets are marked below; 0 = unlimited." pos:[12,300] width:266 height:36
+    label mixed "" pos:[12,338] width:266 height:18
+    fn bind = (
+        binding=true
+        nodes=CyrusSelectionTargets all:(scope.selection==2)
+        summary.text=(nodes.count as string)+" Scatter setup(s). Update also applies pending Manual edits."
+        local usable=nodes.count>0
+        for control in #(updateButton,enableButton,disableButton,display,navigation,idle,showButton,hideButton) do control.enabled=usable
+        mixed.text=""
+        if usable do (
+            local first=nodes[1].baseObject,modes=#(),nav=#(),rest=#()
+            for node in nodes do (
+                local owner=node.baseObject
+                appendIfUnique modes (if owner.groupCenters then 4 else if owner.viewportMode==3 and owner.identificationMode==4 then 5 else owner.viewportMode)
+                appendIfUnique nav owner.viewportNavigationFaces;appendIfUnique rest owner.viewportFaces
+            )
+            display.selection=if modes.count==1 then modes[1]+1 else 1
+            navigation.value=first.viewportNavigationFaces;idle.value=first.viewportFaces
+            mixed.text=(if nav.count>1 then "Moving: mixed. " else "")+(if rest.count>1 then "Idle: mixed." else "")
+        )
+        binding=false
+    )
+    fn apply property value = (if not binding do (local captured=for n in nodes collect n;CyrusSelectionApply captured property value;bind()))
+    on scope selected value do bind()
+    on updateButton pressed do apply #update true
+    on enableButton pressed do apply #enabled true
+    on disableButton pressed do apply #enabled false
+    on display selected value do if value>1 do apply #display (value-1)
+    on navigation changed value do apply #viewportNavigationFaces value
+    on idle changed value do apply #viewportFaces value
+    on showButton pressed do apply #showPoints true
+    on hideButton pressed do apply #showPoints false
+    on CyrusSelectionUI open do bind()
+    on CyrusSelectionUI close do CyrusSelectionClosedKey=(for n in (CyrusSelectionTargets()) collect getHandleByAnim n) as string
+)
+fn CyrusOpenSelectionControls = (
+    if not CyrusSelectionUI.open do createDialog CyrusSelectionUI style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+    CyrusSelectionUI.bind()
+)
+fn CyrusSelectionRefresh = (
+    local targets=CyrusSelectionTargets(),key=(for n in (CyrusSelectionTargets()) collect getHandleByAnim n) as string
+    if CyrusSelectionUI.open then CyrusSelectionUI.bind()
+    else if targets.count>1 and key!=CyrusSelectionClosedKey do CyrusOpenSelectionControls()
+)
+fn CyrusSelectionChanged = (
+    if CyrusSelectionBusy do return false
+    CyrusSelectionBusy=true
+    try (
+        local nodes=selection as array,redirected=#(),changed=false
+        CyrusSelectionPending=undefined
+        if nodes.count==1 and cyrusViewportSelectionHit!=undefined do CyrusSelectionPending=cyrusViewportSelectionHit nodes[1]
+        for n in nodes where isValidNode n do (
+            local owner=if cyrusViewportSelectionOwner!=undefined then cyrusViewportSelectionOwner n else undefined
+            if isValidNode owner then (appendIfUnique redirected owner;changed=true) else appendIfUnique redirected n
+        )
+        if changed do select redirected
+        CyrusSelectionRefresh()
+    )catch(format "Cyrus selection: %\n" (getCurrentException()))
+    CyrusSelectionBusy=false
+)
+callbacks.removeScripts id:#CyrusViewportSelection
+callbacks.addScript #selectionSetChanged "CyrusSelectionChanged()" id:#CyrusViewportSelection
+try(CyrusSelectionTimer.Stop();dotNet.removeAllEventHandlers CyrusSelectionTimer)catch()
+fn CyrusSelectionHoverTick sender event = (
+    if CyrusSelectionPending!=undefined and not CyrusSelectionBusy and not CyrusPointBusy and cyrusViewportPointerIdle() do (
+        local request=CyrusSelectionPending;CyrusSelectionPending=undefined;CyrusSelectionBusy=true
+        try(CyrusSelectionEnterInstance request)catch(format "Cyrus instance selection: %\n" (getCurrentException()))
+        CyrusSelectionBusy=false
+    )
+    if cyrusViewportHoverTick!=undefined and not CyrusPointBusy and AminScatterRenderRedrawHeld!=true do
+        try(if cyrusViewportHoverTick() do redrawViews())catch()
+)
+CyrusSelectionTimer=dotNetObject "System.Windows.Forms.Timer"
+CyrusSelectionTimer.Interval=80
+dotNet.addEventHandler CyrusSelectionTimer "Tick" CyrusSelectionHoverTick
+CyrusSelectionTimer.Start()

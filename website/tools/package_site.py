@@ -13,6 +13,8 @@ def main():
     built = SITE / 'dist'
     reference = json.loads((SITE/'src/content/reference.json').read_text(encoding='utf-8'))
     download = release_spec()
+    if download['installer'] is None:
+        raise SystemExit('This is a website-only update. ZIP packaging and installer publication are deferred; use npm run build.')
     assert reference['developmentVersion'] == download['version']
     verify(built/download['installer']['path'], download)
     html = (built/'index.html').read_text(encoding='utf-8')
@@ -29,7 +31,7 @@ def main():
             continue
         relative = path.relative_to(built).as_posix()
         if relative.startswith('downloads/') and relative != download['installer']['path']:
-            raise SystemExit(f'Only the approved main EXE belongs in website downloads: {relative}')
+            raise SystemExit(f'Only the approved installer belongs in website downloads: {relative}')
         if path.suffix.lower() in {'.exe','.mzp','.zip','.dll','.dlx','.dlh','.dlm','.max'} and relative != download['installer']['path']:
             raise SystemExit(f'Unexpected release/model payload: {relative}')
         if path.suffix.lower()=='.md' or relative.startswith('sources/'):

@@ -1,0 +1,9 @@
+{
+  "status": "ready",
+  "load_seconds": 32.06025439989753,
+  "units_per_metre": 100.0,
+  "node_count": 315,
+  "triangles": 3992626,
+  "renderer": "Corona",
+  "version": "0.87.6"
+}

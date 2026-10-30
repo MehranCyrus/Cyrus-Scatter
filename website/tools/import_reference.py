@@ -131,7 +131,10 @@ def build():
     public_history = [{k:v for k,v in entry.items() if k != 'evidence'} for entry in history['entries']]
     analyzer_doc = next(doc for doc in docs if doc['id'] == 'surface-analyzer')
     analyzer_version = re.search(r'^# Cyrus Surface Analyzer ([0-9.]+)\s*$', decode((REPO / analyzer_doc['path']).read_bytes()), re.MULTILINE).group(1)
-    result = {"schema": "cyrus.public-guide/3.0", "developmentVersion": catalog["development_version"], "artistWorkflowVersion": manifest["artistWorkflowVersion"], "analyzerVersion": analyzer_version, "mcpVersion": catalog["mcp_version"], "reviewed": manifest["reviewed"], "documents": sources, 'changelog':public_history, "features": catalog["features"], "controls": catalog["controls"]}
+    # The public edition follows the reviewed release record. Documenting a
+    # delivery does not publish its installer; that is a separate explicit state.
+    release = json.loads((SITE / 'content/release.json').read_text(encoding='utf-8'))
+    result = {"schema": "cyrus.public-guide/3.0", "developmentVersion": release["version"], "artistWorkflowVersion": manifest["artistWorkflowVersion"], "analyzerVersion": analyzer_version, "mcpVersion": catalog["mcp_version"], "reviewed": manifest["reviewed"], "documents": sources, 'changelog':public_history, "features": catalog["features"], "controls": catalog["controls"]}
     output[SITE / "src" / "content" / "reference.json"] = (json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     return output
 

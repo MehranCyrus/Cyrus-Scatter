@@ -228,16 +228,19 @@ startup defect B39 was corrected in 0.87.3.
 
 Observed in the exact 0.87.5.6 qualification: the Bend-only fixed-base-100% case
 produces zero posed plants/bent guides but still performs 1,786 contact queries
-in 23.863 ms. This is an unimplemented optimization opportunity. Skip only work
-that cannot affect the requested response; Trim and root-hiding semantics may
-still require queries. Preserve parent inheritance, move-away restoration and
-complete publication.
+in 23.863 ms. **The fixed/zero-Bend skip is implemented in 0.87.6.1.** Its
+[controlled follow-up](plans/terraces-performance-20261029/MEASUREMENTS.md) has
+zero contact queries in those cases, independent Trim/root hiding, and a moving-
+parent inheritance regression. Historical 0.87.5.6 figures retain their scope.
 
 Other candidates are finer branch rejection, cheaper appropriate collider queries,
 transient allocation reduction and separately measured buffer/draw costs. Compare
 against the [endorsed baseline](PERFORMANCE_BASELINE.md), using the same settings,
 scene/path and visible quality. A theoretical shortcut, more threads or a GPU
-rewrite is not acceptance. No new optimization is implemented by this record.
+rewrite is not acceptance. The 0.87.6.1 box-proxy comparison showed no fit-time
+gain; distant-plant locality and static-orbit reuse passed their scoped checks.
+Finer spatial rejection, transient allocation reduction and general hardware/
+renderer scaling remain open; B41 is only partially closed.
 
 ## Adaptive viewport follow-up
 

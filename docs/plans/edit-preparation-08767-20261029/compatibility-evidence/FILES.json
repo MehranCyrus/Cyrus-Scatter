@@ -1,0 +1,20 @@
+{
+  "compat-exe-extra-inputs.json": "57b0f4e43114c0cb4906e96fdbd28e7c036269d399b8ad00ae5c532e9e973734",
+  "compat_installer_tests.py": "535a2d14a90b13d8d6f769cbc20a9c2767b3ea592235c5f5d729bd526b43b5d5",
+  "compat_package.py": "b145ff9b9f9fdfde2918a093b7a177384ff5f0dbd96ec595904abcc72791529b",
+  "compat_verify.py": "e1ecce93da4297de7b39fcf3a335a915306bb83116b04258890214354ecda0ac",
+  "InstallerChecks.cs": "b5a3113e95548a93565f678935ee45a130ea445b02c481393a6624ab055d182e",
+  "visual.json": "de64be94e06ebaf1240e6a2ae81acd8ccda56586606da1a6098f1274e6d992bc",
+  "website-changelog-final.png": "052ff4d66c10e7916ecd357995b79c5135950ebee1d9e3157e19464682b27bda",
+  "website-download-final.png": "96697f59da61dc965112c4da75ec550ac1e35097af26268a55f6558202226066",
+  "website-guide-final.png": "12b6ab33a435eab1b041dac4effde6f6cc1c08a9eff8848833a35ee25b888a2a",
+  "website-guide-mobile-sealed.png": "b7f2731492bf8b207e0871996ad8f4f30e2c67bef9bcd96497866f62c472729a",
+  "website-manifest.json": "db6ecbb3764faf7f97834fea4c958f96ef91c92e44f97867373f07c69a036d43",
+  "website-mobile-final.png": "9e7bd51b6ae477eaa282a0851ce9146acc675d8409a4351463e3eb974adbf8ba",
+  "compat-08767-max2024/receipt.json": "7f0d0a3c31c5f0d62fd6dbdb1a3ed8c8a42f0f1cf036ac20bd12245d3729c37b",
+  "compat-08767-max2026/receipt.json": "46ecb651edab36fa6729cce2ccd871a148d98b427b40f82892e1e5acbf9bba0a",
+  "compat-installer-tests/receipt.json": "fe950c8d5a47d6f4cc0bce2905697346f01d6ea7479e0be974f08b637eb8d491",
+  "compat-installer-tests/tests.log": "0a1aa89ad01bdedc743adb78563a7574af943799d082718da5474c68d1230005",
+  "compat-packages/CyrusScatter-0.87.6.7-Setup.build.json": "0415c42489d7dad82e1b6b0b18f7a73d930d9f0627048be36e495e8e6207d228",
+  "compat-packages/PACKAGE_VERIFICATION.json": "1ec667893ebecd594edbc8b1134a2d0ecb3ea3be9c3ac0c96b45143dfff02add"
+}

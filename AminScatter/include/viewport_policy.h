@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <numeric>
+#include <stdexcept>
 #include <vector>
 
 namespace cyrus {
@@ -51,4 +52,48 @@ inline std::size_t viewportStride(std::size_t count) {
     while(std::gcd(stride,count)!=1)++stride;
     return stride;
 }
+
+struct ViewportDrawGroup {ViewportQuota idle,navigation;bool full=false;};
+struct ViewportMeshLayer {
+    bool lines=false;
+    int mode=0;
+    ViewportLimits limits;
+    std::vector<ViewportDemand> groups;
+    std::vector<bool> reduced;
+};
+// One shared controller-level policy for drawing and compact-pose admission.
+inline std::vector<std::vector<ViewportDrawGroup>> viewportMeshPlan(const std::vector<ViewportMeshLayer>& layers,bool boxes=false){
+    std::vector<std::vector<ViewportDrawGroup>> result(layers.size());
+    for(std::size_t l=0;l<layers.size();++l)result[l].resize(layers[l].groups.size());
+    for(int mode=1;mode<3;++mode){
+        std::vector<ViewportDemand> demand;std::vector<std::pair<std::size_t,std::size_t>> owners;ViewportLimits limits;
+        for(std::size_t l=0;l<layers.size();++l){const auto& layer=layers[l];if(layer.lines)continue;limits=layer.limits;
+            if((mode==2)!=(layer.mode==4))continue;
+            for(std::size_t g=0;g<layer.groups.size();++g){auto d=layer.groups[g];if(mode==1)d.cost=1;demand.push_back(d);owners.emplace_back(l,g);}}
+        auto idle=viewportQuotas(demand,limits.values[mode*2],mode==2,boxes);
+        auto moving=viewportQuotas(demand,limits.values[mode*2+1],mode==2,boxes);
+        for(std::size_t i=0;i<owners.size();++i){const auto [l,g]=owners[i];
+            if(mode==2&&layers[l].reduced.at(g))idle[i].box=moving[i].box=true;
+            result[l][g]={idle[i],moving[i],(!idle[i].box&&idle[i].count)||(!moving[i].box&&moving[i].count)};}
+    }
+    return result;
+}
+// Inverse of the existing draw permutation, computed once per source rather
+// than visiting every placement to find the few admitted poses.
+class ViewportRanks {
+    std::uint64_t count_=0,inverse_=0;
+public:
+    explicit ViewportRanks(std::size_t count):count_(count){
+        if(count>0xffffffffull)throw std::invalid_argument("Viewport permutation exceeds instance admission");
+        if(count<2){inverse_=1;return;}
+        std::int64_t oldR=static_cast<std::int64_t>(count),r=static_cast<std::int64_t>(viewportStride(count));
+        std::int64_t oldT=0,t=1;
+        while(r){const auto q=oldR/r;const auto nextR=oldR-q*r;oldR=r;r=nextR;const auto nextT=oldT-q*t;oldT=t;t=nextT;}
+        inverse_=static_cast<std::uint64_t>((oldT%static_cast<std::int64_t>(count)+static_cast<std::int64_t>(count))%static_cast<std::int64_t>(count));
+    }
+    std::size_t rank(std::size_t slot)const{
+        if(slot>=count_)throw std::out_of_range("Viewport source slot exceeds instance admission");
+        return static_cast<std::size_t>((std::uint64_t(slot)*inverse_)%count_);
+    }
+};
 }

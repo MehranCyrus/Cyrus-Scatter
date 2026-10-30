@@ -2366,6 +2366,12 @@
         },
         {
           "component": "flow_previewUI",
+          "control": "sharedViewportButton",
+          "presentation": "flow_previewUI_sharedViewportButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
           "control": "memoryButton",
           "presentation": "flow_previewUI_memoryButton",
           "advanced": false

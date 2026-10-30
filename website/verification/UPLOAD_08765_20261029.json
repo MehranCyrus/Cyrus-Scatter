@@ -1,0 +1,94 @@
+{
+  "status": "passed",
+  "version": "0.87.6.5",
+  "date": "2026-10-29",
+  "scope": "Local static website upload package; no live deployment or plugin rebuild",
+  "archive": {
+    "path": "dist/website/cpanel-2026-10-29-D4YLOrTa/CyrusScatter-website-0.87.6.5.zip",
+    "bytes": 27713898,
+    "sha256": "3e225834db95ca1eb396b0a4c3f7c53d6f99b17b58939763d1f732097274040c",
+    "files": 90
+  },
+  "installer": {
+    "filename": "CyrusScatter-0.87.6.5-Setup.exe",
+    "path": "downloads/CyrusScatter-0.87.6.5-Setup.exe",
+    "format": "EXE",
+    "bytes": 8484864,
+    "sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe"
+  },
+  "content": {
+    "scope": "Website static/content verification only; no plugin qualification",
+    "development_version": "0.87.6.5",
+    "documents": 5,
+    "semantic_controls": 379,
+    "capability_families_including_retired_and_experimental": 37,
+    "bundled_supporting_references": 0,
+    "public_markdown_files": 0,
+    "changelog_versions": 118,
+    "reviewed_local_sources": 143,
+    "resolved_generated_local_links": 57,
+    "source_catalog_sha256": "f41584a531b85d7f256e44d422b154844356b00e52c95a492341ef363531dbd8",
+    "editorial_sha256": "c9a84d59ddf42707763abb762492472230fd56695ac21e7241e9cd8a8d5637ef",
+    "status": "PASS",
+    "concept_posters_with_current_notes": 19,
+    "resolved_static_navigation_destinations": 46
+  },
+  "browser": {
+    "status": "passed",
+    "target": "http://127.0.0.1:4889",
+    "checks": [
+      {
+        "deployment": "root",
+        "filename": "CyrusScatter-0.87.6.5-Setup.exe",
+        "sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe",
+        "download": "passed"
+      },
+      {
+        "deployment": "subfolder",
+        "filename": "CyrusScatter-0.87.6.5-Setup.exe",
+        "sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe",
+        "download": "passed"
+      },
+      {
+        "mobileWidth": 390,
+        "downloadButton": "visible and contained",
+        "horizontalOverflow": false
+      }
+    ],
+    "errors": [],
+    "httpFailures": []
+  },
+  "http": {
+    "status": "passed",
+    "files": 90,
+    "http_hash_checks": 180,
+    "deployments": [
+      "root",
+      "subfolder"
+    ]
+  },
+  "screenshots_visually_reviewed": true,
+  "evidence": [
+    {
+      "path": "website/verification/upload-08765-20261029/browser.json",
+      "sha256": "64d0fb69ba0e6d7ed9f6533a920a30266189f7f03fddd940a4ba4f88815c2310"
+    },
+    {
+      "path": "website/verification/upload-08765-20261029/download-desktop.png",
+      "sha256": "5f55b7c671fb10ab7daa198b039abcd9fc8b96d4a1084ab821d589a299e3d8f1"
+    },
+    {
+      "path": "website/verification/upload-08765-20261029/download-mobile.png",
+      "sha256": "6f883d9397d3b9d8e8f1684a295b0de25d7308a1f9da7388304e73cb15d8a159"
+    },
+    {
+      "path": "website/verification/upload-08765-20261029/http.json",
+      "sha256": "51e1b956d07496722238b6c022b2f9abc7b4bb101164735291b1688693f099f2"
+    }
+  ],
+  "limits": [
+    "Local root/subfolder hosting checked; public host not deployed.",
+    "Existing Vite application-chunk size warning remains.",
+    "No installer execution or new Max runtime qualification."
+  ]
+}

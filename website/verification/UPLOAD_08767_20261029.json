@@ -1,0 +1,44 @@
+{
+  "version": "0.87.6.7",
+  "date": "2026-10-29T20:43:17.716119+00:00",
+  "status": "passed",
+  "hosts": {
+    "2024": "matching SDK build/package only; no host/native-test execution",
+    "2026": "matching SDK build/package only; no host/native-test execution",
+    "2027": "original scoped runtime and native qualification retained byte-for-byte"
+  },
+  "plugin_source_snapshot": {
+    "files": 648,
+    "unchanged": true,
+    "manifest": "evidence/frozen-08767-source.json"
+  },
+  "installer_engine_checks": 58,
+  "exe": {
+    "path": "dist/CyrusScatter-0.87.6.7-20261029/CyrusScatter-0.87.6.7-Setup.exe",
+    "sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+    "bytes": 8584192
+  },
+  "website": {
+    "archive": "dist/website/cpanel-2026-10-29-DQN53IPJ/CyrusScatter-website-0.87.6.7.zip",
+    "sha256": "d86489f843b604587e148146794146dbc8533cdb235259b931699a130e505be8",
+    "bytes": 27815528,
+    "files": 90,
+    "installer_embedded_hash_matches": true,
+    "docs_check": "pass: 146 source bindings / 379 controls / 119 changelog entries",
+    "typescript_vite": "pass",
+    "visual": {
+      "status": "pass",
+      "desktop": "1440 x 1000: Download CTA, release identity, host scope and guide typography inspected",
+      "mobile": "390 x 844: Download and guide inspected, no horizontal overflow; menu opens and guide navigation works",
+      "routes": [
+        "Download",
+        "Changelog via native link click",
+        "Source Preparation Editor guide"
+      ],
+      "http_download_sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+      "final_entry_script": "index-DQN53IPJ.js",
+      "screenshots_note": "Desktop screenshots precede the final correction of two guide button labels; final mobile guide screenshot binds the last entry script. Layout and EXE payload are unchanged."
+    }
+  },
+  "preservation": "No artist-profile installation/restart, older Max host launch, Git push or live deployment. Original Max 2027 receipt and package remain unchanged."
+}

@@ -1,0 +1,128 @@
+[
+  {
+    "case": "parallel",
+    "rows": 128,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 1.27055,
+    "min_ms": 1.2654,
+    "max_ms": 1.4162
+  },
+  {
+    "case": "parallel",
+    "rows": 128,
+    "threads": 2,
+    "samples": 8,
+    "median_ms": 0.7712000000000001,
+    "min_ms": 0.7195,
+    "max_ms": 0.8432
+  },
+  {
+    "case": "parallel",
+    "rows": 128,
+    "threads": 4,
+    "samples": 8,
+    "median_ms": 0.5326,
+    "min_ms": 0.4744,
+    "max_ms": 0.6463
+  },
+  {
+    "case": "parallel",
+    "rows": 128,
+    "threads": 8,
+    "samples": 8,
+    "median_ms": 0.47095,
+    "min_ms": 0.4546,
+    "max_ms": 0.5085
+  },
+  {
+    "case": "parallel",
+    "rows": 512,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 5.08275,
+    "min_ms": 4.9934,
+    "max_ms": 5.7688
+  },
+  {
+    "case": "parallel",
+    "rows": 512,
+    "threads": 2,
+    "samples": 8,
+    "median_ms": 2.90115,
+    "min_ms": 2.7574,
+    "max_ms": 2.9702
+  },
+  {
+    "case": "parallel",
+    "rows": 512,
+    "threads": 4,
+    "samples": 8,
+    "median_ms": 1.7092999999999998,
+    "min_ms": 1.5792,
+    "max_ms": 2.0833
+  },
+  {
+    "case": "parallel",
+    "rows": 512,
+    "threads": 8,
+    "samples": 8,
+    "median_ms": 1.25455,
+    "min_ms": 1.1874,
+    "max_ms": 1.3951
+  },
+  {
+    "case": "local-distant",
+    "rows": 1000,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 0.0039,
+    "min_ms": 0.0032,
+    "max_ms": 0.0058
+  },
+  {
+    "case": "local-distant",
+    "rows": 10000,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 0.00345,
+    "min_ms": 0.0032,
+    "max_ms": 0.0053
+  },
+  {
+    "case": "local-distant",
+    "rows": 100000,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 0.00365,
+    "min_ms": 0.0032,
+    "max_ms": 0.007
+  },
+  {
+    "case": "local-posed",
+    "rows": 128,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 0.0287,
+    "min_ms": 0.0279,
+    "max_ms": 0.0345
+  },
+  {
+    "case": "local-posed",
+    "rows": 1024,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 0.1457,
+    "min_ms": 0.1438,
+    "max_ms": 0.151
+  },
+  {
+    "case": "local-posed",
+    "rows": 8192,
+    "threads": 1,
+    "samples": 8,
+    "median_ms": 1.36645,
+    "min_ms": 1.3315,
+    "max_ms": 1.6173
+  }
+]

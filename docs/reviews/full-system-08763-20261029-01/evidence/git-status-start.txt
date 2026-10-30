@@ -1,0 +1,353 @@
+ M AminScatter/CMakeLists.txt
+ M AminScatter/include/deformation_preview.h
+ M AminScatter/include/interactions_deformation.h
+ M AminScatter/include/interactions_engine.h
+ M AminScatter/include/interactions_source.h
+ M AminScatter/include/placement_store.h
+ M AminScatter/include/point_preview.h
+ M AminScatter/include/viewport_policy.h
+ M AminScatter/scripts/AminScatterObject.ms
+ M AminScatter/src/cyrus_edit.cpp
+ M AminScatter/src/geometry_preview.inc
+ M AminScatter/src/interactions_deformation.cpp
+ M AminScatter/src/interactions_engine.cpp
+ M AminScatter/src/interactions_fast_bend.inc
+ M AminScatter/src/interactions_host.cpp
+ M AminScatter/src/interactions_preview.cpp
+ M AminScatter/src/interactions_render.cpp
+ M AminScatter/src/interactions_source.cpp
+ M AminScatter/src/placement_store.cpp
+ M AminScatter/src/point_display.cpp
+ M AminScatter/src/preview_rows.inc
+ M AminScatter/tests/interactions_adaptation.inc
+ M AminScatter/tests/interactions_tests.cpp
+ M AminScatter/tests/placement_store_tests.cpp
+ M AminScatter/tests/viewport_policy_tests.cpp
+ M AminScatter/tools/ui/approved-layout-manifest.json
+ M AminScatter/tools/ui/approved-layout-rows.cjs
+ M AminScatter/tools/ui/approved-layout.test.cjs
+ M AminScatter/tools/ui/generate.cjs
+ M AminScatter/tools/ui/layers-control-inventory.json
+ M AminScatter/tools/ui/lazy-pages.cjs
+ M AminScatter/tools/ui/templates/approved-main-ui.ms
+ M AminScatter/tools/ui/templates/interactions-authoring.ms
+ M AminScatter/tools/ui/templates/presets.ms
+ M AminScatter/tools/ui/templates/recipes-authored.ms
+ M AminScatter/tools/ui/templates/recipes.ms
+ M AminScatter/tools/ui/templates/scene-presets.ms
+ M AminScatter/tools/ui/templates/shared-library.ms
+ M AminScatter/tools/ui/templates/unified-core.ms
+ M AminScatter/tools/ui/templates/viewport-memory.ms
+ M CyrusArrange/CMakeLists.txt
+ M CyrusArrange/README.md
+ M CyrusArrange/docs/GEOMETRY_USER_WORKFLOW_0.3.2.md
+ M CyrusArrange/docs/README.md
+ M CyrusArrange/docs/RELEASE_POLICY_0.3.2.md
+ M CyrusArrange/docs/UNIFIED_MODIFY_0.3.2.md
+ M CyrusArrange/include/cyrus_arrange/arrangement.h
+ M CyrusArrange/include/cyrus_arrange/assets.h
+ M CyrusArrange/include/cyrus_arrange/document_state.h
+ M CyrusArrange/include/cyrus_arrange/path.h
+ M CyrusArrange/installer/CyrusArrange.mcr
+ M CyrusArrange/installer/install.ms
+ M CyrusArrange/scripts/ArrangeModifier.ms
+ M CyrusArrange/scripts/ArrangeWorkflow.ms
+ M CyrusArrange/scripts/CyrusArrange.ms
+ M CyrusArrange/src/arrange_bridge.cpp
+ M CyrusArrange/src/arrange_presentation.cpp
+ M CyrusArrange/src/arrangement.cpp
+ M CyrusArrange/src/assets.cpp
+ M CyrusArrange/src/document_state.cpp
+ M CyrusArrange/src/max_bridge.cpp
+ M CyrusArrange/src/path.cpp
+ M CyrusArrange/src/storage_plugin.cpp
+ M CyrusArrange/tests/composition_tests.cpp
+ M CyrusArrange/tests/document_state_tests.cpp
+ M CyrusArrange/tests/max/arrange_fit_feedback_tests.ms
+ M CyrusArrange/tests/max/arrange_legacy_minimum_workflow_tests.ms
+ M CyrusArrange/tests/max/arrange_unified_modify_tests.ms
+ M CyrusArrange/tests/max/arrange_workflow_tests.ms
+ M CyrusArrange/tests/max/installed_startup_tests.ms
+ M CyrusArrange/tests/path_tests.cpp
+ M CyrusArrange/tools/build.py
+ M CyrusArrange/tools/package.py
+ M CyrusArrange/tools/run_max_tests.py
+ M CyrusMCP/README.md
+ M CyrusMCP/cyrus_mcp/agent_help.py
+ M CyrusMCP/cyrus_mcp/feature-catalog.json
+ M CyrusMCP/cyrus_mcp/max_host.py
+ M CyrusMCP/cyrus_mcp/models.py
+ M CyrusMCP/cyrus_mcp/panel.py
+ M CyrusMCP/cyrus_mcp/publication.py
+ M CyrusMCP/cyrus_mcp/records.py
+ M CyrusMCP/cyrus_mcp/server.py
+ M CyrusMCP/cyrus_mcp/service.py
+ M CyrusMCP/cyrus_mcp/settings.py
+ M CyrusMCP/tests/test_feature_catalog.py
+ M CyrusMCP/tests/test_license_boundary.py
+ M CyrusMCP/tests/test_mcp.py
+ M CyrusMCP/tests/test_publication.py
+ M CyrusMCP/tests/test_service.py
+ M CyrusMCP/tests/test_transport.py
+ M CyrusPhysicsLab/CMakeLists.txt
+ M CyrusPhysicsLab/README.md
+ M CyrusPhysicsLab/include/core.h
+ M CyrusPhysicsLab/include/live_session.h
+ M CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms
+ M CyrusPhysicsLab/src/core.cpp
+ M CyrusPhysicsLab/src/diagnostics.cpp
+ M CyrusPhysicsLab/src/jolt_world.cpp
+ M CyrusPhysicsLab/src/live_session.cpp
+ D CyrusPhysicsLab/src/max_bake.inc
+ M CyrusPhysicsLab/src/max_collision.inc
+ M CyrusPhysicsLab/src/max_host.cpp
+ M CyrusPhysicsLab/src/max_live.inc
+ M CyrusPhysicsLab/src/physx_world.cpp
+ M CyrusPhysicsLab/src/storage_plugin.cpp
+ M CyrusPhysicsLab/tests/collider_cook_tests.cpp
+ M CyrusPhysicsLab/tests/collision_tests.cpp
+ M CyrusPhysicsLab/tests/compare.cpp
+ M CyrusPhysicsLab/tests/grip_tests.cpp
+ M CyrusPhysicsLab/tests/host_continuous_crash_common.ms
+ M CyrusPhysicsLab/tests/host_continuous_fatal.ms
+ M CyrusPhysicsLab/tests/host_continuous_faults.ms
+ M CyrusPhysicsLab/tests/host_continuous_hardkill.ms
+ M CyrusPhysicsLab/tests/host_continuous_lifecycle.ms
+ M CyrusPhysicsLab/tests/host_continuous_performance.ms
+ M CyrusPhysicsLab/tests/host_continuous_rebuild.ms
+ M CyrusPhysicsLab/tests/host_continuous_recover.ms
+ M CyrusPhysicsLab/tests/host_continuous_secondary.ms
+ M CyrusPhysicsLab/tests/host_proxy_previous_scene.ms
+ M CyrusPhysicsLab/tests/host_regression.ms
+ M CyrusPhysicsLab/tests/host_scaled_ui.ms
+ M CyrusPhysicsLab/tests/hull_tests.cpp
+ M CyrusPhysicsLab/tests/live_stress.cpp
+ M CyrusPhysicsLab/tests/live_tests.cpp
+ M CyrusPhysicsLab/tests/mountain_tests.cpp
+ M CyrusPhysicsLab/tools/build.py
+ M CyrusPhysicsLab/tools/host_test.py
+ M CyrusPhysicsLab/tools/installer_test.py
+ M CyrusPhysicsLab/tools/package.py
+ M README.md
+ M docs/AGENT_START.md
+ M docs/ARTIST_GUIDE.md
+ M docs/BACKLOG.md
+ M docs/GitHub_Tools_Inventory_2026-10-15/NEW_CONVERSATION.md
+ M docs/GitHub_Tools_Inventory_2026-10-15/README.md
+ M docs/KNOWLEDGE_BASELINE.json
+ M docs/PERFORMANCE_BASELINE.md
+ M docs/README.md
+ M docs/Release_Versioning.md
+ M docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md
+ M docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md
+ M docs/Scatter_Physics_Research_2026-10-16/PHASED_PLAN.md
+ M docs/Scatter_Physics_Research_2026-10-16/README.md
+ M docs/plans/improvement-program/PROGRESS.md
+ M tools/procedural_lab/check_generated.py
+ M website/CPANEL_UPLOAD.md
+ M website/README.md
+ M website/content/README.md
+ M website/content/WEBSITE_STATUS.md
+ M website/content/changelog.json
+ M website/content/control-explanations.json
+ M website/content/guide-chapters.json
+ M website/content/release.json
+ M website/content/source-manifest.json
+ M website/src/components/selected-landing.html
+ M website/src/content/controlSections.ts
+ M website/src/content/featureStories.ts
+ M website/src/content/reference.json
+ M website/src/pages/Download.tsx
+ M website/src/pages/Roadmap.tsx
+ M website/tools/import_reference.py
+ M website/tools/package_site.py
+ M website/tools/stage_release.py
+ M website/tools/verify_reference.py
+ M website/verification/react-static-checks.json
+?? AminScatter/include/viewport_pick.h
+?? AminScatter/include/viewport_plan.h
+?? AminScatter/src/viewport_pick.inc
+?? AminScatter/src/viewport_pick_bridge.inc
+?? AminScatter/tests/interactions_review.inc
+?? AminScatter/tools/ui/templates/viewport-selection.ms
+?? CyrusArrange/docs/AMOUNTS_COMPACT_3.3.md
+?? CyrusArrange/docs/ICON_FIRST_0.3.2.md
+?? CyrusArrange/docs/ICON_FIRST_DELIVERY_0.3.2.md
+?? CyrusArrange/docs/ICON_FIRST_QUICKSTART_0.3.2.md
+?? CyrusArrange/docs/LIST_UI_2026-10-22.md
+?? CyrusArrange/docs/LIST_UI_DELIVERY_2026-10-22.md
+?? CyrusArrange/docs/LIST_UI_QUICKSTART_0.3.2.md
+?? CyrusArrange/docs/PACKAGE_WORKER_IDENTITY_0.3.2.md
+?? CyrusArrange/docs/PROPS_3.3_DELIVERY.md
+?? CyrusArrange/docs/PROPS_3.3_IMPLEMENTATION.md
+?? CyrusArrange/docs/PROPS_3.3_QUICKSTART.md
+?? CyrusArrange/docs/PROPS_3.3_UI_LOAD_FIX.md
+?? CyrusArrange/docs/RELEASE_VALIDATION_0.3.2.md
+?? CyrusArrange/docs/ROW_BALANCE_COLLIDER_FIX_0.3.2.md
+?? CyrusArrange/examples/
+?? CyrusArrange/include/cyrus_arrange/source_distribution.h
+?? CyrusArrange/src/source_distribution.cpp
+?? CyrusArrange/tests/data/baseline-011/CyrusArrange-Original-Accessories.cyalib
+?? CyrusArrange/tests/data/imported-model-assets/assets/
+?? CyrusArrange/tests/data/stack-closed.cyalib
+?? CyrusArrange/tests/data/stack-open.cyalib
+?? CyrusArrange/tests/max/arrange_icon_first_tests.ms
+?? CyrusArrange/tests/max/arrange_list_ui_tests.ms
+?? CyrusArrange/tests/source_distribution_tests.cpp
+?? CyrusArrange/tools/preview_delivery.py
+?? CyrusBotanyLab/
+?? CyrusDesignLab/
+?? CyrusMCP/AUDIT_20261023.md
+?? CyrusMCP/CHANGE_IMPACT_20261029.md
+?? CyrusMCP/CHECKPOINT_20261024.md
+?? CyrusMCP/IMPLEMENTATION_GOAL.md
+?? CyrusMCP/M00_BASELINE.md
+?? CyrusMCP/M01_CHANGES.md
+?? CyrusMCP/M01_OPERATIONS.md
+?? CyrusMCP/M01_PROCESS_LOSS.md
+?? CyrusMCP/M01_RECOVERY_BOUNDS.md
+?? CyrusMCP/M01_UNDO.md
+?? CyrusMCP/M02_HANDOFF.md
+?? CyrusMCP/M02_SCENE_CONTEXT.md
+?? CyrusMCP/M03_ASSET_USE.md
+?? CyrusMCP/M03_DESTINATION_SETTINGS.md
+?? CyrusMCP/M03_INSTALLED_SOURCES.md
+?? CyrusMCP/M03_LIBRARY_DISCOVERY.md
+?? CyrusMCP/M03_PRESET_APPLICATION.md
+?? CyrusMCP/M03_RECIPES.md
+?? CyrusMCP/M03_RECIPE_READER.md
+?? CyrusMCP/M03_SETTINGS_PRESETS.md
+?? CyrusMCP/M03_SOURCE_METADATA.md
+?? CyrusMCP/OPERATION_COVERAGE.md
+?? CyrusMCP/QUALIFICATION_20261029.json
+?? CyrusMCP/RESEARCH_20261023.md
+?? CyrusMCP/RESUME_20261029.md
+?? CyrusMCP/SCENE_ONBOARDING_WORKFLOW_20261023.md
+?? CyrusMCP/SYSTEM_DESIGN_REVIEW_20261023.md
+?? CyrusMCP/cyrus_mcp/asset_use.py
+?? CyrusMCP/cyrus_mcp/changes.py
+?? CyrusMCP/cyrus_mcp/destination_settings.py
+?? CyrusMCP/cyrus_mcp/installed_sources.py
+?? CyrusMCP/cyrus_mcp/library.py
+?? CyrusMCP/cyrus_mcp/preset_application.py
+?? CyrusMCP/cyrus_mcp/preset_application_host.py
+?? CyrusMCP/cyrus_mcp/preset_provenance.py
+?? CyrusMCP/cyrus_mcp/presets.py
+?? CyrusMCP/cyrus_mcp/recipes.py
+?? CyrusMCP/cyrus_mcp/recovery.py
+?? CyrusMCP/cyrus_mcp/scene.py
+?? CyrusMCP/cyrus_mcp/source_assets_host.py
+?? CyrusMCP/cyrus_mcp/source_metadata.py
+?? CyrusMCP/cyrus_mcp/source_scale.py
+?? CyrusMCP/tests/test_asset_use.py
+?? CyrusMCP/tests/test_changes.py
+?? CyrusMCP/tests/test_destination_settings.py
+?? CyrusMCP/tests/test_installed_sources.py
+?? CyrusMCP/tests/test_library.py
+?? CyrusMCP/tests/test_native_readback.py
+?? CyrusMCP/tests/test_operation_integrity.py
+?? CyrusMCP/tests/test_preset_application.py
+?? CyrusMCP/tests/test_preset_application_host.py
+?? CyrusMCP/tests/test_preset_provenance.py
+?? CyrusMCP/tests/test_presets.py
+?? CyrusMCP/tests/test_recipes.py
+?? CyrusMCP/tests/test_recovery.py
+?? CyrusMCP/tests/test_scene_context.py
+?? CyrusMCP/tests/test_source_metadata.py
+?? CyrusMCP/tests/test_source_scale.py
+?? CyrusMCP/tests/test_task_handoff.py
+?? CyrusMCP/tests/test_undo_integrity.py
+?? CyrusPhysicsLab/src/max_height.inc
+?? CyrusPhysicsLab/src/max_instances.inc
+?? CyrusPhysicsLab/src/primitives.cpp
+?? CyrusPhysicsLab/tests/instance_tests.cpp
+?? LOGO.psd
+?? "Landing Page Design/"
+?? SplineDynamics_Pack/
+?? docs/GitHub_Tools_Update_2026-10-26/
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030.md
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030_EVIDENCE.json
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030_PLAN.md
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/
+?? docs/plans/cyrus-design-lab/
+?? docs/plans/interaction-review-08763-20261029/
+?? docs/plans/landscape-presentation/GPT_WEB_MODELING_PROMPT.txt
+?? docs/plans/landscape-presentation/GPT_WEB_PROJECT_INSTRUCTIONS.txt
+?? docs/plans/terraces-performance-20261029/
+?? docs/plans/viewport-selection-08762-20261029/
+?? docs/research/design-lab-research-handoff-20261029-01/
+?? docs/research/procedural-tree-reconstruction/
+?? docs/research/scatter-comparison-20261027/
+?? docs/review-briefs/
+?? presentation-studio/tools/nkr-20261029/
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/"
+?? tools/mcp/accepted_target_campaign.py
+?? tools/mcp/accepted_target_host.py
+?? tools/mcp/content_prepare_campaign.py
+?? tools/mcp/content_prepare_host.py
+?? tools/mcp/content_seal_campaign.py
+?? tools/mcp/destination_settings_campaign.py
+?? tools/mcp/destination_settings_host.py
+?? tools/mcp/foundation_boot.ms
+?? tools/mcp/foundation_campaign.py
+?? tools/mcp/foundation_host.py
+?? tools/mcp/handoff_campaign.py
+?? tools/mcp/increment_receipt.py
+?? tools/mcp/installed_planting_campaign.py
+?? tools/mcp/installed_sources_campaign.py
+?? tools/mcp/library_campaign.py
+?? tools/mcp/loss_boot.ms
+?? tools/mcp/loss_campaign.py
+?? tools/mcp/loss_host.py
+?? tools/mcp/mixed_catalog_campaign.py
+?? tools/mcp/mixed_catalog_current_campaign.py
+?? tools/mcp/mixed_catalog_host.py
+?? tools/mcp/model_merge_boundary.ms
+?? tools/mcp/planting_probe.ms
+?? tools/mcp/planting_refinement_campaign.py
+?? tools/mcp/planting_source_setup.ms
+?? tools/mcp/planting_source_setup.py
+?? tools/mcp/planting_sources_campaign.py
+?? tools/mcp/portable_source_host.py
+?? tools/mcp/portable_source_probe.py
+?? tools/mcp/portable_sources_campaign.py
+?? tools/mcp/prepared_assets_campaign.py
+?? tools/mcp/prepared_assets_lifecycle.ms
+?? tools/mcp/prepared_assets_lifecycle_campaign.py
+?? tools/mcp/prepared_assets_old_campaign.py
+?? tools/mcp/preset_application_campaign.py
+?? tools/mcp/preset_application_host.py
+?? tools/mcp/preset_curve_probe.ms
+?? tools/mcp/preset_editor_interaction_campaign.py
+?? tools/mcp/preset_range_undo_probe.ms
+?? tools/mcp/presets_campaign.py
+?? tools/mcp/presets_lifecycle.ms
+?? tools/mcp/presets_lifecycle_campaign.py
+?? tools/mcp/presets_lifecycle_host.py
+?? tools/mcp/public_presets_campaign.py
+?? tools/mcp/public_presets_host.py
+?? tools/mcp/recipe_catalog_campaign.py
+?? tools/mcp/recipe_catalog_host.py
+?? tools/mcp/recipes_campaign.py
+?? tools/mcp/recipes_lifecycle.ms
+?? tools/mcp/recipes_lifecycle_campaign.py
+?? tools/mcp/recipes_lifecycle_host.py
+?? tools/mcp/recovery_campaign.py
+?? tools/mcp/scene_campaign.py
+?? tools/mcp/scene_lifecycle_campaign.py
+?? tools/mcp/scene_passive.ms
+?? tools/mcp/scene_passive_campaign.py
+?? tools/mcp/source_debug.ms
+?? tools/mcp/source_use_campaign.py
+?? tools/mcp/source_use_host.py
+?? tools/mcp/undo_campaign.py
+?? tools/procedural_lab/review08763/
+?? tools/procedural_lab/selection08762/
+?? tools/procedural_lab/terraces0877/
+?? website/prototypes/
+?? website/verification/ARTIST_COVERAGE_08751.md
+?? website/verification/WEBSITE_08751_20261027.md
+?? website/verification/WEBSITE_08755_20261028.json
+?? website/verification/WEBSITE_08755_20261028.md
+?? website/verification/WEBSITE_08756_20261028.json
+?? website/verification/WEBSITE_08756_20261028.md

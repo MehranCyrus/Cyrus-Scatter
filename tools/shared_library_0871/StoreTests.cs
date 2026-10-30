@@ -60,7 +60,10 @@ internal static class StoreTests {
     static string FileId(string path){using(var f=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite|FileShare.Delete)){Information info;if(!GetFileInformationByHandle(f.SafeFileHandle.DangerousGetHandle(),out info))throw new Exception("file identity unavailable");return info.volume+":"+info.indexHigh+":"+info.indexLow;}}
     static int CrashChild(string mode,string root,string signal){
         var store=new SharedLibrary(root,ValidateFixture);
-        if(mode=="crash-promote"){
+        if(mode=="crash-scene-load"){
+            var entry=store.RecipePaths().Single(path=>File.ReadAllText(path).Contains("cyrus.scene-preset"));
+            var staged=Wait(store.PrepareScene(entry,ContentObjects.Hash(entry)));File.WriteAllText(signal,staged);Thread.Sleep(Timeout.Infinite);
+        }else if(mode=="crash-promote"){
             int before=Directory.GetFiles(Path.Combine(root,"objects")).Length;var save=Fixture(store,"interrupted-save");
             Action check=()=>{if(Directory.GetFiles(Path.Combine(root,"objects")).Length>before){File.WriteAllText(signal,"promoted-before-catalog");Thread.Sleep(Timeout.Infinite);}};
             typeof(SharedLibrary).GetMethod("PublishNow",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(store,new object[]{save,Path.Combine(save.Directory,"ready"),check,false});
@@ -164,6 +167,14 @@ internal static class StoreTests {
         Save(afterCrash,"interrupted-save");Check(afterCrash.RecipePaths().Any(p=>afterCrash.RecipeId(p)=="interrupted-save"),"interrupted save cannot be retried");
         CrashCheck("crash-commit",afterCrash.Root,Path.Combine(root,"commit.signal"));var committed=new SharedLibrary(afterCrash.Root,ValidateFixture);
         Check(committed.Collections().Contains("Committed interrupted generation"),"a published head was lost when the process ended before its completion receipt");Check(committed.RecipePaths().All(File.Exists),"interrupted post-commit work damaged dependency closure");
+        var sceneSave=committed.BeginSceneSave("","");File.WriteAllBytes(Path.Combine(sceneSave.Directory,"scene.max"),Bytes("bounded opaque scene fixture"));
+        var sceneEntry=Wait(committed.PublishScene(sceneSave,"Recovery scene","{}","[]",.001,1,"[]",""));var sceneHash=ContentObjects.Hash(sceneEntry);
+        var sceneDoc=D(LibraryJson.Parse(File.ReadAllText(sceneEntry)));Check(S(sceneDoc["scatterVersion"])==typeof(SharedLibrary).Assembly.GetName().Version.ToString(),"Scene provenance differs from its actual assembly version");
+        var activeScene=Wait(committed.PrepareScene(sceneEntry,sceneHash));Check(File.Exists(Path.Combine(Path.GetDirectoryName(activeScene),".cyrus-operation.json")),"Scene-load stage has no ownership marker");
+        Wait(committed.RecoverStaging());Check(File.Exists(activeScene),"Recovery removed an active scene load");committed.DiscardSceneLoad(activeScene);Check(!Directory.Exists(Path.GetDirectoryName(activeScene)),"Successful scene load did not discard its stage");
+        var unverified=Path.Combine(committed.Root,"staging","scene-load-unverified");Directory.CreateDirectory(unverified);File.WriteAllText(Path.Combine(unverified,"scene.max"),"unverified user data");
+        var sceneSignal=Path.Combine(root,"scene-load.signal");CrashCheck("crash-scene-load",committed.Root,sceneSignal);var abandoned=File.ReadAllText(sceneSignal);Check(File.Exists(abandoned),"Owned crash fixture did not retain a staged copy");
+        Wait(committed.RecoverStaging());Check(!Directory.Exists(Path.GetDirectoryName(abandoned)),"Abandoned Scene-load copy was not recovered");Check(File.Exists(Path.Combine(unverified,"scene.max")),"Recovery removed an unverified folder");Check(ContentObjects.Hash(sceneEntry)==sceneHash,"Recovery changed the published Scene preset");
         Console.WriteLine("PASS "+checks+" managed transaction checks; native validation is a separately injected fixture boundary.");return 0;
     }catch(Exception ex){Console.Error.WriteLine(ex);return 1;}}
 }

@@ -22,17 +22,35 @@ void sceneAdaptation(){
     auto compact=deformationSource(source);auto words=deformationPose(*compact,pruned);
     for(unsigned face=0;face<compact->faces.size();++face)require(!deformationVisible(*compact,words,face)&&!visibleFace(*source,pruned,compact->faces[face]),"CPU and compact GPU branch masks agree");
     auto retained=adaptSource(*source,{obstacle},0,0,2,0,0,91);
-    require(!retained.changed&&retained.blockedGuides==2,"Zero prune amount retains obstructed guides and reports them");
+    require(!retained.changed&&retained.queries==0&&retained.blockedGuides==0,"Zero prune amount retains guides without probing disabled contacts");
     auto threshold=adaptSource(*source,{obstacle},0,0,2,1,1,91);
     require(!threshold.changed&&threshold.blockedGuides==2,"Penetration threshold controls pruning independently of bend clearance");
     auto restored=adaptSource(*source,{},0,.5,3,1,0,91);
     require(!restored.changed&&restored.prunedGuides==0,"Move-away response restores original rest geometry");
+    auto fixed=adaptSource(*source,{obstacle},0,1,1,1,0,91,1,1,.25,false);
+    require(!fixed.changed&&fixed.queries==0,"Fully fixed Bend retains rest geometry without contact queries");
+    auto noBend=adaptSource(*source,{obstacle},0,0,1,1,0,91,1,0,.25,false);
+    require(!noBend.changed&&noBend.queries==0,"Zero Bend strength bypasses contact queries");
+    auto fixedTrim=adaptSource(*source,{obstacle},0,1,3,1,0,91,1,1,.25,false);
+    require(fixedTrim.prunedGuides==2&&fixedTrim.queries>0,"Fixed Bend does not disable independent Trim");
+    auto fixedCover=adaptSource(*source,{obstacle},0,0,1,1,0,91,1,1,.25,true);
+    require(fixedCover.coveredRoots==2&&fixedCover.coverageQueries>0&&fixedCover.queries==0,"Disabled Bend keeps root coverage active");
     // Make a two-guide structural forest with an explicit child. The trunk
     // cannot disappear merely because its root is inside an obstacle.
     auto tree=std::make_shared<Source>(*source);auto rig=std::make_shared<stem::Prepared>(*source->rig);tree->rig=rig;
     rig->guides[1].parent=0;rig->guides[1].parentSpan=0;rig->guides[1].parentU=.5;rig->order={0,1};tree->guideRoot[1]=0;
+    // Match the immutable topology cache that prepareSource builds in production.
+    tree->structuralGuides={true,false};
     auto subtree=adaptSource(*tree,{obstacle},0,0,2,1,0,91);
-    require(!subtree.hiddenGuides[0]&&subtree.hiddenGuides[1]&&subtree.blockedGuides==1,"Structural trunk survives while an eligible child is pruned");
+    require(!subtree.hiddenGuides[0]&&subtree.hiddenGuides[1]&&subtree.blockedGuides==0,"Structural trunk survives without a disabled contact probe while an eligible child is pruned");
+    auto carried=std::make_shared<Source>(*tree);auto carriedRig=std::make_shared<stem::Prepared>(*rig);carried->rig=carriedRig;
+    auto& child=carriedRig->guides[1];child.parentSpan=1;child.parentU=.5;
+    carried->guideBounds[1]={};
+    for(auto& p:child.rest.nodes){p.y*=.1;carried->guideBounds[1].include(p);}
+    auto following=adaptSource(*carried,{obstacle},0,1,1,0,0,91,1,.25,.25,false);
+    require(following.guides[0]&&following.guides[1],"A child below the fixed height still follows its bending parent");
+    require(length(sub(following.guides[1]->nodes.front(),child.rest.nodes.front()))>1e-6,"The disabled child's attachment moves with its parent");
+    for(unsigned i=1;i<child.rest.nodes.size();++i)require(std::abs(length(sub(following.guides[1]->nodes[i],following.guides[1]->nodes[0]))-length(sub(child.rest.nodes[i],child.rest.nodes[0])))<1e-12,"Parent propagation preserves the disabled child's shape");
     auto definition=std::make_shared<Definition>();definition->rig=source;definition->geometryBounds=source->bounds;
     auto layout=std::make_shared<Layout>();layout->layers={LayerSettings{}};layout->layers[0].react=true;layout->layers[0].coverRoots=false;layout->layers[0].response=2;layout->sources={{definition}};
     Instance plant;plant.identity="tree:a";plant.hostTransform={1,0,0,0,1,0,0,0,1,0,0,0};layout->instances={plant};

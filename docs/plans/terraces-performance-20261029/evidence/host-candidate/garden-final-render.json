@@ -1,0 +1,155 @@
+{
+  "render_seconds": 250.95030839997344,
+  "controllers": [
+    {
+      "name": "GARDEN | Woodland framing",
+      "counts": [
+        38,
+        49,
+        16,
+        18,
+        13,
+        12
+      ],
+      "errors": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "GARDEN | Terraced meadows",
+      "counts": [
+        9507,
+        4500,
+        1838
+      ],
+      "errors": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "GARDEN | Flower and shrub drifts",
+      "counts": [
+        76,
+        62,
+        24,
+        26
+      ],
+      "errors": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "GARDEN | Lake garden detail",
+      "counts": [
+        456,
+        900,
+        242,
+        270
+      ],
+      "errors": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "name": "GARDEN | Lakeside boulders",
+      "counts": [
+        1,
+        6,
+        15,
+        160
+      ],
+      "errors": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "contact": {
+    "affected": 101,
+    "blocked_guides": 0,
+    "collider_bake_bytes": 0,
+    "compute_participants": 4,
+    "coverage_queries": 133399,
+    "covered": 23,
+    "error": "",
+    "exact_face_tests": 0,
+    "exact_inverse_vertices": 0,
+    "exact_mesh_checks": 0,
+    "exact_mesh_scratch_bound_bytes": 0,
+    "exact_point_tests": 0,
+    "exact_transformed_vertices": 0,
+    "failures": 0,
+    "fit_ms": 27.9266,
+    "fitted_guides": 314,
+    "generation": 1,
+    "hidden_roots": 27043,
+    "hinge_fits": 475,
+    "host_runtime_reservation_bytes": 1143216,
+    "index_ms": 0.0812,
+    "index_payload_bytes": 38360,
+    "iterations": 0,
+    "layout_payload_bytes": 23170,
+    "limited_guides": 0,
+    "maximum_checked_stem_edge_change": 0.0,
+    "mesh_refinement_work": 0,
+    "mesh_refinements": 0,
+    "obstacle_index_payload_bytes": 4560,
+    "obstacle_query_scratch_bound_bytes": 165952,
+    "obstacles": 22,
+    "plants": 160,
+    "pose_payload_bytes": 802280,
+    "posed": 65,
+    "preview_builds": 1,
+    "preview_ms": 10.2213,
+    "preview_reuse_ms": 0.0,
+    "preview_reuses": 0,
+    "process_work": {
+      "collider_cooks": 865,
+      "evaluations": 336,
+      "layouts": 53,
+      "plant_fits": 5116,
+      "source_captures": 870,
+      "source_preparations": 5
+    },
+    "pruned_guides": 161,
+    "quality_checked_guides": 0,
+    "quality_warning_guides": 0,
+    "queries": 24915,
+    "query_ms": 0.0737,
+    "restored": 0,
+    "retained_covered_roots": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "scene_source_watch": [],
+    "separation_queries": 0,
+    "thread_launch_fallback": false,
+    "total_ms": 28.0161,
+    "transient_obstacle_index_payload_bytes": 0,
+    "updates": 1,
+    "worker_coverage_ms": 0.0,
+    "worker_edge_quality_ms": 0.0,
+    "worker_mesh_check_ms": 0.0,
+    "worker_mesh_face_ms": 0.0,
+    "worker_mesh_point_ms": 0.0,
+    "worker_mesh_transform_ms": 0.0
+  },
+  "presentation": "#(1, 3L, 3L, 2, true, 4L, 4L, false, false, true, 0, \"17727920481894172375;13406172227541630818;12594191222470960251;11405149985467329266;\", \"17727920481894172375;13406172227541630818;12594191222470960251;11405149985467329266;\", \"\")",
+  "water_renderable": true,
+  "scene_bytes": 725570588,
+  "status": "complete"
+}

@@ -1,5 +1,17 @@
 # Interactive performance baseline
 
+**0.87.6.7 Edit presentation follow-up:** [Pinned instances and held movement](plans/edit-preparation-08767-20261029/DELIVERY.md) replace release-only ordinary Mesh/Proxy movement with selected transform patches over retained geometry. Tested held samples present the new matrix without placement generation, source preparation or geometry uploads, including a copy of the 18,229-placement Terraces scene. Selected marker iteration and shared correspondence reduce repeated work. Callback timings are separated from actual presentation tickets; they are not GPU FPS, physical input latency or a claim of globally faster computation. Panel expansion/resize also preserves work counters. The artist-endorsed Bend/Trim reference remains 0.87.5.6.
+
+The 0.87.6.7 preparation controls are opt-in per piece. They do not raise Automatic detail or alter the Bend/Trim baseline. On the supplied Violet, 16-point stem guides reduce the maximum source centreline approximation error from 7.68 to 0.80 mm; 62 explicitly selected leaves can have independent guides. Higher detail increases source preparation/pose work. This shape measurement is not a claim of faster contact solving or presented FPS.
+
+**0.87.6.5 selection presentation follow-up:** [Mesh hover and persistent selected outlines](plans/instance-selection-08765-20261029/DELIVERY.md) retain the separate pick helper while replacing the box cue with cached, bounded visible mesh edges. Selected outlines hide during native transform gestures. Focused Max 2027 checks cover retained Manual inputs, unchanged placement/upload counters and no outline rebuilds during warm redraws, plus posed geometry and Undo/Redo. CPU redraw submission timings are not GPU FPS or physical input-to-present latency. The artistic Bend/Trim baseline remains unchanged.
+
+**0.87.6.4 selection follow-up:** [Individual instance selection](plans/instance-selection-08764-20261029/DELIVERY.md) separates the pick helper from shared render items and replaces sampled-mesh hover with twelve box edges. Retained garden picking and navigation checks record unchanged placement/upload counters. No Bend/Trim algorithm change; this does not establish new input-to-present latency or GPU FPS.
+
+**0.87.6.3 review follow-up:** [Review repairs](plans/interaction-review-08763-20261029/DELIVERY.md) remove repeated override-map copies and whole-placement feedback copies, and share draw quotas with compact pose packing. A focused native probe reduces a 1,024-edited-neighbor evaluation from about 520 to 3.24 ms and a one-row edit in a million-row immutable view from 96 MB copied to 208 tracked new bytes. These are scoped native probes, not Max viewport FPS or million-instance interaction qualification. Max 2027 checks separately cover draw-limit/Manual behavior, garden picking/navigation and held-input presentation. The original Bend/Trim algorithm and artist endorsement remain unchanged.
+
+**0.87.6.1 measured follow-up:** [Terraces campaign](plans/terraces-performance-20261029/DELIVERY.md) implements the fixed/zero-Bend guide skip while preserving independent Trim/hiding and moving-parent inheritance. In its controlled real-tree replay, median native fit fell from 16.17 to 6.32 ms for fully fixed Bend and from 13.74 to 6.54 ms for zero Bend. Both have zero contact queries. The six experiments, panel reuse and 18,229-placement garden are scoped in [measurements](plans/terraces-performance-20261029/MEASUREMENTS.md). Scripted orbit had no contact work or buffer uploads; this is not physical input FPS. The original artist endorsement below is unchanged.
+
 **0.87.6 UI preservation:** the [UI/settings delivery](plans/ui-settings-0876-20261028/DELIVERY.md) repairs Point sources and control presentation. [67 protected native source hashes](plans/ui-settings-0876-20261028/evidence/protected-sources.json) remain unchanged from its pre-task snapshot; browsing retained publication counters. This is preservation evidence, not a new drag/orbit performance measurement. The original 0.87.5.6 baseline below remains authoritative.
 
 **0.87.5.6, Max 2027, 28 October 2026** is the current artist-endorsed interaction
@@ -86,14 +98,17 @@ Keep an optimization only with measured benefit and acceptable visual/behavioral
 results. More CPU threads, a new language or GPU compute alone is not a result.
 Do not trade away the useful Bend/Trim behavior to obtain a smaller timing.
 
-## Open work, not implemented improvements
+## Implemented follow-up and open work
 
 [B41](BACKLOG.md#b41--further-interaction-performance-without-losing-the-baseline)
-records a concrete opportunity: the fully fixed Bend-only control case still ran
-1,786 contact queries in 23.863 ms while producing zero poses. An early skip must
-respect any requested Trim or root-hiding work. Finer branch rejection, cheaper
-appropriate collider queries, fewer transient allocations and measured buffer/
-drawing costs are investigation targets, not delivered optimizations.
+originally recorded 1,786 unnecessary queries in its fully fixed control case.
+The 0.87.6.1 early skip closes that specific opportunity and adds a regression for
+moving-parent inheritance below the fixed height. Trim and root hiding retain
+their independent work. Finer spatial branch rejection and fewer transient
+allocations remain investigations. The measured box proxy did not improve fit
+time and was not adopted as a blanket policy. Ten thousand distant plants kept
+the affected local set at nine but increased fit time; constant-time scaling is
+not established. Preserve these distinctions when choosing the next experiment.
 
 Revisit this baseline when the solver, guide hierarchy, query semantics, workload
 scheduler, presentation lifecycle, source lineage, GPU bindings or quality mode

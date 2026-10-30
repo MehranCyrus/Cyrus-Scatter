@@ -1,0 +1,144 @@
+{
+  "branch": "codex/workflow-0.75",
+  "head": "75c60d54dbfd736ffef135d211863516a63543a7",
+  "current_native_sources": 638,
+  "changed_since_fresh_build": {
+    "AminScatter/CMakeLists.txt": {
+      "built": "b03bf28eb9422fb166ff3f374d20666bd8217637bc4aa43ed3449497984ebc93",
+      "now": "7545e2f97ea3254f3889828c1a1c057369d4272d297a13725412536e2115e7f8"
+    },
+    "AminScatter/include/viewport_pick.h": {
+      "built": "444b39d482ad14c5ec0357ce879f233124d3305f3c01cd2e58781d3a596cacc4",
+      "now": "b188161d86d213247aed96f918528be89835614ff152bc1cd309b5ac44b0e3a6"
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "built": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+      "now": "4b246928b347ebb20ff2b37636fea94583481742a70c7e661a8321850bfd1341"
+    },
+    "AminScatter/src/cyrus_edit.cpp": {
+      "built": "e49b1010a0a6649a30a413fcf3628629e6d023767766384000fae58c0498d3d4",
+      "now": "73131107a03a114e0450dd0dac162b015df8d94dba1f36d2a3740ac384cdbd9a"
+    },
+    "AminScatter/src/point_display.cpp": {
+      "built": "d169fe04271ad387781a629a261c6dc7d018ae5b3d102451d3916e1c2e4bf71d",
+      "now": "9cb501ce6fe504ce229dc5f6dff809afcd00dc67a79e0e9a0c3ce47f0fba18c4"
+    },
+    "AminScatter/src/viewport_pick.inc": {
+      "built": "aae8deebaa68db9f037ecac1a65ccb84db6dd8d9de3840d45a4f4fd59fdd4ca2",
+      "now": "c33548e467d19318293375484ad5b2f50dd9144161e65ad3f6d3529adfba18d6"
+    },
+    "AminScatter/src/viewport_pick_bridge.inc": {
+      "built": "e0e8a1ed92d8e0a0d57d829314d4f85682d219cd3b8532fe217eb1e81d1b55a3",
+      "now": "dccff1acf4f5764a26feae65fb0a5c728ccbcc1ae0fdfc38d414f488ccacc1c1"
+    },
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+      "built": "d6c7e74f66f06c87a28100d613f6ec5f0d46920e2fd890633b38c85671199a84",
+      "now": "d4880386f7b70eaa00178245fb8c1e50549638c4ff428d7ff5fd861aeb0867d5"
+    },
+    "AminScatter/tools/ui/templates/interactions-authoring.ms": {
+      "built": "3836e6793880a1ac165de949b6162cb114d418b2f429470f595420672ab73c38",
+      "now": "544f89102779f5f7fdbb558725d61b0bc1bc14b81b1aaf33cd096a75e32f6a53"
+    },
+    "AminScatter/tools/ui/templates/recipes-authored.ms": {
+      "built": "3cf30d44e7ccf0201747de834d1cb44d3171cc1ec7f6188fd6199abc35b4d9ad",
+      "now": "3370c132a42633567b23eb62a9d109af223fe31985680cde153162e6056965bd"
+    },
+    "AminScatter/tools/ui/templates/recipes.ms": {
+      "built": "6c70874250fbbae9a058d11a6d4c8f6ef894f2cb553c7ad8c890ffe3f7abe94a",
+      "now": "03d7eaa4bbbdade99821c8c1ba0b94561d5e9fb4c713fb2332c6b86fbc6f13ff"
+    },
+    "AminScatter/tools/ui/templates/scene-presets.ms": {
+      "built": "e9ff738614d94b532cac823d50499ded92e0ae1c7b9ff471e3114e11b7a01407",
+      "now": "4272ca7c610d9eecef97a5c1fb75f3ebf2db78e2bb206dea89f32315c3c43268"
+    },
+    "AminScatter/tools/ui/templates/shared-library.ms": {
+      "built": "a996968013d7abd8f2590501f37efb02ec8370a67469ba2d76b503d3e5aa0686",
+      "now": "3a4c733728bf3ee5f39507fafa419d3230b084a9652c7f45796f41fc89d48145"
+    },
+    "AminScatter/tools/ui/templates/unified-core.ms": {
+      "built": "2201f7b74eb4ef905598b742e04fc7a2bf1b960cd5cbdde29683983cdbc2d7de",
+      "now": "d69b37fd493939ae82feeae7d2fc33e3a711368b5c52276f8898a6ab03541ed4"
+    },
+    "AminScatter/tools/ui/templates/viewport-memory.ms": {
+      "built": "3ed1d58555abab4bd39c65dcf9b25a8d06d0724797bb13b043e18741642d63b9",
+      "now": "4984abce37fa9ba28893b0cb4b8bd519d4481959a5403ff7affb796874d22b49"
+    },
+    "AminScatter/tools/ui/templates/viewport-selection.ms": {
+      "built": "b3bc89b464181d7ea6f8592a9817b96a097b0b4bda44ac6d9ae6ac199601f205",
+      "now": "6ff5dad740b8f34835bbb7b2eb057fbaa202f4adc60ca9289ed8a33f6ded6a3e"
+    }
+  },
+  "changed_since_qualified_build": {
+    "AminScatter/CMakeLists.txt": {
+      "qualified": "b03bf28eb9422fb166ff3f374d20666bd8217637bc4aa43ed3449497984ebc93",
+      "now": "7545e2f97ea3254f3889828c1a1c057369d4272d297a13725412536e2115e7f8"
+    },
+    "AminScatter/include/viewport_pick.h": {
+      "qualified": "444b39d482ad14c5ec0357ce879f233124d3305f3c01cd2e58781d3a596cacc4",
+      "now": "b188161d86d213247aed96f918528be89835614ff152bc1cd309b5ac44b0e3a6"
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "qualified": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+      "now": "4b246928b347ebb20ff2b37636fea94583481742a70c7e661a8321850bfd1341"
+    },
+    "AminScatter/src/cyrus_edit.cpp": {
+      "qualified": "e49b1010a0a6649a30a413fcf3628629e6d023767766384000fae58c0498d3d4",
+      "now": "73131107a03a114e0450dd0dac162b015df8d94dba1f36d2a3740ac384cdbd9a"
+    },
+    "AminScatter/src/point_display.cpp": {
+      "qualified": "d169fe04271ad387781a629a261c6dc7d018ae5b3d102451d3916e1c2e4bf71d",
+      "now": "9cb501ce6fe504ce229dc5f6dff809afcd00dc67a79e0e9a0c3ce47f0fba18c4"
+    },
+    "AminScatter/src/viewport_pick.inc": {
+      "qualified": "aae8deebaa68db9f037ecac1a65ccb84db6dd8d9de3840d45a4f4fd59fdd4ca2",
+      "now": "c33548e467d19318293375484ad5b2f50dd9144161e65ad3f6d3529adfba18d6"
+    },
+    "AminScatter/src/viewport_pick_bridge.inc": {
+      "qualified": "e0e8a1ed92d8e0a0d57d829314d4f85682d219cd3b8532fe217eb1e81d1b55a3",
+      "now": "dccff1acf4f5764a26feae65fb0a5c728ccbcc1ae0fdfc38d414f488ccacc1c1"
+    },
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+      "qualified": "d6c7e74f66f06c87a28100d613f6ec5f0d46920e2fd890633b38c85671199a84",
+      "now": "d4880386f7b70eaa00178245fb8c1e50549638c4ff428d7ff5fd861aeb0867d5"
+    },
+    "AminScatter/tools/ui/templates/interactions-authoring.ms": {
+      "qualified": "3836e6793880a1ac165de949b6162cb114d418b2f429470f595420672ab73c38",
+      "now": "544f89102779f5f7fdbb558725d61b0bc1bc14b81b1aaf33cd096a75e32f6a53"
+    },
+    "AminScatter/tools/ui/templates/recipes-authored.ms": {
+      "qualified": "3cf30d44e7ccf0201747de834d1cb44d3171cc1ec7f6188fd6199abc35b4d9ad",
+      "now": "3370c132a42633567b23eb62a9d109af223fe31985680cde153162e6056965bd"
+    },
+    "AminScatter/tools/ui/templates/recipes.ms": {
+      "qualified": "6c70874250fbbae9a058d11a6d4c8f6ef894f2cb553c7ad8c890ffe3f7abe94a",
+      "now": "03d7eaa4bbbdade99821c8c1ba0b94561d5e9fb4c713fb2332c6b86fbc6f13ff"
+    },
+    "AminScatter/tools/ui/templates/scene-presets.ms": {
+      "qualified": "e9ff738614d94b532cac823d50499ded92e0ae1c7b9ff471e3114e11b7a01407",
+      "now": "4272ca7c610d9eecef97a5c1fb75f3ebf2db78e2bb206dea89f32315c3c43268"
+    },
+    "AminScatter/tools/ui/templates/shared-library.ms": {
+      "qualified": "a996968013d7abd8f2590501f37efb02ec8370a67469ba2d76b503d3e5aa0686",
+      "now": "3a4c733728bf3ee5f39507fafa419d3230b084a9652c7f45796f41fc89d48145"
+    },
+    "AminScatter/tools/ui/templates/unified-core.ms": {
+      "qualified": "2201f7b74eb4ef905598b742e04fc7a2bf1b960cd5cbdde29683983cdbc2d7de",
+      "now": "d69b37fd493939ae82feeae7d2fc33e3a711368b5c52276f8898a6ab03541ed4"
+    },
+    "AminScatter/tools/ui/templates/viewport-memory.ms": {
+      "qualified": "3ed1d58555abab4bd39c65dcf9b25a8d06d0724797bb13b043e18741642d63b9",
+      "now": "4984abce37fa9ba28893b0cb4b8bd519d4481959a5403ff7affb796874d22b49"
+    },
+    "AminScatter/tools/ui/templates/viewport-selection.ms": {
+      "qualified": "b3bc89b464181d7ea6f8592a9817b96a097b0b4bda44ac6d9ae6ac199601f205",
+      "now": "6ff5dad740b8f34835bbb7b2eb057fbaa202f4adc60ca9289ed8a33f6ded6a3e"
+    }
+  },
+  "product_source_edited_by_review": false,
+  "max_year": 2027,
+  "computer_use": false,
+  "host_authority": "Ephemeral unique test trust; same product source, different public-key configuration. Shipped owner-trust package was inspected, not installed or launched.",
+  "final_check_utc": "2026-10-29T10:08:20.623227+00:00",
+  "qualification_scope": "Fresh 0.87.6.3 build and recorded test payload; later concurrent workspace changes are not qualified by these passes.",
+  "fresh_vs_qualified_source_differences": {}
+}

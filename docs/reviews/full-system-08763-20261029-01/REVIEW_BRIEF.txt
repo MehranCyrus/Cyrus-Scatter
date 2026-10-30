@@ -1,0 +1,355 @@
+CYRUS SCATTER 0.87.6.3 — INDEPENDENT FULL-SYSTEM REVIEW
+
+Act as a skeptical senior C++/3ds Max plug-in engineer, performance investigator,
+graphics engineer, and software reliability reviewer. Independently review the
+current Cyrus Scatter implementation. Find defects, unnecessary work, unsafe
+assumptions, missing coverage, and practical opportunities to improve speed and
+reliability. Be rigorous and direct. Do not manufacture findings or praise the
+architecture without evidence.
+
+This assignment is REVIEW AND VALIDATION, not implementation. We will validate
+your findings and choose fixes afterward. You may create isolated test drivers,
+fixtures, benchmark harnesses, reports, and experimental patches in a disposable
+copy. Do not modify the product working tree, change versions, install into the
+artist's profile, rebuild knowledge indexes, commit, push, publish, or create a
+release installer. Preserve unrelated work and all artist data.
+
+PRODUCT PRIORITIES
+
+This is an interactive architectural landscaping tool. The priorities are:
+1. Responsive viewport movement and immediate useful visual feedback.
+2. Predictable artist controls, stable scenes, and reliable save/load/Undo.
+3. Efficient use of CPU, GPU, and memory at realistic scene sizes.
+4. Simple workflows and trustworthy Library, recipes, presets, and licensing.
+
+The artist values the existing broad Bend/Trim appearance over realistic physics.
+Do not recommend restoring expensive detailed contact refinement to normal
+dragging merely to improve physical accuracy. Faster execution is useful only
+when the intended appearance, responsiveness, and authored data are preserved.
+Simplification is welcome; silently reducing density, quality, functionality,
+authorization, or error detection is not an equivalent optimization.
+
+1. ESTABLISH THE EXACT TARGET
+
+Local repository, if available:
+F:\Cursor\_Cyrus_Apps\CyrusScatter
+
+Current testing delivery: 0.87.6.3, Max 2027 MZP only.
+Original artist-endorsed interaction baseline: 0.87.5.6.
+Library/native Scene preset baseline: 0.87.5.1, with separate qualification.
+Selection/shared-controller workflow: 0.87.6.2, preserved by 0.87.6.3.
+
+Do not assume the remote Git branch contains the latest delivery. The local
+workspace includes uncommitted and untracked files and independent work on other
+products. Record branch, HEAD, tracked diff, relevant untracked files, and hashes
+of the files you inspect or build. Distinguish committed, working-tree, packaged,
+and actually loaded code. If receiving an archive, record its hash and manifest.
+Recheck relevant source hashes at the end; label any concurrent changes instead
+of combining results from different revisions.
+
+Read AGENTS.md and docs/AGENT_START.md, then the applicable sections of:
+- docs/ENGINEERING_FOUNDATION.md
+- docs/PERFORMANCE_BASELINE.md
+- docs/ARCHITECTURE.md and docs/BACKLOG.md
+- docs/AGENT_WORKFLOW.md, especially build and isolated host testing
+- docs/ARTIST_GUIDE.md
+- docs/plans/interaction-review-08763-20261029/DELIVERY.md and QUALIFICATION.json
+- docs/plans/viewport-selection-08762-20261029/DELIVERY.md
+- docs/plans/terraces-performance-20261029/DELIVERY.md and MEASUREMENTS.md
+- docs/plans/ui-settings-0876-20261028/CONTROL_LEDGER.md
+- docs/plans/scene-presets-08751/DELIVERY_08751.md and ARTIST_GUIDE.md
+- docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md
+- current licensing owners routed from CyrusLicensing/README.md and docs/licensing/
+
+Read relevant implementation rather than loading all historical reports by default.
+Run the documented facts/freshness commands when available:
+python -B tools/rag/context.py facts
+python -B tools/rag/context.py status --verify-sources
+Use narrow knowledge searches where useful. The compact knowledge scope is not
+the whole repository. The index was stale against multiple current files when
+this brief was prepared; retrieved historical text is not proof of current code.
+Inspect original sources. Do not refresh an index just to obtain a green status.
+
+Use only Max 2027 for builds and executed host tests in this review. Older-host
+compatibility can be inspected statically but must not be reported as tested.
+If Max, a renderer, SDK, hardware counters, or scene files are unavailable, record
+the limitation and perform useful native/static tests. Never invent host results
+or let a mocked callback stand in for real presentation or renderer qualification.
+
+2. MAP THE WHOLE PRODUCT BEFORE DEEP TESTING
+
+Build a concise subsystem and ownership map. Scope is Cyrus Scatter and its actual
+dependencies, not a review of every independent experimental product in this repo.
+
+Inspect native calculation/display and generated script orchestration in
+AminScatter/. Authoritative UI sources are tools/ui/templates/unified-core.ms and
+the relevant generator modules, not only scripts/AminScatterObject.ms. Trace the
+managed Library code in AminScatter/shared/, recipe and Scene preset templates,
+licensing components and native integration, installer/loader guards, and relevant
+Analyzer/MCP boundaries used by Scatter. Independent products matter only where
+they affect those boundaries.
+
+Trace these representative actions end to end:
+- A setting edit, explicit Update, and a relevant Live change.
+- Collider movement through CPU calculation, pose packaging, GPU readiness,
+  display submission, and actual presentation while input remains held.
+- Camera orbit/pan/zoom with unchanged planting.
+- Hover, owner selection, individual Cyrus Edit selection, and an instance move.
+- Prepare a source once and reuse it across transformed instances and layers.
+- Library browse/import, recipe save/load, and native Scene preset merge.
+- Licensed authoring, denied authoring, and permitted inspection/recovery.
+
+For each, identify ownership, stable identity, dependencies, cache keys, thread,
+invalidation, publication boundary, failure recovery, Undo, and persistent state.
+Separate candidate IDs, accepted placements, shown instances, source IDs, and
+rendered output; do not treat them as interchangeable.
+
+3. FEATURE AND UI COVERAGE
+
+Inventory every current panel/control, including advanced, conditional, popup,
+multi-selection, and sub-object controls. Use the current generated inventory and
+source callbacks to verify the older control ledger. Record what it does, who
+owns the setting, how it updates, how it persists, and its test status.
+
+Cover at least:
+- Controller enable/disable, Manual/Live, Update, multi-controller controls.
+- Ordered layers, copy/duplicate/reorder, visibility, colors, and source containers.
+- Models and Points: add/remove/replace, missing sources, weights, transforms,
+  point assignment, groups, band labels, and source/model scale relationships.
+- Surface/random layouts, clusters, spline bands, Analyzer-driven assignments.
+- Count/density, seeds, image/surface density, masks, preview display and curves.
+- Receiver-bound Paint Areas, paint/erase/fill/clear, spline import, inside/outside
+  fade, density/scale fade, and multiple receivers.
+- Include/exclude areas, slope/altitude, boundary falloff and selection scope.
+- Transforms, alignment, radius/spacing scopes, Relax, cleanup and Edit overrides.
+- Viewport modes, wireframe, textures, points/proxies, triangle/memory limits,
+  source/posed picking, hover ownership, selection and shared controls.
+- Interaction roles, scene/scattered colliders, neighbors, Bend/Trim, hide margin,
+  overhead hiding, trunk/base/fade, preparation editor, source review and limits.
+- Library, recipes, portable/settings-only/native Scene presets and asset reuse.
+- Licensing, diagnostics, startup/load behavior and package identity checks.
+
+Look for contradictory or dead controls, stale UI, wrong owners after callbacks,
+duplicate event handlers, panel rebuild flicker, confusing placement, unexpected
+recalculation, and Undo that captures derived preview work. Recommend concrete UI
+changes only when tied to a real usability problem. Do not delete safeguards just
+because their current presentation is technical.
+
+4. CORRECTNESS AND LIFECYCLE REVIEW
+
+Check geometry/units, source offsets, scale including nonuniform/mirrored cases,
+degenerate or open colliders, roots inside solids, distant coordinates, hierarchy,
+fixed and deforming parts, visibility, bounds, normals, materials and mapping.
+Check finite-value validation, integer/index/count overflow, precision loss,
+resource admission arithmetic, maximum supported sizes and shader/CPU indexing.
+Check empty/missing/replaced sources; roles disabled and re-enabled; stale caches;
+settings after Edit moves; clone/delete; scene reset/load/merge; save/reload;
+Undo/Redo; cancellation; malformed input; and allocation/resource limits.
+
+Preserve seeded determinism and documented stability limits. Check independent
+layer ownership and collision scopes. Manual pending edits must wait for Update.
+Changing display limits must not commit pending placement changes. Failed
+successors must retain a compatible complete preceding result, not combine old
+geometry with new metadata or lose authored edits.
+
+Revalidate the 0.87.6.3 fixes independently: inactive-neighbor participation,
+hiding reach across modes, borrowed overrides/edited-reactor indexing, draw-aware
+pose admission, fixed-part visibility, conservative render bounds and sparse
+transform feedback. Follow consumers and lifetime boundaries. Search for nearby
+variants and regressions rather than simply repeating the original report.
+
+5. PERFORMANCE, CPU PARALLELISM, GPU AND NAVIGATION
+
+Measure before proposing an architecture change. Identify the dominant costs for
+each workflow and determine whether they are necessary. Explicitly investigate:
+- Repeated scans, sorting, hashing, geometry capture, preparation, allocation,
+  copies, map construction, packet creation, and full-container bookkeeping.
+- Broad-phase locality, per-branch pruning, source reuse, shared instance data,
+  bounds inflation, hidden/offscreen work, and old/new collider dirty regions.
+- Fully fixed/zero-Bend behavior while preserving enabled Trim/hiding and children
+  that must follow a moving parent.
+- Camera-only activity causing solver work, placement rebuilding, texture reloads,
+  buffer uploads, unnecessary picking setup, or preview repacking.
+- Rapid dragging: obsolete work, coalescing, cancellation, backpressure, stale
+  publication, and a final result that fails to catch up after release.
+- All current draw paths, including fallback paths and CPU-baked posed geometry;
+  do not assume compact-GPU optimizations automatically apply everywhere.
+- Memory through simultaneous old/new generations, caches, Undo/history, scratch,
+  CPU meshes, compact poses, renderer output and GPU resources.
+
+For multithreading, identify genuinely independent numeric work, copied input
+ownership, host-thread restrictions, lifetime/join/shutdown, races, publication,
+determinism, false sharing, locks, allocation contention and oversubscription with
+Max/renderers. Compare serial and suitable bounded worker counts on identical
+inputs. Include scheduling overhead and small-workload thresholds. Do not replace
+host-thread work with unsafe worker calls merely to improve a timer.
+
+For GPU handling, inspect the actual Max 2027 graphics path and SDK constraints:
+instancing, shared sources, pose packing, draw submission, culling/LOD, resource
+reuse, uploads, fences/synchronization, CPU stalls/readbacks, device lifetime,
+recovery, memory pressure, display/picking agreement and render equivalence.
+GPU drawing/deformation is not proof of GPU contact solving.
+
+Assess CUDA/OpenCL/compute shaders only as evidence-backed opportunities. For each
+candidate state its parallel structure, resident input/output, transfer volume,
+synchronization, interop availability, CPU/GPU break-even size, fallback, vendor
+coverage and failure costs. Use Amdahl-style end-to-end reasoning. A fast isolated
+kernel does not prove faster Max interaction. Verify uncertain SDK/API claims
+against versioned primary sources; label inference and unavailable measurements.
+
+Do not promise unlimited/million-instance realtime. Explain the measured limits
+and tradeoffs. Distinguish avoidable global work from necessary global metadata.
+
+6. BENCHMARK AND TEST PROTOCOL
+
+Use owned disposable profiles and copied scenes. Do not overwrite originals,
+change the installed artist build, or restart the artist's Max session. Verify
+source, package, generated script and loaded native module identities before tests.
+
+Available real scenes, if present:
+Test Scene/Terraces_Final.max
+Test Scene/New Plants test 22.max
+Test Scene/Small Test Interaction.max
+Test Scene/Rock_Boulder_10/Rock_10.max
+Also inspect the existing delivered Terraces garden and owned review fixtures.
+Discover their actual paths; do not assume the original Terraces file already
+contains the later planted garden.
+
+Where an installed renderer permits it, add small render-output spot checks for
+deformed/fixed geometry, hidden roots, bounds, normals, mapping, material IDs and
+automatic final output. Compare to the published viewport state. An independent
+CPU geometry reference can establish numeric agreement but cannot certify an
+unexecuted renderer, render farm, or device-loss path.
+
+Use existing tests/drivers when applicable, then add small reproductions for gaps.
+The generated-source checker, Max 2027 native CTest suite and focused managed/
+Python tests are starting evidence, not sufficient proof of every workflow.
+Reproduce suspect behavior on the unchanged current build first. Experimental
+changes belong in an isolated copy and must remain separate from the baseline.
+
+Cover these experiments with fixed seeds, camera paths and collider paths:
+- Small baseline and representative grass, fern, flower, bush, tree and rock data;
+  include a source mixing rigid/fixed geometry with deforming foliage.
+- One collider touching a small part of a tree; multiple colliders and repeated
+  enter/exit/reversal, including walls, concave/opening cases and transformed shapes.
+- Same local interaction with increasing distant vegetation. Separate increased
+  drawing cost from contact calculation and global bookkeeping cost.
+- Fully fixed and zero-Bend cases; then independently enable Trim/root hiding.
+- Continuous movement versus release, abrupt jumps, settings after Edit moves,
+  switching active controllers and sources, restoration and rapid direction changes.
+- Idle/orbit/pan/zoom in mesh, textured, wireframe, point/proxy modes; multiple
+  controllers, budget changes, hover selection and individually posed picking.
+- Memory over repeated changes, bounded soak, save/load and recovery; no dangerous
+  unlimited allocation tests on the artist's running desktop.
+- Library/recipe/licensing matrices from the next sections.
+
+Report cold/warm runs, repetitions, hardware, build flags, scene/model/guide counts,
+visible counts, triangles, modes, budgets and units. Use distributions and p95/p99
+only with enough samples; label single-run microbenchmarks honestly. Log medians,
+spikes, work counters, copied/uploaded bytes, allocations and memory accounting.
+Separate cumulative allocation from peak live memory, reserved memory and RSS/VRAM.
+
+Time source preparation, placement, contact fitting, pose construction, upload,
+host submission and actual presentation separately. Log requested/computed/ready/
+presented generations where available. CPU redraw duration is not GPU FPS.
+Scripted held-input replay is not physical mouse-to-screen latency. Validate
+appearance, final state, stable identities and unaffected behavior as well as speed.
+
+7. LIBRARY, RECIPES, PRESETS AND STORAGE
+
+Trace native/managed/script boundaries and test the actual advertised workflows:
+browse/search/categories/thumbnails; merge/add-to-layer; save/update/rename/delete;
+export/import; duplicates and shared storage; settings-only versus portable versus
+native Scene presets; cross-scene reuse and unavailable original source folders.
+
+Check atomic transactions, rollback, interruption recovery, partial imports,
+reference accounting, deduplication, revision ownership, cache invalidation,
+concurrent scans/reads/writes and UI cancellation. Removing one card must not
+silently invalidate shared assets used by another.
+
+Cover missing textures/material plug-ins, units and scale, nested dependencies,
+relative/absolute and long/Unicode paths, read-only/missing roots, corrupt data,
+schema/version mismatch, archive traversal/unsafe extraction, file-size/count
+limits, unexpected code execution from metadata, and deterministic serialization.
+Separate supported portability from Max/renderer dependencies. Check actual Undo
+and merge notices; native Max merge may legitimately clear Undo if disclosed.
+Verify operations do not repath/mutate unrelated artist scene assets.
+
+Audit installer/loader/version guards statically against current payloads. Do not
+confuse previous all-host packages with current 0.87.6.3 runtime qualification.
+
+8. LICENSING AND SECURITY
+
+Review the implemented licensing boundary and all meaningful native/script entry
+points, not only disabled UI buttons. Distinguish team/development mechanisms from
+a deployed customer service; do not assume an unfinished service exists.
+
+Verify signature/claim validation, trust configuration, grant/permit ownership,
+product/build/device binding, expiry/clock behavior, renewal, offline operation,
+operation scope, single-use permits, persistence and worker unload. Check direct
+calls, stale permits, unknown operations and failed imports with synthetic fixtures.
+Keep authoring, inspection, preservation/recovery and rendering decisions distinct.
+Do not casually recommend blocking recovery of existing artist work.
+
+Measure whether checks perform network, file I/O, expensive cryptography, locking
+or allocation in drag/orbit/browse paths. Recommend fast validated immutable state
+only with correct refresh/revocation/expiry boundaries. Removing authorization or
+accepting arbitrary caller-provided 'verified' flags is not an optimization.
+
+Use mock services, temporary stores and test-only keys. Do not read/export private
+keys or real tokens, alter production grants, exercise real billing/activation
+endpoints, or include secrets in reports. Record service-dependent checks as
+unavailable when only the native foundation exists.
+
+9. EVIDENCE STANDARD FOR EVERY FINDING
+
+Each finding must contain:
+- Stable ID, concise title, subsystem and affected build/source hashes.
+- Type: correctness / performance / concurrency / graphics / usability / security /
+  persistence / test gap / maintainability.
+- Severity P0-P3, separately from confidence and evidence status.
+- Evidence status: reproduced, statically demonstrated, measured opportunity,
+  hypothesis requiring measurement, not reproduced, or already fixed/not applicable.
+- Artist-visible trigger, expected behavior, actual behavior and impact.
+- Exact repository-relative file/symbol/line references and causal explanation.
+- Reproduction steps or runnable driver, command, fixture and raw evidence links.
+- For performance: measured cost, avoidable work, scaling and equivalent baseline.
+- Minimal repair direction, affected ownership/invalidation, risks and tradeoffs.
+- Regression test and measurable acceptance criteria, including an unaffected case.
+
+For a static finding, show a reachable path and violated invariant; do not label it
+runtime reproduced. Passing tests do not disprove an untested path. A potential
+issue is not confirmed just because similar code caused a past problem. Check the
+backlog and previous review, merge duplicates, and identify newly introduced issues
+versus preexisting behavior. Keep architectural preferences and readability cleanup
+separate from defects. Avoid arbitrary finding quotas.
+
+10. DELIVERABLES AND COMPLETION
+
+Write a review bundle under a fresh directory such as:
+docs/reviews/full-system-08763-YYYYMMDD-NN/
+Put build outputs and large temporary data in a separate owned build directory.
+For a cloud checkout use equivalent local paths and provide the report ZIP.
+
+Include:
+00_SUMMARY.md — verdict, top verified risks, strongest opportunities, scope/limits.
+01_FINDINGS.md — prioritized findings with the complete evidence fields above.
+02_COVERAGE.md — architecture map and every subsystem/control with explicit status.
+03_PERFORMANCE.md — measurements, raw data links, scaling, CPU/GPU/thread analysis.
+04_LIBRARY_AND_RECIPES.md — workflows, data integrity, portability and failures.
+05_LICENSING_AND_SECURITY.md — actual trust boundaries, fixtures and missing scope.
+06_TEST_REPORT.md — exact identities, commands, passes/failures/blocked tests.
+07_RECOMMENDED_SEQUENCE.md — ordered small fixes, dependencies, effort, measurable
+  benefit, acceptance criteria and rollback risks; separate research projects.
+findings.json, coverage.csv, benchmark data, reproducible test drivers and manifest.
+
+Do not duplicate large prose across files. Use evidence links and consolidate
+related symptoms under their root cause. Package the review materials in a ZIP,
+excluding model libraries, binaries, secret/license data and unrelated files.
+Record the bundle manifest/hash and provide a concise final summary.
+
+Completion means every subsystem is accounted for, high-impact suspicions have
+been tested or precisely bounded, measurements are reproducible, and remaining
+unknowns are explicit. Do not stop after one successful test suite or a list of
+generic recommendations. Do not claim exhaustive correctness or invent missing
+execution. Finish with concrete priorities we can independently validate and fix.

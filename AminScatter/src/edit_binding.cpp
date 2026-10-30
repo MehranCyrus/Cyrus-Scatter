@@ -130,4 +130,22 @@ Merge merge(const std::string& previous,const std::string& current){
 const std::string* sourceRevision(const Descriptor& descriptor,const std::string& id) noexcept{
     const auto found=descriptor.sources.find(id);return found==descriptor.sources.end()?nullptr:&found->second;
 }
+Merge mergePinned(const std::string& previous,const std::string& current){
+    if(previous.empty()||!isSourceAware(previous))return merge(previous,current);
+    auto old=parse(previous),next=parse(current);
+    const auto owner=[](const std::string& basis){
+        const auto end=basis.find(receiverSeparator),begin=basis.find("|EditOwner:");
+        require(begin!=std::string::npos&&begin<end,"Pinned Edit requires its source-aware layer owner");
+        const auto stop=basis.find('|',begin+1);
+        require(stop!=std::string::npos&&stop<end&&stop>begin+11,"Invalid pinned Edit owner");
+        return basis.substr(begin,stop-begin);
+    };
+    require(owner(old.basis)==owner(next.basis),"Pinned Edit belongs to another layer");
+    const auto previousReceivers=old.basis.substr(old.basis.find(receiverSeparator));
+    const auto common=next.basis.substr(0,next.basis.find(receiverSeparator));
+    next.basis=receivers::mergeBinding(common+previousReceivers,next.basis);
+    next.legacy=old.legacy;
+    for(const auto& [id,revision]:old.sources)if(!next.sources.count(id))next.sources.emplace(id,revision);
+    (void)encode(next);return {std::move(next),false};
+}
 }

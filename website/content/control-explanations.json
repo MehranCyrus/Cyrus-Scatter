@@ -541,13 +541,11 @@
     "owner_context": "Selected source rows of the layer"
   },
   "layer.sourceUI.sourceScaleSpin": {
-    "label": "Scale",
-    "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
+    "label": "Model scale",
+    "help": "Combine model Scale with the supported evaluated source-node scale, applied once. Supported source-aware Edit deltas are retained; reacting plants require positive uniform transforms.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3274",
-      "AminScatter/tools/ui/templates/unified-core.ms:3350"
-    ],
-    "owner_context": "Selected source rows of the layer"
+      "AminScatter/tools/ui/templates/unified-core.ms:4985"
+    ]
   },
   "layer.sourceUI.radiusSourceSpin": {
     "label": "Radius",
@@ -2716,53 +2714,40 @@
       "AminScatter/tools/ui/templates/viewport-memory.ms:1"
     ]
   },
-  "layer.interactionsUI.colliderCheck": {
-    "label": "Collider",
-    "help": "Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:3"
-    ]
-  },
-  "layer.interactionsUI.reactCheck": {
-    "label": "React to colliders",
-    "help": "Bend prepared plant models near collider layers. Analyze and review each unique source once.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:4"
-    ]
-  },
   "layer.interactionsUI.rootsCheck": {
-    "label": "Hide roots under colliders",
-    "help": "Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react.",
+    "label": "Hide covered roots",
+    "help": "Hide covered rooted groups independently of the response mode, using Hide area and Hide margin. Works with Bend, Trim, Bend and trim, and Detailed contact; authored fixed pieces remain visible.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:5"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:16",
+      "docs/plans/interaction-review-08763-20261029/DELIVERY.md:30"
     ]
   },
   "layer.interactionsUI.gapSpin": {
-    "label": "Contact gap",
-    "help": "Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only.",
+    "label": "Clearance",
+    "help": "Expand the contact envelope for bending and trimming. In Detailed contact, this is independent of rooted-group Hide margin.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:6"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:27"
     ]
   },
   "layer.interactionsUI.stiffnessSpin": {
-    "label": "Stem stiffness",
-    "help": "Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations.",
+    "label": "Refinement stiffness",
+    "help": "Resistance used by slower iterative contact refinement. Fast Bend/Trim does not use this setting. Available under More settings.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:7"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:34"
     ]
   },
   "layer.interactionsUI.proxyList": {
-    "label": "Collider shape",
-    "help": "Mesh requires a closed manifold source. Box is an explicit conservative approximation.",
+    "label": "Collision geometry",
+    "help": "For scattered colliders choose Original closed mesh, Bounding box or Assigned custom mesh. Bounding box is an explicit conservative approximation.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:8"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:9"
     ]
   },
   "layer.interactionsUI.modelList": {
-    "label": "Plant source to prepare",
-    "help": "Select a source for guide preparation or a separate collision mesh. Instances reuse the same source definition.",
+    "label": "Original source model",
+    "help": "Select the canonical authored source row shared with Models & Points. Prepare the original geometry once; instances reuse its definition.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:9"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:5"
     ]
   },
   "layer.interactionsUI.buildTrunksButton": {
@@ -2773,15 +2758,15 @@
     ]
   },
   "layer.interactionsUI.pickColliderButton": {
-    "label": "Pick closed collider mesh",
-    "help": "Bind a separate closed mesh to the selected visual source. Its relative transform defines every instance's collision shape.",
+    "label": "Assign custom collider",
+    "help": "Bind a reviewed closed proxy to a scattered collider source. Ordinary scene colliders are enrolled in their own setup list.",
     "evidence": [
       "AminScatter/tools/ui/templates/interactions-ui.ms:11"
     ]
   },
   "layer.interactionsUI.reviewColliderButton": {
-    "label": "Review collider",
-    "help": "Show a frozen collision mesh at a published instance; the overlay is not the authored proxy.",
+    "label": "Show collider",
+    "help": "Toggle the collision overlay. The overlay is a review view and does not replace the original source.",
     "evidence": [
       "AminScatter/tools/ui/templates/interactions-ui.ms:12"
     ]
@@ -2790,56 +2775,275 @@
     "label": "Repair preparation settings",
     "help": "Convert legacy distances to metres; repair invalid values to 5 mm / 5%. Scene geometry is not rescaled.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:13"
-    ]
-  },
-  "layer.interactionsUI.analyzeButton": {
-    "label": "Analyze model",
-    "help": "Infer stem guides and attachments for this source. Inspect the review before accepting; unresolved geometry requires authored guides.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:14"
-    ]
-  },
-  "layer.interactionsUI.acceptButton": {
-    "label": "Accept reviewed guides",
-    "help": "Accept only after inspecting root positions, branch directions and foliage attachments.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:15"
-    ]
-  },
-  "layer.interactionsUI.clearButton": {
-    "label": "Hide guide review",
-    "help": "Remove temporary review overlays without deleting authored models or colliders.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:16"
-    ]
-  },
-  "layer.interactionsUI.applyButton": {
-    "label": "Apply interactions",
-    "help": "Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:17"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:32"
     ]
   },
   "layer.interactionsUI.validateButton": {
-    "label": "Validate full visible mesh",
-    "help": "Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain.",
+    "label": "Check full visible mesh",
+    "help": "Run the slower complete-geometry check. A broad guide-envelope response alone does not certify leaf-level intersection freedom.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:18"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:31"
     ]
   },
   "layer.interactionsUI.minimumSpin": {
     "label": "Minimum stem length",
     "help": "Minimum stem length in the source model before instance scaling. Stored in metres, displayed in scene units; supports 1–100 mm.",
     "evidence": [
-      "AminScatter/tools/ui/templates/interactions-ui.ms:19"
+      "AminScatter/tools/ui/templates/interactions-ui.ms:33"
     ]
   },
   "layer.interactionsUI.foliageSpin": {
     "label": "Preview leaves / blades",
     "help": "Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces.",
     "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:28"
+    ]
+  },
+  "layer.interactionsUI.roleList": {
+    "label": "Layer role",
+    "help": "Choose Off, Scattered colliders or React to colliders. Enroll ordinary walls and stones separately in Scene colliders.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:3"
+    ]
+  },
+  "layer.interactionsUI.sourcePickButton": {
+    "label": "Add source",
+    "help": "Pick an original scene source for this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:6"
+    ]
+  },
+  "layer.interactionsUI.sourceRemoveButton": {
+    "label": "Remove source",
+    "help": "Remove the selected source row from this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:7"
+    ]
+  },
+  "layer.interactionsUI.focusSourceButton": {
+    "label": "Frame source",
+    "help": "Frame the original source in the Max viewport.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:8"
+    ]
+  },
+  "layer.interactionsUI.prepareButton": {
+    "label": "Prepare model",
+    "help": "Prepare the selected original source for plant interactions.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:13"
+    ]
+  },
+  "layer.interactionsUI.editorButton": {
+    "label": "Edit preparation",
+    "help": "Open the source preparation editor to review pieces and guides.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:14"
+    ]
+  },
+  "layer.interactionsUI.guideReviewButton": {
+    "label": "Show source guides",
+    "help": "Toggle the prepared guides on the original source.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:15"
+    ]
+  },
+  "layer.interactionsUI.hideAreaList": {
+    "label": "Hide area",
+    "help": "Choose Inside solid or the downward Under collider footprint for covered-root hiding. Under collider also considers overhead obstructions; independent of the bending response.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:25",
+      "docs/plans/interaction-review-08763-20261029/DELIVERY.md:30"
+    ]
+  },
+  "layer.interactionsUI.hideMarginSpin": {
+    "label": "Hide margin",
+    "help": "Expand the covered-root hiding region independently of bending Clearance. Applies when Hide covered roots is enabled, including artistic response modes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:26",
+      "docs/plans/interaction-review-08763-20261029/DELIVERY.md:30"
+    ]
+  },
+  "layer.interactionsUI.retryButton": {
+    "label": "Retry contact update",
+    "help": "Retry contact fitting using the current prepared sources and colliders.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:30"
+    ]
+  },
+  "layer.interactionsUI.connectionSpin": {
+    "label": "Branch connection",
+    "help": "Set the distance used to connect nearby branch preparation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:35"
+    ]
+  },
+  "layer.interactionsUI.verticesLimitSpin": {
+    "label": "Source vertices",
+    "help": "Bound the vertices admitted during source preparation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:36"
+    ]
+  },
+  "layer.interactionsUI.trianglesLimitSpin": {
+    "label": "Source triangles",
+    "help": "Bound the triangles admitted during source preparation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:37"
+    ]
+  },
+  "layer.interactionsUI.partsLimitSpin": {
+    "label": "Connected pieces",
+    "help": "Bound connected pieces admitted during preparation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:38"
+    ]
+  },
+  "layer.interactionsUI.guidesLimitSpin": {
+    "label": "Prepared guides",
+    "help": "Bound the number of prepared guides.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:39"
+    ]
+  },
+  "layer.interactionsUI.previewLimitSpin": {
+    "label": "Preview triangles",
+    "help": "Bound preparation preview triangles.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:40"
+    ]
+  },
+  "layer.interactionsUI.memoryLimitSpin": {
+    "label": "Preparation memory",
+    "help": "Set the preparation memory allowance in MiB.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:41"
+    ]
+  },
+  "layer.interactionsUI.workLimitSpin": {
+    "label": "Preparation work",
+    "help": "Bound preparation work in millions of operations.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:42"
+    ]
+  },
+  "layer.interactionsUI.cleanColliderLinksButton": {
+    "label": "Clean unused collider links",
+    "help": "Remove unused source collider references.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:43"
+    ]
+  },
+  "general.previewUI.fastNavigationButton": {
+    "label": "Fast navigation",
+    "help": "Apply a bounded moving-view preset using complete instances. Idle detail restores after navigation; accepted placements do not change.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4736"
+    ]
+  },
+  "layer.collidersUI.colliderList": {
+    "label": "Scene collider objects",
+    "help": "Ordinary scene meshes enrolled once for this Scatter setup. Reacting layers use these references; missing rows remain removable.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:193"
+    ],
+    "owner_context": "Scatter setup / ordinary scene collider references"
+  },
+  "layer.collidersUI.addButton": {
+    "label": "Pick scene collider",
+    "help": "Pick an ordinary closed wall, stone or other scene mesh. It keeps its scene transform and needs no scatter layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:194"
+    ],
+    "owner_context": "Scatter setup / ordinary scene collider references"
+  },
+  "layer.collidersUI.selectedButton": {
+    "label": "Add selected colliders",
+    "help": "Enroll selected ordinary scene meshes in the setup collider list.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:195"
+    ],
+    "owner_context": "Scatter setup / ordinary scene collider references"
+  },
+  "layer.collidersUI.removeButton": {
+    "label": "Remove collider reference",
+    "help": "Remove the selected reference while keeping its scene object. This authoring command supports Undo.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:196"
+    ],
+    "owner_context": "Scatter setup / ordinary scene collider references"
+  },
+  "layer.collidersUI.selectButton": {
+    "label": "Select collider",
+    "help": "Select the enrolled scene object for ordinary Max transforms.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:197"
+    ],
+    "owner_context": "Scatter setup / ordinary scene collider references"
+  },
+  "layer.interactionsUI.responseList": {
+    "label": "Response",
+    "help": "Choose Bend, Trim, Bend and trim, or Detailed contact (slow). Older Detailed-contact scenes open in Bend in 0.87.5.6. Fast modes use coarse guide spans and one response.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:17"
+    ]
+  },
+  "layer.interactionsUI.strengthSpin": {
+    "label": "Bend strength (%)",
+    "help": "Control the overall amount of artistic bending. The fast path applies one response; it does not search successive angles or simulate time-dependent stiffness.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:18"
+    ]
+  },
+  "layer.interactionsUI.pruneThresholdSpin": {
+    "label": "Trim after overlap",
+    "help": "Require deeper guide-envelope overlap before a branch becomes eligible for trimming. Larger values retain more shallow contacts.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:22"
+    ]
+  },
+  "layer.interactionsUI.pruneAmountSpin": {
+    "label": "Trim amount (%)",
+    "help": "Select a stable fraction of eligible blocked branch groups. Descendants follow a trimmed parent; the percentage is not a fraction of all polygons.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:23"
+    ]
+  },
+  "layer.interactionsUI.neighborsCheck": {
+    "label": "React to neighboring trees",
+    "help": "Opt in on both reacting layers. Stable identities choose which tree yields against rest-branch proxies; ordinary spacing still handles trunks.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:24"
+    ]
+  },
+  "layer.interactionsUI.trunkSpin": {
+    "label": "Trunk bend (%)",
+    "help": "Control how much structural root stems carrying branches may bend. 0 keeps those guides rigid; 100 permits full bend strength. Independent grass roots are not automatically trunks. Artistic modes only.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:19"
+    ]
+  },
+  "layer.interactionsUI.fixedBaseSpin": {
+    "label": "Fixed base (% height)",
+    "help": "Keep the lower part still, measured from the source root level. 30 fixes the bottom 30% of source height. Reuses preparation; artistic modes only.",
+    "evidence": [
       "AminScatter/tools/ui/templates/interactions-ui.ms:20"
+    ]
+  },
+  "layer.interactionsUI.transitionSpin": {
+    "label": "Bend fade (% height)",
+    "help": "Set the height of the smooth transition from fixed to flexible. 30 spreads the fade over 30% of source height. Reuses preparation; artistic modes only.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:21"
+    ]
+  },
+  "general.previewUI.sharedViewportButton": {
+    "label": "Multiple Scatters...",
+    "help": "Open shared controls for Selected Scatters or All Scatters. Change display mode, moving/idle triangle limits, preview visibility or Enable/Disable. Each action changes only its chosen property; Update Scatters explicitly applies pending Manual edits. Opening the window does not calculate placements.",
+    "owner_context": "Explicit selected-controller scope or all Scatter controllers",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4745",
+      "AminScatter/tools/ui/templates/viewport-selection.ms:37"
     ]
   }
 }

@@ -1,0 +1,35 @@
+{
+  "automatic-final": {
+    "status": "pass",
+    "rest_max_error_m": 0.0,
+    "roundtrip": true,
+    "triangles_preserved": true,
+    "bytes": 1467842,
+    "raw_receipt_sha256": "b4c0a5b70fc0220ebb36a6784313ce615f985dec1a810cced7e231c6c9dfd312"
+  },
+  "stem-detail": {
+    "status": "pass",
+    "rest_max_error_m": 0.0,
+    "roundtrip": true,
+    "triangles_preserved": true,
+    "bytes": 1500821,
+    "raw_receipt_sha256": "48a2ab4c9fdf826b69e37158a62f21d93fd5d88e233d67d8b20dfc8f1e4d0494"
+  },
+  "leaf-detail": {
+    "status": "pass",
+    "rest_max_error_m": 0.0,
+    "roundtrip": true,
+    "triangles_preserved": true,
+    "bytes": 1601714,
+    "raw_receipt_sha256": "1440d24c021c2f085340e999f55ee25ea351073d566d61f3d0dffe4b124cec2b"
+  },
+  "combined": {
+    "status": "pass",
+    "rest_max_error_m": 0.0,
+    "roundtrip": true,
+    "triangles_preserved": true,
+    "bytes": 1632517,
+    "raw_receipt_sha256": "53ebe4212d6ba4caf183e37f5128bd7f8f205567aab3e07bba92e8b48491a011"
+  },
+  "automatic_metadata_equal": true
+}

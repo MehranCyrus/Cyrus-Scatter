@@ -115,5 +115,11 @@ assert.equal((script.match(/diversityUI_strokeChoices_colored.SelectionMode=\(do
 assert.equal((script.match(/sourceUI_plantList_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiExtended/g)||[]).length,1,'Main source-list selection keeps its existing modifiers');
 assert.equal((script.match(/undo "Cyrus Band assignment" on savedOwner.setStrokeSelection/g)||[]).length,1,'An assignment edit has one native Undo transaction');
 
-const container=script.slice(script.indexOf('plugin helper CyrusSourceContainer'));
+const containerStart=script.indexOf('plugin helper CyrusSourceContainer');
+const selectionStart=script.indexOf('global CyrusSelectionUI,',containerStart);
+assert.ok(containerStart>=0 && selectionStart>containerStart,'The shared-selection tool is declared after the container plugin');
+const container=script.slice(containerStart,selectionStart);
 assert.deepEqual([...container.matchAll(/rollout (\w+) "/g)].map(m=>m[1]),['containerUI'],'Selecting a rectangle must not build the Scatter pages');
+const selection=script.slice(selectionStart);
+assert.deepEqual([...selection.matchAll(/rollout (\w+) "/g)].map(m=>m[1]),['CyrusSelectionUI'],'The standalone shared-selection tool has one rollout');
+assert.ok(selection.includes('fn CyrusSelectionTargets all:false = ('),'Shared controls resolve existing Scatter owners');

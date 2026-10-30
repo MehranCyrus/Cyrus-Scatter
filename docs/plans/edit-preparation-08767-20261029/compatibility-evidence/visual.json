@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "desktop": "1440 x 1000: Download CTA, release identity, host scope and guide typography inspected",
+  "mobile": "390 x 844: Download and guide inspected, no horizontal overflow; menu opens and guide navigation works",
+  "routes": [
+    "Download",
+    "Changelog via native link click",
+    "Source Preparation Editor guide"
+  ],
+  "http_download_sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+  "final_entry_script": "index-DQN53IPJ.js",
+  "screenshots_note": "Desktop screenshots precede the final correction of two guide button labels; final mobile guide screenshot binds the last entry script. Layout and EXE payload are unchanged."
+}

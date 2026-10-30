@@ -1,0 +1,282 @@
+[
+  {
+    "id": "A056",
+    "name": "Tea Tree - 01",
+    "node": "SOURCE | A056 | Tea Tree - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A056 - Tea Tree - 01\\model.max",
+    "vertices": 53824,
+    "triangles": 94060,
+    "dimensions": [
+      266.0703125,
+      294.125,
+      430.98046875
+    ],
+    "merge_seconds": 0.6623211000114679
+  },
+  {
+    "id": "A072",
+    "name": "Broadleaf Tree 01",
+    "node": "SOURCE | A072 | Broadleaf Tree 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A072 - Broadleaf Tree 01\\model.max",
+    "vertices": 454616,
+    "triangles": 432640,
+    "dimensions": [
+      479.755859375,
+      515.12109375,
+      653.908924281598
+    ],
+    "merge_seconds": 0.6329694001469761
+  },
+  {
+    "id": "A078",
+    "name": "Rounded Broadleaf Tree",
+    "node": "SOURCE | A078 | Rounded Broadleaf Tree",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A078 - Rounded Broadleaf Tree\\model.max",
+    "vertices": 840406,
+    "triangles": 1090253,
+    "dimensions": [
+      996.47265625,
+      801.0546875,
+      1145.740966796875
+    ],
+    "merge_seconds": 0.6420666000340134
+  },
+  {
+    "id": "A098",
+    "name": "Norway Maple - Red Foliage",
+    "node": "SOURCE | A098 | Norway Maple - Red Foliage",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A098 - Norway Maple - Red Foliage\\model.max",
+    "vertices": 172649,
+    "triangles": 215272,
+    "dimensions": [
+      235.32421875,
+      237.73828125,
+      335.317626953125
+    ],
+    "merge_seconds": 0.5173365001101047
+  },
+  {
+    "id": "A103",
+    "name": "Broadleaf Tree - Slender 03",
+    "node": "SOURCE | A103 | Broadleaf Tree - Slender 03",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A103 - Broadleaf Tree - Slender 03\\model.max",
+    "vertices": 386656,
+    "triangles": 249056,
+    "dimensions": [
+      56.703125,
+      53.890625,
+      91.52297973632812
+    ],
+    "merge_seconds": 0.5196489000227302
+  },
+  {
+    "id": "A075",
+    "name": "Cypress Tree",
+    "node": "SOURCE | A075 | Cypress Tree",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A075 - Cypress Tree\\model.max",
+    "vertices": 365170,
+    "triangles": 534535,
+    "dimensions": [
+      307.4453125,
+      304.671875,
+      674.7259584888816
+    ],
+    "merge_seconds": 0.7722233000677079
+  },
+  {
+    "id": "A049",
+    "name": "Peach Tree - 01",
+    "node": "SOURCE | A049 | Peach Tree - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A049 - Peach Tree - 01\\model.max",
+    "vertices": 313991,
+    "triangles": 516381,
+    "dimensions": [
+      545.265625,
+      506.3125,
+      447.6346435546875
+    ],
+    "merge_seconds": 0.7300435998477042
+  },
+  {
+    "id": "A083",
+    "name": "Lavender - 01",
+    "node": "SOURCE | A083 | Lavender - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A083 - Lavender - 01\\model.max",
+    "vertices": 365902,
+    "triangles": 563380,
+    "dimensions": [
+      117.240234375,
+      113.4609375,
+      83.61527895927429
+    ],
+    "merge_seconds": 0.6526079999748617
+  },
+  {
+    "id": "A086",
+    "name": "Rugosa Rose - 02",
+    "node": "SOURCE | A086 | Rugosa Rose - 02",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A086 - Rugosa Rose - 02\\model.max",
+    "vertices": 165963,
+    "triangles": 205704,
+    "dimensions": [
+      98.66015625,
+      112.90234375,
+      86.75324249267578
+    ],
+    "merge_seconds": 0.624532800167799
+  },
+  {
+    "id": "A081",
+    "name": "Black Elder - 01",
+    "node": "SOURCE | A081 | Black Elder - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A081 - Black Elder - 01\\model.max",
+    "vertices": 209801,
+    "triangles": 228483,
+    "dimensions": [
+      115.9921875,
+      106.1640625,
+      79.60706329345703
+    ],
+    "merge_seconds": 0.6267894001211971
+  },
+  {
+    "id": "A085",
+    "name": "Myrtle - 03",
+    "node": "SOURCE | A085 | Myrtle - 03",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A085 - Myrtle - 03\\model.max",
+    "vertices": 357439,
+    "triangles": 332838,
+    "dimensions": [
+      112.96875,
+      116.54296875,
+      120.15087890625
+    ],
+    "merge_seconds": 0.636426700046286
+  },
+  {
+    "id": "A062",
+    "name": "Common Blue Violet - 04",
+    "node": "SOURCE | A062 | Common Blue Violet - 04",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A062 - Common Blue Violet - 04\\model.max",
+    "vertices": 10922,
+    "triangles": 17110,
+    "dimensions": [
+      28.08203125,
+      27.27734375,
+      9.793603777885437
+    ],
+    "merge_seconds": 0.5039641999173909
+  },
+  {
+    "id": "A064",
+    "name": "Creeping Phlox - 01",
+    "node": "SOURCE | A064 | Creeping Phlox - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A064 - Creeping Phlox - 01\\model.max",
+    "vertices": 10295,
+    "triangles": 15424,
+    "dimensions": [
+      20.587890625,
+      16.142578125,
+      14.053655624389648
+    ],
+    "merge_seconds": 0.5445412001572549
+  },
+  {
+    "id": "A066",
+    "name": "Herb Robert Geranium - 04",
+    "node": "SOURCE | A066 | Herb Robert Geranium - 04",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A066 - Herb Robert Geranium - 04\\model.max",
+    "vertices": 10766,
+    "triangles": 16356,
+    "dimensions": [
+      24.681640625,
+      24.642578125,
+      13.399861454963684
+    ],
+    "merge_seconds": 0.5757128000259399
+  },
+  {
+    "id": "A067",
+    "name": "Spotted Deadnettle - 04",
+    "node": "SOURCE | A067 | Spotted Deadnettle - 04",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A067 - Spotted Deadnettle - 04\\model.max",
+    "vertices": 14584,
+    "triangles": 21260,
+    "dimensions": [
+      22.12109375,
+      15.25390625,
+      16.07019403576851
+    ],
+    "merge_seconds": 0.5322503999341279
+  },
+  {
+    "id": "A068",
+    "name": "Grass - Bushy Clump",
+    "node": "SOURCE | A068 | Grass - Bushy Clump",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A068 - Grass - Bushy Clump\\model.max",
+    "vertices": 7459,
+    "triangles": 8222,
+    "dimensions": [
+      17.17578125,
+      17.0703125,
+      6.7653608322143555
+    ],
+    "merge_seconds": 0.46991489990614355
+  },
+  {
+    "id": "A069",
+    "name": "Grass - Small Clump",
+    "node": "SOURCE | A069 | Grass - Small Clump",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A069 - Grass - Small Clump\\model.max",
+    "vertices": 4444,
+    "triangles": 4360,
+    "dimensions": [
+      14.5234375,
+      14.4921875,
+      4.994350433349609
+    ],
+    "merge_seconds": 0.48560289992019534
+  },
+  {
+    "id": "A070",
+    "name": "Clover - Patch 04",
+    "node": "SOURCE | A070 | Clover - Patch 04",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Groundcover\\A070 - Clover - Patch 04\\model.max",
+    "vertices": 2106,
+    "triangles": 2772,
+    "dimensions": [
+      7.69921875,
+      7.6875,
+      3.564150333404541
+    ],
+    "merge_seconds": 0.5006089000962675
+  },
+  {
+    "id": "A088",
+    "name": "Arthropodium - 01",
+    "node": "SOURCE | A088 | Arthropodium - 01",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Groundcover\\A088 - Arthropodium - 01\\model.max",
+    "vertices": 6765,
+    "triangles": 11460,
+    "dimensions": [
+      134.02734375,
+      117.80859375,
+      77.16642761230469
+    ],
+    "merge_seconds": 0.5417112000286579
+  },
+  {
+    "id": "A090",
+    "name": "Arthropodium - 04",
+    "node": "SOURCE | A090 | Arthropodium - 04",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Groundcover\\A090 - Arthropodium - 04\\model.max",
+    "vertices": 42135,
+    "triangles": 55752,
+    "dimensions": [
+      108.34765625,
+      171.96875,
+      111.07877349853516
+    ],
+    "merge_seconds": 0.6711826000828296
+  }
+]

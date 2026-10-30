@@ -1,0 +1,16 @@
+{
+  "owns_highlight": 1,
+  "sdk_hit_owner": "$Editable_Mesh:Owned layered scatter @ [0.000000,0.000000,0.000000]",
+  "selection": [
+    "Owned layered scatter"
+  ],
+  "edit_level": 1,
+  "selected_ids": [
+    "c:4294967299"
+  ],
+  "expected_id": "c:4294967299",
+  "active_layer_owner": 18,
+  "streams_unchanged": true,
+  "epoch_unchanged": true,
+  "status": "complete"
+}

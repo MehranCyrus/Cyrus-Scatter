@@ -1,0 +1,2137 @@
+{
+  "version": "0.87.6.1",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "interactions": 15,
+  "status": "scoped_pass",
+  "baseline": "0.87.6 exact installer-r2, preserving the artist-endorsed 0.87.5.6 response",
+  "native_tests": {
+    "passed": 62,
+    "total": 62,
+    "host": 2027,
+    "log_sha256": "2ea470a783c7048e648eb05e30e9f19dd9ed917a4409ab6c0a43aa9fab0ead5d"
+  },
+  "package": {
+    "status": "passed",
+    "version": "0.87.6.1",
+    "exe_sha256": "b629bbd547c2c4e48095e1d9f58fd1c8bce1c92bb836e376a3684e7490d9ec65",
+    "exe_bytes": 8360448,
+    "packages": {
+      "CyrusScatter-0.87.6.1-Max2024.mzp": "6062d120169169a8300969d65e89c25f6da48cdb4a5f48d76df5bd7288bf22d5",
+      "CyrusScatter-0.87.6.1-Max2026.mzp": "00b3290b2a5fff425148ff75e07a7d0b3f5a4903b3cdb1d242bcac7c27519c3b",
+      "CyrusScatter-0.87.6.1-Max2027.mzp": "d9938661abde552447147f46b0eb9bda9c229843e3d66b2b086e885cb2cb6105"
+    },
+    "embedded_resources": {
+      "Cyrus.Payload.2024.mzp": "6062d120169169a8300969d65e89c25f6da48cdb4a5f48d76df5bd7288bf22d5",
+      "Cyrus.Payload.2026.mzp": "00b3290b2a5fff425148ff75e07a7d0b3f5a4903b3cdb1d242bcac7c27519c3b",
+      "Cyrus.Payload.2027.mzp": "d9938661abde552447147f46b0eb9bda9c229843e3d66b2b086e885cb2cb6105"
+    },
+    "builds": {
+      "2024": {
+        "receipt_sha256": "6a94b051b5de6b85f56f48bd7b210c920f434037e412709af2b5d6376931b9f3",
+        "native": {
+          "AminScatter.dlx": "c56dc3ec1bd3439c3e1e970783bdbf3416935d914129430721ac0ebb19990b15",
+          "CyrusScatterEdit.dlm": "42c9e56aeb8cad09dfc40649fbad4ef917501e5b65de27cf1c2a26a4316f537a",
+          "CyrusBrush.dlx": "ca80bfc4c0b1e49f071ad31dda8f4678b00c3c2a2812865bfbf854b5917051e2",
+          "CyrusBrushStorage.dlh": "6b1b2b925b727826781482fc397981fe548708e5efc6093161403d4d9ed265eb"
+        },
+        "host_tested": false
+      },
+      "2026": {
+        "receipt_sha256": "6dcf7ff73ad7683f55290d1731288d04710c816b37d31b1bb03aa379fac63378",
+        "native": {
+          "AminScatter.dlx": "c8b283737eea58d5642e569e6335f622fbd949d563e3e7ae0aae539f429abba1",
+          "CyrusScatterEdit.dlm": "946abc7e64b80ac22ce49548f6beb05c32898c2244e1f23b744284b8cba1dc1e",
+          "CyrusBrush.dlx": "96343c1cdb22db5e0f65c3378094938e105bcee44ee56358d1dc602281b06cf1",
+          "CyrusBrushStorage.dlh": "0751439394ca7a1d971ee042237a5738147b5a06057d6fee10e80ca84d6742a1"
+        },
+        "host_tested": false
+      },
+      "2027": {
+        "receipt_sha256": "b6c6d66bf144e58c7de5af4d52ddf094b25d86f48e3b3f6e86bc243f38a30697",
+        "native": {
+          "AminScatter.dlx": "596d01f64d454f73c9e9306c35e0de7cc53eaed83969c2e407d68982b32678ac",
+          "CyrusScatterEdit.dlm": "834e2c054353c9c611c45314f40fe911a4c0690e92523d8559498ce651a53e1f",
+          "CyrusBrush.dlx": "57a48b0977c9723e9902a5d172f866b261c341cee97b0cbfd47a3ebb30ec3603",
+          "CyrusBrushStorage.dlh": "4a06167ce42bbebc9cfff9a288504330d512ef93e37b3a3244d6bca84462de8c"
+        },
+        "host_tested": true
+      }
+    },
+    "scope": "Exact-source native SDK builds and ZIP/EXE payload integrity. Max 2027 native and owned-host evidence is separate. Max 2024/2026 were not launched. Installer was not executed in artist profiles.",
+    "content": "Existing shared library and independently installed Surface Analyzer are retained; optional content ZIP is not embedded."
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.6.1",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 378,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "bc309833df213b2598869c7f6068f465970fb224f1537df4379f6f34822aa14f",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "input_integrity": {
+    "Terraces_Final.max": {
+      "bytes": 289793828,
+      "sha256": "69ff41356a5312dba7841bc47bbe49b6ce77a8ca79168fd045c8c17c618a8378"
+    },
+    "Rock_Boulder_10/Rock_10.max": {
+      "bytes": 286720,
+      "sha256": "3b540ffcaf3b20faebb62dbf46d10f4adc1da9d70bc199596b4882021a77ea85"
+    }
+  },
+  "ui": {
+    "baseline": {
+      "point_label_current": false,
+      "closed_page_current": true,
+      "epochs": [
+        2,
+        2
+      ],
+      "panels": {
+        "Layers": 398.1750999810174,
+        "Surfaces": 422.3018499324098,
+        "Models & Points": 345.48140002880245,
+        "Source containers": 250.6458000279963,
+        "Layout": 592.5533501431346,
+        "Amount": 328.8661000551656,
+        "Painting": 331.34594990406185,
+        "Include / exclude": 344.51609989628196,
+        "Transforms": 314.4392999820411,
+        "Spacing & cleanup": 315.64980011899024,
+        "Viewport & render": 306.1570499558002,
+        "Stats & diagnostics": 281.79100004490465,
+        "Interactions": 305.16139999963343,
+        "Scene colliders": 202.50630006194115
+      },
+      "stages": [
+        {
+          "stage": "geometry_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mesh_channel_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "candidates",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mask_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "surface_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "attributes_radii",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "spacing",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "preview_prepare",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "buffer_upload",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "publication",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "map_bake",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_create",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_bind",
+          "calls": 84,
+          "total_us": 1607141,
+          "max_us": 192011,
+          "failed": 0
+        },
+        {
+          "stage": "ui_layout",
+          "calls": 12,
+          "total_us": 486646,
+          "max_us": 99099,
+          "failed": 0
+        },
+        {
+          "stage": "ui_lists",
+          "calls": 19,
+          "total_us": 58715,
+          "max_us": 8927,
+          "failed": 0
+        }
+      ]
+    },
+    "candidate": {
+      "point_label_current": true,
+      "closed_page_current": true,
+      "epochs": [
+        2,
+        2
+      ],
+      "panels": {
+        "Layers": 302.34359996393323,
+        "Surfaces": 360.96335004549474,
+        "Models & Points": 308.2946001086384,
+        "Source containers": 182.38325009588152,
+        "Layout": 413.06005010847,
+        "Amount": 268.1260498939082,
+        "Painting": 254.85874980222434,
+        "Include / exclude": 283.0285000381991,
+        "Transforms": 276.24299994204193,
+        "Spacing & cleanup": 271.9782000640407,
+        "Viewport & render": 256.6122498828918,
+        "Stats & diagnostics": 215.05190001334995,
+        "Interactions": 249.5611000340432,
+        "Scene colliders": 186.9936001021415
+      },
+      "stages": [
+        {
+          "stage": "geometry_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mesh_channel_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "candidates",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mask_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "surface_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "attributes_radii",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "spacing",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "preview_prepare",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "buffer_upload",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "publication",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "map_bake",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_create",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_bind",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_layout",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_lists",
+          "calls": 1,
+          "total_us": 591,
+          "max_us": 591,
+          "failed": 0
+        }
+      ]
+    },
+    "final_package": {
+      "status": "complete",
+      "before_assignment": [
+        "UI source | 1.00 | Unassigned",
+        "[Point] | 1.00 | Unassigned"
+      ],
+      "after_assignment": [
+        "UI source | 1.00 | Out 1",
+        "[Point] | 1.00 | Out 1"
+      ],
+      "authored_band_label": "Out 1",
+      "point_label_current": true,
+      "after_forced_refresh": [
+        "UI source | 1.00 | Out 1",
+        "[Point] | 1.00 | Out 1"
+      ],
+      "closed_page_current": true,
+      "version": "0.87.6.1"
+    }
+  },
+  "contact": {
+    "baseline": {
+      "bend": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 49.5433,
+          "p95": 57.7239,
+          "maximum": 69.0887
+        },
+        "max_queries": 3401,
+        "max_fitted_guides": 1980,
+        "fitted_guides": [
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1373,
+          1333,
+          1330,
+          1330,
+          1330,
+          1333,
+          1373,
+          1980,
+          1980
+        ]
+      },
+      "fixed": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 16.17265,
+          "p95": 22.4229,
+          "maximum": 24.7064
+        },
+        "max_queries": 3587,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "zero": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 13.742,
+          "p95": 20.9788,
+          "maximum": 21.3185
+        },
+        "max_queries": 3587,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "fixed-trim": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 6.9159,
+          "p95": 7.8257,
+          "maximum": 7.9519
+        },
+        "max_queries": 1115,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "zero-cover": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 7.64675,
+          "p95": 12.6347,
+          "maximum": 18.9189
+        },
+        "max_queries": 2367,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "orbit_work_unchanged": true
+    },
+    "candidate": {
+      "bend": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 44.62125,
+          "p95": 49.9563,
+          "maximum": 51.7545
+        },
+        "max_queries": 3401,
+        "max_fitted_guides": 1980,
+        "fitted_guides": [
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1980,
+          1373,
+          1333,
+          1330,
+          1330,
+          1330,
+          1333,
+          1373,
+          1980,
+          1980
+        ]
+      },
+      "fixed": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 6.3183,
+          "p95": 6.8788,
+          "maximum": 6.8844
+        },
+        "max_queries": 0,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "zero": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 6.5365,
+          "p95": 7.7536,
+          "maximum": 9.1795
+        },
+        "max_queries": 0,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "fixed-trim": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 6.82495,
+          "p95": 7.144,
+          "maximum": 7.2032
+        },
+        "max_queries": 1106,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "zero-cover": {
+        "fit_ms": {
+          "samples": 16,
+          "median": 6.3304,
+          "p95": 7.229,
+          "maximum": 7.4261
+        },
+        "max_queries": 0,
+        "max_fitted_guides": 0,
+        "fitted_guides": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "orbit_work_unchanged": true
+    }
+  },
+  "locality": [
+    {
+      "case": "local-only",
+      "accepted": [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      "fit_ms": {
+        "samples": 14,
+        "median": 43.2746,
+        "p95": 52.6682,
+        "maximum": 53.4446
+      },
+      "max_affected": 9,
+      "max_queries": 3387
+    },
+    {
+      "case": "distant-1000",
+      "accepted": [
+        0,
+        0,
+        16,
+        0,
+        0,
+        1000
+      ],
+      "fit_ms": {
+        "samples": 14,
+        "median": 53.0727,
+        "p95": 61.7205,
+        "maximum": 92.1716
+      },
+      "max_affected": 9,
+      "max_queries": 3387
+    },
+    {
+      "case": "distant-10000",
+      "accepted": [
+        0,
+        0,
+        16,
+        0,
+        0,
+        10000
+      ],
+      "fit_ms": {
+        "samples": 14,
+        "median": 50.73075,
+        "p95": 62.3149,
+        "maximum": 66.0019
+      },
+      "max_affected": 9,
+      "max_queries": 3387
+    },
+    {
+      "case": "two-colliders",
+      "accepted": [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      "fit_ms": {
+        "samples": 14,
+        "median": 43.4001,
+        "p95": 49.276,
+        "maximum": 73.4185
+      },
+      "max_affected": 11,
+      "max_queries": 3905
+    }
+  ],
+  "proxy_comparison": [
+    {
+      "case": "original-stone",
+      "faces": 84,
+      "fit_ms": {
+        "samples": 14,
+        "median": 41.942449999999994,
+        "p95": 49.5308,
+        "maximum": 66.6555
+      }
+    },
+    {
+      "case": "box-proxy",
+      "faces": 12,
+      "fit_ms": {
+        "samples": 14,
+        "median": 42.95265,
+        "p95": 60.9667,
+        "maximum": 68.5093
+      }
+    }
+  ],
+  "rapid": {
+    "rapid-scene": {
+      "samples": 24,
+      "presented_during_movement": 10,
+      "final_frame": [
+        29,
+        29,
+        2
+      ],
+      "fit_ms": {
+        "samples": 12,
+        "median": 41.2502,
+        "p95": 51.1641,
+        "maximum": 86.3277
+      },
+      "orbit_work_unchanged": true
+    },
+    "rapid-edit": {
+      "samples": 24,
+      "presented_during_movement": 12,
+      "final_frame": [
+        54,
+        54,
+        2
+      ],
+      "fit_ms": {
+        "samples": 12,
+        "median": 40.5875,
+        "p95": 51.3061,
+        "maximum": 52.1496
+      },
+      "orbit_work_unchanged": true
+    }
+  },
+  "edit_settings": "complete",
+  "navigation": [
+    {
+      "case": "light",
+      "cpu_redraw_ms": {
+        "samples": 24,
+        "median": 17.120799981057644,
+        "p95": 20.245700143277645,
+        "maximum": 29.112800024449825
+      },
+      "idle_triangles": 8500744,
+      "navigation_triangles": 903656,
+      "work_unchanged": true,
+      "epochs_unchanged": true,
+      "stream_delta": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "memory_estimates": [
+        1,
+        0,
+        8589934592,
+        2942725969,
+        5219410278,
+        1965078473,
+        977647496,
+        0,
+        41773756416,
+        55055892480,
+        6436638464,
+        536870912,
+        2147483648,
+        32000000,
+        "fallback",
+        ""
+      ]
+    },
+    {
+      "case": "balanced",
+      "cpu_redraw_ms": {
+        "samples": 24,
+        "median": 14.6656499709934,
+        "p95": 16.810999950394034,
+        "maximum": 18.41780007816851
+      },
+      "idle_triangles": 24569988,
+      "navigation_triangles": 4496845,
+      "work_unchanged": true,
+      "epochs_unchanged": true,
+      "stream_delta": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "memory_estimates": [
+        1,
+        0,
+        8589934592,
+        3843517393,
+        5219410278,
+        2491916393,
+        1351601000,
+        0,
+        41243725824,
+        54736625664,
+        6436638464,
+        536870912,
+        2147483648,
+        32000000,
+        "fallback",
+        ""
+      ]
+    },
+    {
+      "case": "detail",
+      "cpu_redraw_ms": {
+        "samples": 24,
+        "median": 14.928249991498888,
+        "p95": 16.575600020587444,
+        "maximum": 18.24599993415177
+      },
+      "idle_triangles": 40601757,
+      "navigation_triangles": 8500744,
+      "work_unchanged": true,
+      "epochs_unchanged": true,
+      "stream_delta": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "memory_estimates": [
+        1,
+        0,
+        8589934592,
+        4317782001,
+        5219410278,
+        2768822093,
+        1548959908,
+        0,
+        40845897728,
+        54535430144,
+        6436638464,
+        536870912,
+        2147483648,
+        32000000,
+        "fallback",
+        ""
+      ]
+    }
+  ],
+  "landscape": {
+    "root_handles": [
+      137643,
+      137643
+    ],
+    "samples": [
+      {
+        "step": 0,
+        "cpu_sync_ms": 26.14729991182685,
+        "frame": "#(1, 5L, 5L, 2, true, 4L, 4L, false, false, true, 0, \"4762637190139754731;13406172227541630818;12594191222470960251;17353265481026261018;\", \"4762637190139754731;13406172227541630818;12594191222470960251;17353265481026261018;\", \"\")",
+        "stats": {
+          "affected": 53,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 60804,
+          "covered": 25,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 17.1681,
+          "fitted_guides": 147,
+          "generation": 2,
+          "hidden_roots": 27036,
+          "hinge_fits": 236,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 800936,
+          "posed": 63,
+          "preview_builds": 2,
+          "preview_ms": 8.3278,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 321,
+            "layouts": 49,
+            "plant_fits": 4119,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 151,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 13963,
+          "query_ms": 0.0252,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 55,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 17.2343,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 2,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 1,
+        "cpu_sync_ms": 26.06999990530312,
+        "frame": "#(1, 6L, 6L, 2, true, 4L, 4L, false, false, true, 0, \"11213912086549614633;13406172227541630818;12594191222470960251;14907008943301039095;\", \"11213912086549614633;13406172227541630818;12594191222470960251;14907008943301039095;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 61702,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 17.1644,
+          "fitted_guides": 157,
+          "generation": 3,
+          "hidden_roots": 26921,
+          "hinge_fits": 244,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 803904,
+          "posed": 62,
+          "preview_builds": 3,
+          "preview_ms": 8.172,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 322,
+            "layouts": 49,
+            "plant_fits": 4173,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 149,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 15077,
+          "query_ms": 0.0207,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 60,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 17.2231,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 3,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 2,
+        "cpu_sync_ms": 26.643200078979135,
+        "frame": "#(1, 7L, 7L, 2, true, 4L, 4L, false, false, true, 0, \"6223891110695713680;13406172227541630818;12594191222470960251;4724229332507300712;\", \"6223891110695713680;13406172227541630818;12594191222470960251;4724229332507300712;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 61234,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 18.2439,
+          "fitted_guides": 162,
+          "generation": 4,
+          "hidden_roots": 26621,
+          "hinge_fits": 255,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 804856,
+          "posed": 62,
+          "preview_builds": 4,
+          "preview_ms": 7.6141,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 323,
+            "layouts": 49,
+            "plant_fits": 4227,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 155,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 16502,
+          "query_ms": 0.0253,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 59,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 18.313,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 4,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 3,
+        "cpu_sync_ms": 26.223500026389956,
+        "frame": "#(1, 8L, 8L, 2, true, 4L, 4L, false, false, true, 0, \"4167100750081968951;13406172227541630818;12594191222470960251;54086131738831337;\", \"4167100750081968951;13406172227541630818;12594191222470960251;54086131738831337;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 60584,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 17.6498,
+          "fitted_guides": 146,
+          "generation": 5,
+          "hidden_roots": 26266,
+          "hinge_fits": 238,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 800656,
+          "posed": 62,
+          "preview_builds": 5,
+          "preview_ms": 7.8813,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 324,
+            "layouts": 49,
+            "plant_fits": 4281,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 154,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 18335,
+          "query_ms": 0.0239,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 61,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 17.717,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 5,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 4,
+        "cpu_sync_ms": 28.53880007751286,
+        "frame": "#(1, 9L, 9L, 2, true, 4L, 4L, false, false, true, 0, \"3704879975422081878;13406172227541630818;12594191222470960251;8633700428262187833;\", \"3704879975422081878;13406172227541630818;12594191222470960251;8633700428262187833;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 59526,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 20.5246,
+          "fitted_guides": 140,
+          "generation": 6,
+          "hidden_roots": 25942,
+          "hinge_fits": 218,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 798808,
+          "posed": 62,
+          "preview_builds": 6,
+          "preview_ms": 7.2303,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 325,
+            "layouts": 49,
+            "plant_fits": 4335,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 140,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 20205,
+          "query_ms": 0.0231,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 60,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 20.5914,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 6,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 5,
+        "cpu_sync_ms": 25.995700154453516,
+        "frame": "#(1, 10L, 10L, 2, true, 4L, 4L, false, false, true, 0, \"11017530770704304455;13406172227541630818;12594191222470960251;15386426073646496360;\", \"11017530770704304455;13406172227541630818;12594191222470960251;15386426073646496360;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 57468,
+          "covered": 27,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 18.4454,
+          "fitted_guides": 119,
+          "generation": 7,
+          "hidden_roots": 25780,
+          "hinge_fits": 181,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 785002,
+          "posed": 60,
+          "preview_builds": 7,
+          "preview_ms": 6.9438,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 326,
+            "layouts": 49,
+            "plant_fits": 4389,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 124,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 20865,
+          "query_ms": 0.0195,
+          "restored": 1,
+          "retained_covered_roots": 0,
+          "reused_poses": 61,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 18.5019,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 7,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 6,
+        "cpu_sync_ms": 27.078400133177638,
+        "frame": "#(1, 11L, 11L, 2, true, 4L, 4L, false, false, true, 0, \"15658817240587979074;13406172227541630818;12594191222470960251;15643205033198792641;\", \"15658817240587979074;13406172227541630818;12594191222470960251;15643205033198792641;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 59526,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 19.4155,
+          "fitted_guides": 140,
+          "generation": 8,
+          "hidden_roots": 25942,
+          "hinge_fits": 218,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 798808,
+          "posed": 62,
+          "preview_builds": 8,
+          "preview_ms": 7.1091,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 327,
+            "layouts": 49,
+            "plant_fits": 4443,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 140,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 20205,
+          "query_ms": 0.0197,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 61,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 19.4731,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 8,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 7,
+        "cpu_sync_ms": 26.62770007736981,
+        "frame": "#(1, 12L, 12L, 2, true, 4L, 4L, false, false, true, 0, \"18224951378204996411;13406172227541630818;12594191222470960251;13561095135673146815;\", \"18224951378204996411;13406172227541630818;12594191222470960251;13561095135673146815;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 60584,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 18.8682,
+          "fitted_guides": 146,
+          "generation": 9,
+          "hidden_roots": 26266,
+          "hinge_fits": 238,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 800656,
+          "posed": 62,
+          "preview_builds": 9,
+          "preview_ms": 7.2403,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 328,
+            "layouts": 49,
+            "plant_fits": 4497,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 154,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 18334,
+          "query_ms": 0.018,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 60,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 18.9209,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 9,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 8,
+        "cpu_sync_ms": 25.8158000651747,
+        "frame": "#(1, 13L, 13L, 2, true, 4L, 4L, false, false, true, 0, \"13070862295266337498;13406172227541630818;12594191222470960251;17288355855847710533;\", \"13070862295266337498;13406172227541630818;12594191222470960251;17288355855847710533;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 61234,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 18.0447,
+          "fitted_guides": 162,
+          "generation": 10,
+          "hidden_roots": 26621,
+          "hinge_fits": 255,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 804856,
+          "posed": 62,
+          "preview_builds": 10,
+          "preview_ms": 7.1731,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 329,
+            "layouts": 49,
+            "plant_fits": 4551,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 155,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 16501,
+          "query_ms": 0.0201,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 61,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 18.1013,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 10,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 9,
+        "cpu_sync_ms": 23.575699888169765,
+        "frame": "#(1, 14L, 14L, 2, true, 4L, 4L, false, false, true, 0, \"15358426404145052657;13406172227541630818;12594191222470960251;10662461105975799684;\", \"15358426404145052657;13406172227541630818;12594191222470960251;10662461105975799684;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 61702,
+          "covered": 26,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 15.8237,
+          "fitted_guides": 157,
+          "generation": 11,
+          "hidden_roots": 26921,
+          "hinge_fits": 244,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 803904,
+          "posed": 62,
+          "preview_builds": 11,
+          "preview_ms": 7.1795,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 330,
+            "layouts": 49,
+            "plant_fits": 4605,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 149,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 15077,
+          "query_ms": 0.02,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 59,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 15.8834,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 11,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 10,
+        "cpu_sync_ms": 25.076699908822775,
+        "frame": "#(1, 15L, 15L, 2, true, 4L, 4L, false, false, true, 0, \"18386731095600190760;13406172227541630818;12594191222470960251;9635063465665766533;\", \"18386731095600190760;13406172227541630818;12594191222470960251;9635063465665766533;\", \"\")",
+        "stats": {
+          "affected": 54,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 62205,
+          "covered": 25,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 17.2953,
+          "fitted_guides": 147,
+          "generation": 12,
+          "hidden_roots": 27036,
+          "hinge_fits": 236,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 800936,
+          "posed": 63,
+          "preview_builds": 12,
+          "preview_ms": 7.2278,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 331,
+            "layouts": 49,
+            "plant_fits": 4659,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 151,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 14364,
+          "query_ms": 0.0226,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 60,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 17.3597,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 12,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      },
+      {
+        "step": 11,
+        "cpu_sync_ms": 24.431300116702914,
+        "frame": "#(1, 16L, 16L, 2, true, 4L, 4L, false, false, true, 0, \"3409306396306452083;13406172227541630818;12594191222470960251;1113147652281575120;\", \"3409306396306452083;13406172227541630818;12594191222470960251;1113147652281575120;\", \"\")",
+        "stats": {
+          "affected": 53,
+          "blocked_guides": 0,
+          "collider_bake_bytes": 0,
+          "compute_participants": 4,
+          "coverage_queries": 61187,
+          "covered": 23,
+          "error": "",
+          "exact_face_tests": 0,
+          "exact_inverse_vertices": 0,
+          "exact_mesh_checks": 0,
+          "exact_mesh_scratch_bound_bytes": 0,
+          "exact_point_tests": 0,
+          "exact_transformed_vertices": 0,
+          "failures": 0,
+          "fit_ms": 16.1624,
+          "fitted_guides": 152,
+          "generation": 13,
+          "hidden_roots": 27043,
+          "hinge_fits": 251,
+          "host_runtime_reservation_bytes": 1143216,
+          "index_ms": 0.0,
+          "index_payload_bytes": 38360,
+          "iterations": 0,
+          "layout_payload_bytes": 23170,
+          "limited_guides": 0,
+          "maximum_checked_stem_edge_change": 0.0,
+          "mesh_refinement_work": 0,
+          "mesh_refinements": 0,
+          "obstacle_index_payload_bytes": 4560,
+          "obstacle_query_scratch_bound_bytes": 165952,
+          "obstacles": 22,
+          "plants": 160,
+          "pose_payload_bytes": 802280,
+          "posed": 65,
+          "preview_builds": 13,
+          "preview_ms": 7.6998,
+          "preview_reuse_ms": 0.0017,
+          "preview_reuses": 8,
+          "process_work": {
+            "collider_cooks": 864,
+            "evaluations": 332,
+            "layouts": 49,
+            "plant_fits": 4712,
+            "source_captures": 868,
+            "source_preparations": 4
+          },
+          "pruned_guides": 161,
+          "quality_checked_guides": 0,
+          "quality_warning_guides": 0,
+          "queries": 13588,
+          "query_ms": 0.019,
+          "restored": 0,
+          "retained_covered_roots": 0,
+          "reused_poses": 55,
+          "reuses": 0,
+          "scene_source_watch": [],
+          "separation_queries": 0,
+          "thread_launch_fallback": false,
+          "total_ms": 16.2171,
+          "transient_obstacle_index_payload_bytes": 192,
+          "updates": 13,
+          "worker_coverage_ms": 0.0,
+          "worker_edge_quality_ms": 0.0,
+          "worker_mesh_check_ms": 0.0,
+          "worker_mesh_face_ms": 0.0,
+          "worker_mesh_point_ms": 0.0,
+          "worker_mesh_transform_ms": 0.0
+        }
+      }
+    ],
+    "active_grass_sources": 1,
+    "controllers": [
+      {
+        "name": "GARDEN | Woodland framing",
+        "counts": [
+          38,
+          49,
+          16,
+          18,
+          13,
+          12
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Terraced meadows",
+        "counts": [
+          9507,
+          4500,
+          1838
+        ],
+        "errors": [
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Flower and shrub drifts",
+        "counts": [
+          76,
+          62,
+          24,
+          26
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Lake garden detail",
+        "counts": [
+          456,
+          900,
+          242,
+          270
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Lakeside boulders",
+        "counts": [
+          1,
+          6,
+          15,
+          160
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\Terraces_Garden_0.87.6.1_Max2027.max",
+    "status": "complete",
+    "drag_fit_ms": {
+      "samples": 12,
+      "median": 17.84725,
+      "p95": 19.4155,
+      "maximum": 20.5246
+    },
+    "counts": 18229
+  },
+  "landscape_render": {
+    "render_seconds": 250.95030839997344,
+    "controllers": [
+      {
+        "name": "GARDEN | Woodland framing",
+        "counts": [
+          38,
+          49,
+          16,
+          18,
+          13,
+          12
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Terraced meadows",
+        "counts": [
+          9507,
+          4500,
+          1838
+        ],
+        "errors": [
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Flower and shrub drifts",
+        "counts": [
+          76,
+          62,
+          24,
+          26
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Lake garden detail",
+        "counts": [
+          456,
+          900,
+          242,
+          270
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "name": "GARDEN | Lakeside boulders",
+        "counts": [
+          1,
+          6,
+          15,
+          160
+        ],
+        "errors": [
+          "",
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "contact": {
+      "affected": 101,
+      "blocked_guides": 0,
+      "collider_bake_bytes": 0,
+      "compute_participants": 4,
+      "coverage_queries": 133399,
+      "covered": 23,
+      "error": "",
+      "exact_face_tests": 0,
+      "exact_inverse_vertices": 0,
+      "exact_mesh_checks": 0,
+      "exact_mesh_scratch_bound_bytes": 0,
+      "exact_point_tests": 0,
+      "exact_transformed_vertices": 0,
+      "failures": 0,
+      "fit_ms": 27.9266,
+      "fitted_guides": 314,
+      "generation": 1,
+      "hidden_roots": 27043,
+      "hinge_fits": 475,
+      "host_runtime_reservation_bytes": 1143216,
+      "index_ms": 0.0812,
+      "index_payload_bytes": 38360,
+      "iterations": 0,
+      "layout_payload_bytes": 23170,
+      "limited_guides": 0,
+      "maximum_checked_stem_edge_change": 0.0,
+      "mesh_refinement_work": 0,
+      "mesh_refinements": 0,
+      "obstacle_index_payload_bytes": 4560,
+      "obstacle_query_scratch_bound_bytes": 165952,
+      "obstacles": 22,
+      "plants": 160,
+      "pose_payload_bytes": 802280,
+      "posed": 65,
+      "preview_builds": 1,
+      "preview_ms": 10.2213,
+      "preview_reuse_ms": 0.0,
+      "preview_reuses": 0,
+      "process_work": {
+        "collider_cooks": 865,
+        "evaluations": 336,
+        "layouts": 53,
+        "plant_fits": 5116,
+        "source_captures": 870,
+        "source_preparations": 5
+      },
+      "pruned_guides": 161,
+      "quality_checked_guides": 0,
+      "quality_warning_guides": 0,
+      "queries": 24915,
+      "query_ms": 0.0737,
+      "restored": 0,
+      "retained_covered_roots": 0,
+      "reused_poses": 0,
+      "reuses": 0,
+      "scene_source_watch": [],
+      "separation_queries": 0,
+      "thread_launch_fallback": false,
+      "total_ms": 28.0161,
+      "transient_obstacle_index_payload_bytes": 0,
+      "updates": 1,
+      "worker_coverage_ms": 0.0,
+      "worker_edge_quality_ms": 0.0,
+      "worker_mesh_check_ms": 0.0,
+      "worker_mesh_face_ms": 0.0,
+      "worker_mesh_point_ms": 0.0,
+      "worker_mesh_transform_ms": 0.0
+    },
+    "presentation": "#(1, 3L, 3L, 2, true, 4L, 4L, false, false, true, 0, \"17727920481894172375;13406172227541630818;12594191222470960251;11405149985467329266;\", \"17727920481894172375;13406172227541630818;12594191222470960251;11405149985467329266;\", \"\")",
+    "water_renderable": true,
+    "scene_bytes": 725570588,
+    "status": "complete"
+  },
+  "scene_files": {
+    "Terraces_Garden_0.87.6.1_Max2027.max": {
+      "bytes": 725570588,
+      "sha256": "bd41e91c6da20aa5184693535f86899350f44fb11946bb7b9fdaf2aa3085c132"
+    },
+    "Contact_Distant_10000_Stress.max": {
+      "bytes": 144854306,
+      "sha256": "86e797207dbb4335d82f481abc19e6d3a4e2c20cd26f145b84137362a2801d27"
+    },
+    "Terraces_Garden_0.87.6.1.png": {
+      "bytes": 4861485,
+      "sha256": "5cb0315d49a6f31502375ec3e8fee97d694a5bfc427a6d9de231ad961bc7b14a"
+    }
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-2027\\AminScatter.dlx",
+        "sha256": "596d01f64d454f73c9e9306c35e0de7cc53eaed83969c2e407d68982b32678ac"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-2027\\CyrusBrush.dlx",
+        "sha256": "57a48b0977c9723e9902a5d172f866b261c341cee97b0cbfd47a3ebb30ec3603"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-2027\\CyrusBrushStorage.dlh",
+        "sha256": "4a06167ce42bbebc9cfff9a288504330d512ef93e37b3a3244d6bca84462de8c"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-2027\\CyrusScatterEdit.dlm",
+        "sha256": "834e2c054353c9c611c45314f40fe911a4c0690e92523d8559498ce651a53e1f"
+      }
+    },
+    "script_fingerprint": "5ea9855dba298d01fedc9d8a425e248c7ef01c2cb675d66184855150e21d4a3d"
+  },
+  "scene_proxy": {
+    "source_triangles": 752,
+    "proxy_triangles": 140,
+    "reason": "Source rock has an open bottom; explicit closed convex scene proxy used. No automatic convex policy added."
+  },
+  "cleanup": {
+    "folders": 21,
+    "logical_GiB": 15.3185,
+    "scope": "Older explicitly inventoried disposable build folders; small receipts archived; reparse candidate retained."
+  },
+  "limits": [
+    "CPU/scripted redraw timings are not presented FPS or physical mouse latency.",
+    "2024/2026 compile/package only; no host execution.",
+    "Box proxy was not faster and was rejected as a general optimization. Convex proxies can fill openings.",
+    "Library 0.87.5.1 retains its own evidence.",
+    "Full renderer fidelity/long-session memory/device-loss/million-instance realtime remain unqualified.",
+    "Knowledge index and public website not rebuilt."
+  ]
+}

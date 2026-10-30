@@ -79,6 +79,7 @@
 .product-page .release-action.primary:disabled{background:#dbe2d0;color:#4d6043;border-color:#aebda0}
 .product-page .release-action:not(:disabled):hover{filter:brightness(.93)}
 .product-page .release-availability{font-size:10px;color:var(--muted);line-height:1.8;margin:12px 0 8px}
+.product-page .release-links{display:flex;flex-wrap:wrap;gap:0 20px}
 .product-page .release-content{border:1px solid var(--line);padding:30px;background:#f1f0e7}
 .docs-shell .product-page .release-content h2{font-size:30px;font-weight:450;line-height:1.15;letter-spacing:-1px;margin:24px 0}
 .product-page .release-content>p:not(.product-kicker){font-size:12px;line-height:1.85;color:var(--muted)}

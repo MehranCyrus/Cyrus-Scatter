@@ -67,13 +67,13 @@ Bounds deformationBounds(const DeformationSource& data,const std::vector<Deforma
         for(unsigned j=0;j<guides[i].rest.nodes.size();++j){auto p=point(words[data.guideSlots[i]+2*j]);b.include(sub(p,{radius,radius,radius}));b.include(add(p,{radius,radius,radius}));}}
     return b;
 }
-Vec deformationPoint(const DeformationSource& data,const std::vector<DeformationWord>& pose,unsigned face,unsigned corner){
+Vec deformationPoint(const DeformationSource& data,const std::vector<DeformationWord>& pose,unsigned face,unsigned corner,unsigned offset){
     if(corner>2||face>=data.faces.size())throw std::runtime_error("Compact corner outside source");unsigned base=face*10+corner*3;const auto& rest=data.corners[base];const auto& meta=data.corners[base+1];
-    if(rest[3]==0||pose.at(unsigned(meta[3]))[3]<=0)return point(rest);
-    const auto& a=pose.at(unsigned(meta[0]));const auto& b=pose.at(unsigned(meta[1]));auto q=g::shortest_slerp(quaternion(pose.at(unsigned(meta[0])+1)),quaternion(pose.at(unsigned(meta[1])+1)),meta[2]);
+    if(rest[3]==0||pose.at(offset+unsigned(meta[3]))[3]<=0)return point(rest);
+    const auto& a=pose.at(offset+unsigned(meta[0]));const auto& b=pose.at(offset+unsigned(meta[1]));auto q=g::shortest_slerp(quaternion(pose.at(offset+unsigned(meta[0])+1)),quaternion(pose.at(offset+unsigned(meta[1])+1)),meta[2]);
     if(!q)throw std::runtime_error("Invalid compact interpolated frame");return add(f::lerp(point(a),point(b),meta[2]),f::rotate(*q,point(data.corners[base+2])));
 }
-bool deformationVisible(const DeformationSource& data,const std::vector<DeformationWord>& pose,unsigned face){const auto& roots=data.corners.at(face*10+9);for(unsigned k=0;k<3;++k)if(pose.at(unsigned(roots[k]))[3]<0)return false;return true;}
+bool deformationVisible(const DeformationSource& data,const std::vector<DeformationWord>& pose,unsigned face,unsigned offset){const auto& roots=data.corners.at(face*10+9);for(unsigned k=0;k<3;++k)if(pose.at(offset+unsigned(roots[k]))[3]<0)return false;return true;}
 DeformationChanges deformationChanges(const std::vector<DeformationChange>& changes){
     if(changes.size()>indexLimit/10)throw std::runtime_error("Compact changed-instance admission exceeded");
     DeformationChanges result;result.capacity=1;while(result.capacity<std::max<std::size_t>(1,changes.size()*2))result.capacity*=2;

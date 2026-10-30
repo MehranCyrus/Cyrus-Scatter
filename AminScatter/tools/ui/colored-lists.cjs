@@ -5,7 +5,7 @@ module.exports=function(text,components){
  if(components.some(p=>p.key==='sourceUI'))specs.push({id:'sourceUI_plantList',multi:true,name:'sourceUI_obj.sourceLabel (args.Index+1)',color:'sourceUI_obj.sourceIDColor (args.Index+1)',select:'if newFocus>0 do sourceUI_focusedRow=newFocus;sourceUI_showSelectedColor()',tip:'(sourceUI_obj.sourceLabel (row+1))+"\\n"+(sourceUI_obj.sourceBandDetails (row+1))'});
  if(components.some(p=>p.key==='flow_layersUI'))specs.push({id:'flow_layersUI_layerList',multi:false,name:'root.layerCaption flow_layersUI_members[args.Index+1]',color:'flow_layersUI_members[args.Index+1].layerIDColor',select:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]',open:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]',tip:'root.layerCaption flow_layersUI_members[row+1]'});
  if(components.some(p=>p.key==='diversityUI')){
-  specs.push({id:'diversityUI_strokesList',multi:false,color:'diversityUI_obj.strokeDisplayColors[diversityUI_strokeRows[args.Index+1]]',select:'diversityUI_selectedBandID=if view.SelectedIndex>=0 then diversityUI_obj.strokeIDs[diversityUI_strokeRows[view.SelectedIndex+1]] else 0;diversityUI_showStroke()'});
+  specs.push({id:'diversityUI_strokesList',multi:false,color:'diversityUI_bandAssignmentPalette diversityUI_strokeRows[args.Index+1]',palette:true,tip:'diversityUI_bandAssignmentTip diversityUI_strokeRows[row+1]',select:'diversityUI_selectedBandID=if view.SelectedIndex>=0 then diversityUI_obj.strokeIDs[diversityUI_strokeRows[view.SelectedIndex+1]] else 0;diversityUI_showStroke()'});
   specs.push({id:'diversityUI_strokeChoices',multi:true,toggle:true,color:'diversityUI_choiceColor (args.Index+1)',select:'diversityUI_setBandChoices indices'});
  }
  if(!specs.length)return text;
@@ -40,10 +40,14 @@ module.exports=function(text,components){
         on ${id} DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
             local shade=if args.Index<${id}_colors.count then ${id}_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
-            local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
             local inset=(ceil (3*${id}_scale)) as integer,swatch=(ceil (10*${id}_scale)) as integer
-            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
-            ink.Dispose()
+            local palette=${s.palette?'if classof shade==Array then shade else #()':'#(shade)'},swatchHeight=amax 1 (rectangle.Height-2*inset)
+            for band=1 to palette.count do (
+                local colorValue=palette[band],ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (colorValue.r as integer) (colorValue.g as integer) (colorValue.b as integer))
+                local left=floor ((band-1)*swatch/palette.count),right=floor (band*swatch/palette.count)
+                args.Graphics.FillRectangle ink (rectangle.X+inset+left) (rectangle.Y+inset) (amax 1 (right-left)) swatchHeight
+                ink.Dispose()
+            )
             ${s.name?`local fullText=view.Items.Item[args.Index] as string,fullName=${s.name}
             local suffix=substring fullText (fullName.count+1) -1
             local textRenderer=dotNetClass "System.Windows.Forms.TextRenderer",flags=dotNetClass "System.Windows.Forms.TextFormatFlags"
@@ -92,7 +96,7 @@ ${specs.map(s=>{const id=s.id+'_colored';return `                -- The native l
                 )
                 local colors=for row=1 to ${s.id}.items.count collect (${s.color.replaceAll('args.Index+1','row')})
                 local colorsChanged=colors.count!=${id}_colors.count
-                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=${id}_colors[row]
+                if not colorsChanged do colorsChanged=not CyrusPresetSameValues colors ${id}_colors
                 if colorsChanged do ${id}_colors=colors
                 for i=0 to ${id}.Items.Count-1 do (
                     local selected=${s.multi?`${s.id}.selection[i+1]`:`${s.id}.selection==i+1`}

@@ -29,6 +29,12 @@ Pose adaptSource(const Source& source,const std::vector<Shape>& shapes,double cl
         // receive their own independent response from their fixed attachment.
         if(trunk&&trunkBend==0)continue;
         const bool parentMoved=guide.parent>=0&&bool(pose.guides[guide.parent]);
+        // No contact result can alter a disabled response. Root coverage was
+        // handled above, independently. A moved parent still carries its child
+        // even when that child cannot bend or trim on its own.
+        const bool canBend=response!=2&&strength>0&&fixedBase<1&&source.guideBounds[index].hi.y>fixedHeight;
+        const bool canTrim=response!=1&&!trunk&&amount>0;
+        if(!canBend&&!canTrim&&!parentMoved)continue;
         if(!parentMoved&&std::none_of(cached.begin(),cached.end(),[&](const auto& shape){return source.guideBounds[index].expanded(clearance).overlaps(shape.bounds);}))continue;
         auto rest=guide.rest;bool changed=false;
         if(guide.parent>=0&&pose.guides[guide.parent]){
@@ -39,7 +45,7 @@ Pose adaptSource(const Source& source,const std::vector<Shape>& shapes,double cl
         Bounds envelope;const double radius=source.guideRadius[index];for(auto p:rest.nodes)envelope.include(p);
         envelope=envelope.expanded(radius+clearance);
         double depth=0,contactNode=0;Vec away{};const unsigned spans=unsigned(rest.nodes.size()-1),samples=std::min(4u,spans);
-        for(const auto& shape:cached){if(!envelope.overlaps(shape.bounds))continue;
+        if(canBend||canTrim)for(const auto& shape:cached){if(!envelope.overlaps(shape.bounds))continue;
             for(unsigned sample=0;sample<samples;++sample){const auto a=sample*spans/samples,b=(sample+1)*spans/samples;
                 const double band=radius+clearance+1e-6;Bounds spanBox;spanBox.include(rest.nodes[a]);spanBox.include(rest.nodes[b]);
                 if(!spanBox.expanded(band).overlaps(shape.bounds))continue;
@@ -49,7 +55,7 @@ Pose adaptSource(const Source& source,const std::vector<Shape>& shapes,double cl
             }
         }
         bool bent=false;double remainingDepth=depth;
-        if(depth>0&&response!=2&&strength>0){
+        if(depth>0&&canBend){
             Vec tangent,axis;
             if(f::unit(sub(rest.nodes.back(),rest.nodes.front()),tangent)){
                 // Symmetric contact must still choose a stable direction.

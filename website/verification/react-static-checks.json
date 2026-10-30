@@ -1,17 +1,17 @@
 {
   "scope": "Website static/content verification only; no plugin qualification",
-  "development_version": "0.87.3",
+  "development_version": "0.87.6.7",
   "documents": 5,
-  "semantic_controls": 351,
+  "semantic_controls": 379,
   "capability_families_including_retired_and_experimental": 37,
   "bundled_supporting_references": 0,
   "public_markdown_files": 0,
-  "changelog_versions": 100,
-  "reviewed_local_sources": 105,
-  "resolved_generated_local_links": 53,
-  "source_catalog_sha256": "7c38ce05ab2a499e125b535623f66ac737be2b908789110dd3e3037cdeb44ff8",
-  "editorial_sha256": "68f7b03346bc53e3c3f73040a5344cf9d3e798cbfc69995e43880b4b13500421",
+  "changelog_versions": 119,
+  "reviewed_local_sources": 146,
+  "resolved_generated_local_links": 57,
+  "source_catalog_sha256": "59a134df24eb20a9312ff55a1d8b8cf69d6f392874d051b2b3f949b83530b4e9",
+  "editorial_sha256": "c9a84d59ddf42707763abb762492472230fd56695ac21e7241e9cd8a8d5637ef",
   "status": "PASS",
   "concept_posters_with_current_notes": 19,
-  "resolved_static_navigation_destinations": 45
+  "resolved_static_navigation_destinations": 46
 }

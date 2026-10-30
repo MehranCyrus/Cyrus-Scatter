@@ -36,11 +36,20 @@ int main() {
             }
         }
         for(std::size_t count=1;count<1200;++count) {
-            const auto stride=viewportStride(count);std::set<std::size_t> seen;
-            for(std::size_t i=0;i<count;++i)require(seen.insert(i*stride%count).second,"display sampling repeated a placement");
+            const auto stride=viewportStride(count);std::set<std::size_t> seen;ViewportRanks inverse(count);
+            for(std::size_t i=0;i<count;++i){require(seen.insert(i*stride%count).second,"display sampling repeated a placement");require(inverse.rank(i*stride%count)==i,"Pose admission must exactly match the rendered permutation");}
             require(seen.size()==count,"display sampling lost a placement");
         }
         require(viewportQuotas({},0,true).empty(),"empty preview");
+        ViewportMeshLayer plants;plants.mode=4;plants.groups={{13087,100},{41,300}};plants.reduced={false,false};plants.limits.values={0,0,0,0,10000,5000};
+        ViewportMeshLayer stones;stones.mode=4;stones.groups={{10,12}};stones.reduced={false};stones.limits=plants.limits;
+        auto plan=viewportMeshPlan({plants,stones});
+        auto reference=viewportQuotas({plants.groups[0],plants.groups[1],stones.groups[0]},10000,true);
+        require(plan[0][0].idle.count==reference[0].count&&plan[0][1].idle.count==reference[1].count&&plan[1][0].idle.count==reference[2].count,"Pose preparation and display share controller-wide multi-layer quotas");
+        auto boxes=viewportMeshPlan({plants,stones},true);require(boxes[0][0].idle.box&&boxes[0][0].idle.count>=plan[0][0].idle.count,"Fallback boxes retain a wider transform-only prefix");
+        ViewportRanks ranks(13087);std::size_t poses=0;
+        for(std::size_t slot=0;slot<13087;++slot)poses+=ranks.rank(slot)<plan[0][0].idle.count;
+        require(poses==plan[0][0].idle.count&&poses<13087&&(poses+1)*1282<(1u<<24),"Draw-limited 160-guide source admits only required poses below the old all-pose rejection");
         std::cout<<"viewport budgets, zero, coverage, deterministic prefixes and memory fallback passed\n";
         return 0;
     } catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}

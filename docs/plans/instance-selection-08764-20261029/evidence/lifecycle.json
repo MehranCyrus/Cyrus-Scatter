@@ -1,0 +1,12 @@
+{
+  "transformed_instance_pick": true,
+  "ordinary_object_occlusion": true,
+  "hidden_preview_not_pickable": true,
+  "controller_selection_keeps_settings": true,
+  "multi_controller_controls": true,
+  "helpers_before_save": 2,
+  "save_reload_single_render_and_pick_helper": true,
+  "save_reload_stable_pick": true,
+  "delete_clears_owner_helpers": true,
+  "status": "complete"
+}

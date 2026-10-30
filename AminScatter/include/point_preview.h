@@ -7,6 +7,7 @@
 #include "preview_budget.h"
 #include "viewport_policy.h"
 #include "sparse_instances.h"
+#include "placement_store.h"
 
 namespace cyrus {
 extern PreviewBudget pointPreviewBudget,meshPreviewBudget;
@@ -101,6 +102,7 @@ struct PreviewGeometry {
     std::shared_ptr<PreviewMemory> editsMemory;
     Box3 sharedWorldBounds;
     std::uint64_t sharedInstanceFingerprint=0;
+    std::shared_ptr<const std::vector<std::uint32_t>> pickRows;
     Point3 color;
     bool placeholder=false;
     bool reducedBox=false;
@@ -122,6 +124,7 @@ struct PreviewGeometry {
 // Source-local triangles and exact accepted placement transforms are shared
 // with the fallback cache. No expanded world-space triangle array is retained.
 struct MeshSnapshot {
+    std::shared_ptr<const placements::View> pickView;
     std::shared_ptr<PreviewMemory> memory;
     std::vector<PreviewGeometry> groups;
     std::vector<Box3> groupBounds;

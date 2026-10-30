@@ -1,0 +1,62 @@
+PASS EXE embeds exactly the requested host mapping
+PASS embedded inventory version and host 2024
+PASS plugin update defaults to retaining content 2024
+PASS native installed 2024
+PASS paired startup registered 2024
+PASS registration preserves other plugins 2024
+PASS repeat install is idempotent 2024
+PASS missing binary repair 2024
+PASS modified file is retained and rejected 2024
+PASS rollback copied:CyrusGallery.dll / 2024
+PASS retry copied:CyrusGallery.dll / 2024
+PASS rollback journal / 2024
+PASS retry journal / 2024
+PASS rollback publishing:1 / 2024
+PASS retry publishing:1 / 2024
+PASS rollback publishing:2 / 2024
+PASS retry publishing:2 / 2024
+PASS rollback publishing:3 / 2024
+PASS retry publishing:3 / 2024
+PASS personal files preserved 2024
+INSTALLED	2024	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2024\runtime\r\3dae1788c5ce	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2024\startup	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2024\macros	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2024\profile
+PASS embedded inventory version and host 2026
+PASS plugin update defaults to retaining content 2026
+PASS native installed 2026
+PASS paired startup registered 2026
+PASS registration preserves other plugins 2026
+PASS repeat install is idempotent 2026
+PASS missing binary repair 2026
+PASS modified file is retained and rejected 2026
+PASS rollback copied:CyrusGallery.dll / 2026
+PASS retry copied:CyrusGallery.dll / 2026
+PASS rollback journal / 2026
+PASS retry journal / 2026
+PASS rollback publishing:1 / 2026
+PASS retry publishing:1 / 2026
+PASS rollback publishing:2 / 2026
+PASS retry publishing:2 / 2026
+PASS rollback publishing:3 / 2026
+PASS retry publishing:3 / 2026
+PASS personal files preserved 2026
+INSTALLED	2026	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2026\runtime\r\1f13ba68c05c	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2026\startup	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2026\macros	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2026\profile
+PASS embedded inventory version and host 2027
+PASS plugin update defaults to retaining content 2027
+PASS native installed 2027
+PASS paired startup registered 2027
+PASS registration preserves other plugins 2027
+PASS repeat install is idempotent 2027
+PASS missing binary repair 2027
+PASS modified file is retained and rejected 2027
+PASS rollback copied:CyrusGallery.dll / 2027
+PASS retry copied:CyrusGallery.dll / 2027
+PASS rollback journal / 2027
+PASS retry journal / 2027
+PASS rollback publishing:1 / 2027
+PASS retry publishing:1 / 2027
+PASS rollback publishing:2 / 2027
+PASS retry publishing:2 / 2027
+PASS rollback publishing:3 / 2027
+PASS retry publishing:3 / 2027
+PASS personal files preserved 2027
+INSTALLED	2027	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2027\runtime\r\423b717ef49e	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2027\startup	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2027\macros	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\edit-size-review-20261029-01\compat-installer-data\2027\profile
+PASSED 58 exact-EXE owned-profile checks

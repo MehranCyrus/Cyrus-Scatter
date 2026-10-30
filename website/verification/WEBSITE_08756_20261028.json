@@ -1,0 +1,230 @@
+{
+  "status": "passed",
+  "version": "0.87.5.6",
+  "website_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\website\\cpanel-2026-10-28-YhAo48Ts\\CyrusScatter-website-0.87.5.6.zip",
+  "website_bytes": 27579140,
+  "website_sha256": "be784f8f65e166d3f176d4ee8a690bafdf2349c1c236985be8dd19c40c2ec84a",
+  "website_files": 90,
+  "installer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5.6-20261028\\CyrusScatter-0.87.5.6-Setup.exe",
+  "installer_sha256": "84ec5636dd30b380a55288ee59dfa53d7e75de13ef6477391ff7ebb16f80f3af",
+  "installer_bytes": 8352256,
+  "max_years": [
+    2024,
+    2026,
+    2027
+  ],
+  "qualified_2027_package_unchanged": true,
+  "identical_frozen_plugin_sources_across_hosts": 629,
+  "concurrent_native_source_drift_excluded_from_artifacts": [
+    "AminScatter/src/max_bridge.cpp"
+  ],
+  "http_download": {
+    "url": "http://127.0.0.1:5186/final/downloads/CyrusScatter-0.87.5.6-Setup.exe",
+    "status": 200,
+    "bytes": 8352256,
+    "sha256": "84ec5636dd30b380a55288ee59dfa53d7e75de13ef6477391ff7ebb16f80f3af"
+  },
+  "mobile": {
+    "brokenLoadedImages": [],
+    "documentWidth": 375,
+    "download": [
+      {
+        "filename": "CyrusScatter-0.87.5.6-Setup.exe",
+        "href": "http://127.0.0.1:5186/final/downloads/CyrusScatter-0.87.5.6-Setup.exe"
+      }
+    ],
+    "newControls": true,
+    "overflow": false,
+    "url": "http://127.0.0.1:5186/final/#/download",
+    "version": "Cyrus Scatter\n0.87.5.6",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    }
+  },
+  "control_search": {
+    "url": "http://127.0.0.1:5186/final/#/controls?topic=interactions&q=Trunk+bend",
+    "headings": [
+      "Trunk bend (%)"
+    ],
+    "overflow": false
+  },
+  "browser_errors": [],
+  "existing_file_changes_in_selected_snapshot": [
+    "AminScatter\\src\\max_bridge.cpp",
+    "website\\CPANEL_UPLOAD.md",
+    "website\\README.md",
+    "website\\content\\WEBSITE_STATUS.md",
+    "website\\content\\changelog.json",
+    "website\\content\\control-explanations.json",
+    "website\\content\\guide-chapters.json",
+    "website\\content\\release.json",
+    "website\\content\\source-manifest.json",
+    "website\\src\\content\\controlSections.ts",
+    "website\\src\\content\\featureStories.ts",
+    "website\\src\\content\\reference.json",
+    "website\\src\\pages\\Download.tsx",
+    "website\\src\\pages\\Roadmap.tsx",
+    "website\\verification\\react-static-checks.json"
+  ],
+  "scope": "Website/archive/resource checks and 2024/2026 SDK compilation. No new Max runtime or installer execution.",
+  "native_build_receipts": {
+    "2024": "build\\website08756-20261028-01\\native-2024\\receipt.json",
+    "2026": "build\\website08756-20261028-01\\native-2026\\receipt.json"
+  },
+  "original_2027_qualification": "docs/plans/drag-response-08756-20261028/QUALIFICATION_08756.json",
+  "knowledge": {
+    "core": {
+      "action": null,
+      "all_sources_verified": true,
+      "compatible": true,
+      "corpus_scope": {
+        "chunk_count": 466,
+        "limits": "Explicit reviewed enrollment only; not the whole repository",
+        "source_count": 32
+      },
+      "error_type": null,
+      "exit_code": 0,
+      "freshness_scope": "All enrolled parents individually rehashed; no filesystem transaction",
+      "index_generation": "3701dec0506b4e4779d30ec2cd54da567551c609ae64b87fbc1187aed99aa73b",
+      "index_schema": "cyrus.lexical-index/2",
+      "ok": true,
+      "rebuild_required": false,
+      "schema": "cyrus.index-status/2",
+      "source_issues": [],
+      "source_verification_requested": true,
+      "sources_checked": 32,
+      "sources_verified": 32,
+      "stale": false,
+      "verification_checks": {
+        "all_artifact_fingerprints_and_chunk_export": true,
+        "all_searchable_rows_against_export": true,
+        "complete_generation_metadata": true,
+        "corpus_definition_identity": true,
+        "logical_generation_fingerprint": true,
+        "runtime_configuration_and_repository": true,
+        "sqlite_metadata_identity": true,
+        "sqlite_quick_check_and_counts": true
+      },
+      "provenance": {
+        "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+        "generation": "3701dec0506b4e4779d30ec2cd54da567551c609ae64b87fbc1187aed99aa73b",
+        "corpus_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\rag\\corpus-harness-core-v3.json",
+        "corpus_sha256": "99914265ad7ca3f849edacb1368bf1b0ae1851aa1c50135b21e1a2bfe2b6dbfc",
+        "build_receipt": {
+          "identities_sha256": "8e2c1225746344e5ca70d8c1b9c2f874b588a4e143bcbc98214d8845c3a327b8",
+          "path": "logical.json",
+          "relative_to": "explicit_selected_index_directory",
+          "sha256": "3701dec0506b4e4779d30ec2cd54da567551c609ae64b87fbc1187aed99aa73b"
+        },
+        "detail_command": "Repeat this command with --detail full for complete provenance."
+      },
+      "context_selection": {
+        "mode": "scoped",
+        "scope": "Core contracts, native Scene/Library and current artistic interaction performance baseline/selected source owners.",
+        "exclusions": [
+          "Independent product implementation and instruction/evaluation files are excluded.",
+          "Future optimizations including B41 are not implemented by this knowledge refresh.",
+          "The separate 64-parent project selection has its own freshness and evaluation limits."
+        ],
+        "review_receipt": "_local/rag/harness/reviews/20261028-performance-03.json",
+        "generation": "3701dec0506b4e4779d30ec2cd54da567551c609ae64b87fbc1187aed99aa73b"
+      },
+      "context_view": "compact"
+    },
+    "project": {
+      "action": "Review source issues and publish a fresh compatible successor; retain this generation.",
+      "all_sources_verified": false,
+      "compatible": true,
+      "corpus_scope": {
+        "chunk_count": 1444,
+        "limits": "Explicit reviewed enrollment only; not the whole repository",
+        "source_count": 64
+      },
+      "error_type": "stale_evidence",
+      "exit_code": 3,
+      "freshness_scope": "All enrolled parents individually rehashed; no filesystem transaction",
+      "index_generation": "0e9b6624e71529808bb41563f199eec86fe756d4106230cdbe22292e9b933bb8",
+      "index_schema": "cyrus.lexical-index/2",
+      "ok": false,
+      "rebuild_required": true,
+      "schema": "cyrus.index-status/2",
+      "source_issues": [
+        {
+          "error": "changed source README.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "README.md",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source docs/PRODUCT_AND_AI_ROADMAP.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source website/README.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "website/README.md",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source website/content/source-manifest.json: hash/identity mismatch; review evidence and rebuild",
+          "path": "website/content/source-manifest.json",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source docs/README.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "docs/README.md",
+          "source_status": "changed"
+        }
+      ],
+      "source_verification_requested": true,
+      "sources_checked": 64,
+      "sources_verified": 59,
+      "stale": true,
+      "verification_checks": {
+        "all_artifact_fingerprints_and_chunk_export": true,
+        "all_searchable_rows_against_export": true,
+        "complete_generation_metadata": true,
+        "corpus_definition_identity": true,
+        "logical_generation_fingerprint": true,
+        "runtime_configuration_and_repository": true,
+        "sqlite_metadata_identity": true,
+        "sqlite_quick_check_and_counts": true
+      },
+      "provenance": {
+        "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+        "generation": "0e9b6624e71529808bb41563f199eec86fe756d4106230cdbe22292e9b933bb8",
+        "corpus_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\rag\\corpus-v47.json",
+        "corpus_sha256": "89ea0da455dd8004a060ed54b96533e05ed58f37a7652f1c5c96a5163a90f0a9",
+        "build_receipt": {
+          "identities_sha256": "56d91d84db48bbd3c4178a98630b65611d0e7c51fcda5e5571e442ccaaeb123c",
+          "path": "logical.json",
+          "relative_to": "explicit_selected_index_directory",
+          "sha256": "0e9b6624e71529808bb41563f199eec86fe756d4106230cdbe22292e9b933bb8"
+        },
+        "detail_command": "Repeat this command with --detail full for complete provenance."
+      },
+      "context_selection": {
+        "mode": "legacy-project",
+        "scope": "Existing explicit project enrollment; check freshness",
+        "scoped_snapshot_available": false,
+        "generation": "0e9b6624e71529808bb41563f199eec86fe756d4106230cdbe22292e9b933bb8"
+      },
+      "context_view": "compact"
+    }
+  },
+  "producer_source_hashes": {
+    "2027": "ca7d6149256f61bd1ca454a42484a1a47f6a74fcec8b91aa7a98f22ccc0b9c68",
+    "2024": "ca7d6149256f61bd1ca454a42484a1a47f6a74fcec8b91aa7a98f22ccc0b9c68",
+    "2026": "ca7d6149256f61bd1ca454a42484a1a47f6a74fcec8b91aa7a98f22ccc0b9c68"
+  },
+  "concurrent_source_identity": {
+    "path": "AminScatter/src/max_bridge.cpp",
+    "task_start_sha256": "ca7d6149256f61bd1ca454a42484a1a47f6a74fcec8b91aa7a98f22ccc0b9c68",
+    "current_sha256": "b1a3ebd9069d5139503f09c71aab8e6f4744fc577eaa0e43424fbc87b45bc33e",
+    "included_in_artifacts": false
+  },
+  "changed_markdown_links": {
+    "checked": 337,
+    "missing": []
+  }
+}

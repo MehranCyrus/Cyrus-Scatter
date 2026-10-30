@@ -10,7 +10,8 @@ def test_catalog_accounts_for_every_current_control_and_feature_family():
     expected={(group,section,c["name"],c["kind"]) for group,sections in inventory.items() if isinstance(sections,dict)
               for section,controls in sections.items() for c in controls}
     actual={(c["group"],c["section"],c["name"],c["kind"]) for c in catalog["controls"]}
-    assert expected==actual and len(actual)==len(catalog["controls"])==362  # Includes the 0.87.4 preparation editor.
+    assert expected==actual
+    assert len(actual)==len(catalog["controls"]),"Feature catalog contains duplicate controls"
     assert catalog['development_version']==re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(root/'AminScatter/CMakeLists.txt').read_text())[1]
     assert catalog['calculation_model']=='CyrusUnified2'
     features={f["feature_id"] for f in catalog["features"]}

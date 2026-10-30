@@ -1,132 +1,110 @@
-# Cyrus Scatter — selected landing and visual guide
+# Cyrus Scatter — website and field guide
 
-The maintained public frontend follows **Scatter 0.87.3 / schema 61**, independent **Surface Analyzer 0.14.2** and **MCP 0.73.0 / plan 0.73**. The 26 October update documents reviewed rooted contact, lightweight trunk/custom colliders, physical preparation settings and the shared static model/texture library. Library settings lookup and saving the chosen folder are corrected. Exposed-root automatic fitting remains on hold; contact authoring is retained in Max scenes and is not transferred through recipes.
+The maintained website follows the **Scatter 0.87.6.7 testing release**, scene 65, portable recipe 9,
+Interactions 17 and Edit capability/storage 5/4. It covers individual instance
+selection, shared controls for multiple setups, responsive artistic Bend/Trim,
+independent root hiding, retained shared geometry and the existing Library.
 
-The Download page serves the exact **0.87.3 EXE** for Max 2024, 2026 and 2027, with Analyzer 0.14.2 included. Max 2027 retains scoped 0.87.3 runtime evidence; newly built Max 2024/2026 payloads have native test evidence only. Rebuilt Analyzer source is unchanged and retains its historical qualification. Public hashes and size are in `content/release.json`; staging refuses mismatched bytes. Content 0.86.7 is optional and supplied separately.
+The website includes the verified **0.87.6.7 EXE for Max 2024, 2026 and 2027**.
+The full static upload ZIP contains that installer under `downloads/`. Plugin
+runtime qualification covers focused Max 2027 checks; Max 2024/2026 are
+SDK-build/package only. Surface Analyzer 0.14.2 and optional plant content 0.86.7
+remain independent and are not embedded. This is a local upload package, not a
+live deployment.
 
-The cream/forest-green layout, specimen showcase and historical concept imagery are retained. Five curated guides, all **351 semantic controls** and **37 capability records** follow the source catalog. Capability visibility is not a claim of MCP write support. Static recipes cover supported assets/default OCIO; contact simulation and arbitrary scene serialization remain outside that portable route.
+Five curated guides, **379 semantic controls**, **14 plugin sections** and **37
+capability families** follow current source evidence. Catalog visibility does not
+grant MCP mutation authority. Development MCP extensions are described separately
+from the packaged 0.73.0 foundation. Fast guide responses can leave overlaps;
+there is no universal FPS, exact-clearance or arbitrary-topology guarantee.
 
-See [the current website receipt](verification/WEBSITE_0873_20261026.md) and [installer scope](../docs/plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md). A local production build and cPanel upload ZIP do not publish a live website. Use the [cPanel upload guide](CPANEL_UPLOAD.md) for deployment.
+See [website validation](verification/UPLOAD_08767_20261029.md),
+[plugin delivery](../docs/plans/edit-preparation-08767-20261029/DELIVERY.md)
+and [packaging/publication state](CPANEL_UPLOAD.md).
 
-## Run locally
+## Work locally
 
-Node 22.14.0 and npm 10.9.2 were used. From this directory:
+From website/:
 
 ```powershell
 npm ci
 npm run docs:sync
+npm run docs:check
+npm run build
 npm run dev
 ```
 
-Open the local URL printed by Vite. The development review uses `http://127.0.0.1:5178/`, launched explicitly with:
+`npm ci` is needed only when installing dependencies. The build runs TypeScript,
+Vite and the download-publication guard. It creates local `dist/`, not a ZIP or
+live deployment. `npm run preview` serves that build. For the established explicit
+development port use:
 
 ```powershell
 node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5178 --strictPort
 ```
 
-The explicit command also avoids shell wrappers consuming arguments after `npm run dev`. Production checks and a local production preview:
+Hash routes and the relative Vite base support static hosting and subdirectories.
+Opening source index.html with file:// is not the supported workflow. Use `npm run package:cpanel` to build the static upload ZIP with the verified
+installer. See `CPANEL_UPLOAD.md` before uploading.
 
-```powershell
-npm run docs:check
-npm run typecheck
-npm run build
-npm run preview
-```
-
-Use the production preview to test the installer link: the EXE is staged during `npm run build`, not served by the source-only development server. Deploying the contents of `dist/` requires a separate publishing decision. Hash routing works on static hosting and retains meaningful guide/control deep links without server rewrites. The relative Vite base supports a subdirectory. Opening source `index.html` directly with `file://` is no longer the supported workflow.
-
-For a cPanel upload package, run `npm run package:cpanel`. The verified ZIP and hash manifest are written under the repository's ignored `dist/website/` directory. Follow [the cPanel upload guide](CPANEL_UPLOAD.md); this command builds locally and does not publish to a host.
-
-## What the website contains
-
-The control reference now follows the approved plugin sections including Interactions, with exact control membership, matching sidebar links and guide destinations. See [reference order and source refresh](verification/CONTROL_REFERENCE_ORDER.md).
-
-The catalog filters and visual lessons share one minimal dropdown component, with keyboard navigation and viewport-aware menus. See [dropdown design and verification](verification/DROPDOWN_REFINEMENT.md).
-
-- The user-selected blended garden landing: five interactive courtyard stages, layer/density/source controls, boundary inset, Analyzer views, keyboard local edits and a concept-image viewer.
-- The guide’s “Plant with intention” hero now uses the accepted circular garden study. A compact toolbar offers Garden / Layers views and Build up above four closely spaced illustrative planes. Both views and playback retain the same illustrative plants. This is educational SVG, not plugin output.
-- The user-selected fixed-rail visual guide: an illustrated ownership overview, six interactive lessons, first planting workflow, practical examples, glossary and a local 24-item review checklist.
-- All 19 supplied feature posters, with current source-verified reading notes that visibly identify obsolete baked-in ownership labels.
-- Artist features, exact behavior boundaries and two actual Max studies with version/context captions.
-- Five complete maintained source documents, a fixed documentation sidebar, section links, printing and global search (`Ctrl+K` / `Command+K`).
-- The complete current semantic catalog, with exact source keys, readable source-verified labels, explanations, ownership, local/MCP context and implementation-evidence paths. Entries do not each represent a distinct visible button or an individually qualified feature; current counts are in the [static verification receipt](verification/react-static-checks.json).
-- All **37 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
-- Explicit **Current**, **Experimental** and **Planned** distinctions, plus the five dependent roadmap stages from the maintained public summary.
-- Native-dialog search with Escape/focus restoration, keyboard result navigation, empty states, mobile navigation, reduced-motion support and meaningful unknown-route/source-loading/error states.
-
-There is no backend, signup, payment, telemetry, live Max connection or assistant login. Primary actions open real website destinations; the main EXE is served directly from the static download folder. The optional MCP foundation is narrower than the native artist UI; catalog visibility does not imply remote control support.
-
-## Source architecture
+## Source ownership
 
 | Path | Purpose |
 | --- | --- |
-| `src/App.tsx` | One React application, two user-selected route shells and hash navigation. |
-| `src/components/SelectedLanding.tsx`, `selected-landing.html`, `landing-controller.ts` | Faithful supplied landing inside a React-owned, mount/dispose lifecycle boundary. Scoped listeners, observers, timers and drawing frames are cleaned up. |
-| `src/components/DocsShell.tsx` | Selected fixed rail, breadcrumb/search topbar and accessible mobile drawer. |
-| `src/components/PlantingLayerStudy.tsx`, `planting-layer-art.ts`, `planting-layer-study.css` | React-owned guide hero interaction, deterministic botanical SVG and scoped responsive layout. |
-| `src/components/` | Search, real-study presentation, shared botanical symbols, typed educational drawing models and icons. |
-| `src/pages/` | Illustrated guide, six lessons, workflow, poster library, examples, local checklist, glossary, full references and roadmap. |
-| `src/styles.css`, `landing.css`, `docs-design.css`, `selected-refinements.css` | Local typography, preserved reference geometry, scoped shell styles, responsive states and print. |
-| `content/source-manifest.json` | Explicit five-document manifest, catalog and selected supporting-doc/source-provenance enrollment. |
-| `content/control-explanations.json` | Source-verified editorial metadata for every current exact semantic key. |
-| `content/gallery-reading-notes.json` | Current reading notes, source evidence and guide links for every supplied poster. |
-| `content/release.json`, `src/content/release.ts`, `tools/stage_release.py` | One approved release record, relative EXE URL and verified production staging. |
-| `src/content/reference.json` | Deterministically generated current content and complete source fingerprints. |
-| `content/guide-chapters.json` | Curated customer-facing chapters rendered into HTML and search data. |
-| `content/changelog.json` | Concise version timeline with local-only evidence paths. |
-| `public/assets/` | Local fonts, nine newly generated responsive concept images, eight preserved historical variants, 19 unchanged optimized posters and two actual Max studies. |
-| `artwork/brand/` / `public/assets/brand/` | User-selected logo original, responsive logo/icon PNGs and provenance manifest. Root `public/favicon.ico` contains 16/32/48/64px frames. Reproduce with `tools/prepare_brand_assets.py` (Pillow). |
-| `artwork/landing-20261011/` | Native 1448 × 1086 generated PNG originals and exact prompts. These are concept images, not plugin renders. |
-| `artwork/hero-studies-20261011/` | Five native 1672 × 941 aerial image options and prompts. User selected Contour terraces for the full-width landing hero, fitted below navigation within the desktop viewport. |
-| `tools/prepare_hero_studies.py` | Fifteen responsive hero-study encodings; SHA256/source receipts in `public/assets/hero-studies/manifest.json`. Requires Pillow. |
-| `tools/import_reference.py` | Standard-library source importer and deterministic `--check` mode. |
-| `tools/verify_reference.py` | Source hashes, current version, semantic-key identity, editorial coverage, reference links, assets and no-source-export checks. |
-| `tools/extract_design_assets.py` | Reproducible extraction of the supplied main design's eight unique WebP variants. |
-| `tools/prepare_concept_assets.py` | Native and responsive 480/960-pixel encodings of the new generated images, WebP quality 96; never upscales. Requires Pillow. |
-| `tools/prepare_study_assets.py` | Faithful native 1200-pixel WebP display derivative with separate original/render provenance; requires optional `tools/requirements-assets.txt`. |
+| src/App.tsx | React application, hash routing and route shells. |
+| src/components/SelectedLanding.tsx, selected-landing.html, landing-controller.ts | Selected landing composition and bounded educational interactions. |
+| src/components/DocsShell.tsx | Fixed documentation rail, search and mobile navigation. |
+| src/components/PlantingLayerStudy.tsx and related artwork/styles | Deterministic illustrated guide hero; not plugin output. |
+| src/pages/ | Features, guides, workflow, Library showcase, latest version, examples, controls and roadmap. |
+| content/release.json, src/content/release.ts | Reviewed product edition; download publication is independent. |
+| content/guide-chapters.json | Curated artist chapters rendered into HTML and search content. |
+| content/control-explanations.json | Readable explanations and ownership for exact semantic keys. |
+| content/changelog.json | Versioned changes; local evidence paths are stripped from public output. |
+| content/source-manifest.json | Reviewed parent hashes and the five maintained guide owners. |
+| src/content/reference.json | Deterministic generated content; edit its inputs instead. |
+| tools/import_reference.py, tools/verify_reference.py | Source import, fingerprints, control coverage, assets and link checks. |
+| tools/stage_release.py | Verify and stage only the installer selected in release.json. |
+| public/assets/ | Existing local artwork, model previews, fonts and historical studies. |
 
-The importer renders curated guide text and strips changelog evidence before publication. Source fingerprints and control explanation evidence remain local. Raw Markdown, internal report snapshots, implementation bodies and owner licensing documents are not distributed. The packager rejects Markdown and the retired public source tree.
+The reference follows the approved plugin section ordering, including Interactions
+and Scene colliders. The selected landing and documentation designs are preserved.
+This task changes content and release availability, not the illustrative algorithms.
+Public output contains no raw repository Markdown, internal report bodies or owner
+licensing documents. Website content generation does not rebuild knowledge indexes.
 
-The public roadmap is curated against `docs/PRODUCT_AND_AI_ROADMAP.md`. Root/docs navigation and the MCP contract remain authoritative. Re-sync after changing these maintained sources; stale outputs fail `docs:check`.
-
-## Routes
+## Main routes
 
 | Route | Content |
 | --- | --- |
-| `#/` / `#/home/workflow` | Selected landing and anchored interactive courtyard. |
-| `#/features` / `#/features/painting` | Artist feature sections and technical studies. |
-| `#/guide` | Selected illustrated guide overview and five core ideas. |
-| `#/workflow` | Six-step first planting workflow. |
-| `#/visuals/layers` | Six selectable interactive lessons; other IDs are containers, coverage, spacing, updates and viewport. |
-| `#/gallery` | All 19 posters, series filters, viewer and current reading notes. |
-| `#/library` | Curated rendered individual plants and the model-to-recipe workflow. |
-| `#/download` | Direct combined Scatter/Analyzer EXE download, installation steps and separate optional-content explanation. |
-| `#/examples` / `#/checklist` / `#/glossary` | Practical studies, local artist review and vocabulary. |
-| `#/guide/artist-guide/vector-painting` | Exact chapter/section link. |
-| `#/controls?q=radius&feature=C14` | Search and capability filters. |
-| `#/controls?id=control-layer-brushui-beginbutton` | Semantic-key destination, independent of catalog order. |
-| `#/roadmap` | Current/experimental/planned direction. |
-| `#/about` | Versions, source provenance and image credits. |
-| `#/changelog` / `#/changelog/v0.78.3` | Filterable development timeline and direct version links. |
+| #/ | Selected landing and interactive courtyard studies. |
+| #/features | Artist features and contextual historical studies. |
+| #/guide, #/workflow, #/visuals | Guide overview, first planting workflow and visual lessons. |
+| #/guide/artist-guide/select-instances-and-multiple-setups | Current instance selection and shared-control workflow. |
+| #/controls | Searchable current semantic reference. |
+| #/library, #/gallery | Plant showcase and 19 feature posters with provenance. |
+| #/download | Current release, EXE download, supported hosts and installation instructions. |
+| #/examples, #/checklist, #/glossary | Examples, local review notes and vocabulary. |
+| #/roadmap, #/about, #/changelog | Status distinctions, credits and historical changes. |
 
-## Visual provenance and history
+## Evidence and visual provenance
 
-The supplied `Landing Page Design/` archive is preserved unchanged. The active landing faithfully integrates `cyrus-scatter-site`; documentation preserves the `Design 1/website` shell, with the user-requested layer study replacing its overview hero illustration. These are direct ports of the selected compositions and interactions, with current source-verified text, rather than the previous React interpretation. Its supplied typography, proportions, image treatments and illustrated teaching structures remain visible. Concept images illustrate intent; educational diagrams do not execute Scatter. Actual captures are labeled separately: the 0.78.3 Max 2026 point-only Exclude inspection and the historical 0.75 Corona garden render (16 passes, 1200 × 1500). The garden display derivative is a 848,774-byte WebP (1200 × 1500, quality 95), with the unchanged 1200 × 1500 original’s hash recorded separately. The redundant 9.6 MB original is not shipped in public assets. Optional asset regeneration uses Pillow 12.3.0 (`python -m pip install -r tools/requirements-assets.txt`, then `python tools/prepare_study_assets.py`) and requires the original local artist source. Normal site builds do not need Pillow or that source folder. See the rendered Sources & credits page and image manifests. Fonts and SIL licenses remain local.
+Concept images and educational SVG studies do not execute Scatter or prove its
+output. The selected Contour terraces hero and other generated artwork retain
+original provenance. The 19 supplied posters retain current reading notes where
+baked-in ownership labels are historical. Actual Max captures retain their original
+versions: the 0.78.3 point-only Exclude study and the 0.75 Corona garden render.
+Individual plant previews are an asset showcase, not a downloadable content pack.
 
-Old `assets/`, `sources/`, `content/coverage.json`, `content/WEBSITE_STATUS.md` and earlier `verification/` receipts are inactive historical evidence. They are excluded from the active React entry/build. The retired buildless `app.js`, root `styles.css` and `content/reference.js` have been removed; `src/` is the sole application. Historical browser reports do not certify this React edition.
+Original design archives, artwork sources and old verification receipts are
+preserved. [Selected design implementation](verification/SELECTED_DESIGN_IMPLEMENTATION.md),
+[layer study](verification/LAYER_STUDY_INTEGRATION.md) and earlier browser receipts
+retain their historical scope; they do not certify current changed copy or layout.
 
-## Validation boundary
+This update uses source/content checks, TypeScript and a production build without
+Computer Use. It does not add browser visual acceptance, plugin runtime tests,
+installer execution or hosting qualification. The website has no backend, signup,
+payment, telemetry, live Max connection or assistant login.
 
-Current public-content cleanup, version-history decisions and the replacement cPanel ZIP are recorded in [PUBLIC_CONTENT_HISTORY.md](verification/PUBLIC_CONTENT_HISTORY.md). The exact package passed 76 assertions and 152 HTTP file/hash checks; 45 existing interactions also pass.
-
-The current visual lessons, complete practical-example artwork, connected controls and native-resolution image upgrade are recorded in [VISUAL_LESSONS_REFINEMENT.md](verification/VISUAL_LESSONS_REFINEMENT.md). The 45-interaction suite and 57 focused checks passed. That historical source-import block is resolved by the current reference refresh; internal report/source records have since been removed from public output.
-
-The current guide hero integration is recorded in [LAYER_STUDY_INTEGRATION.md](verification/LAYER_STUDY_INTEGRATION.md). Earlier selected-design screenshots precede this hero replacement.
-
-The selected-design implementation is recorded in [SELECTED_DESIGN_IMPLEMENTATION.md](verification/SELECTED_DESIGN_IMPLEMENTATION.md). Reproducible headless scripts are `tools/check_selected_routes.py` and `tools/check_selected_interactions.py`; CLI logs/screenshots are in the owned `build/website-react-implementation-20261011/` run. The current static check covers curated chapters, semantic controls, capability families, changelog versions, local source fingerprints, poster assets/reading notes and static navigation destinations. See the [current static verification receipt](verification/react-static-checks.json) for measured counts. No raw Markdown or supporting-report snapshots are public.
-
-The [independent selected-design review](verification/SELECTED_DESIGNS_REVIEW.md) records the production-browser checks, reference preservation and final screenshots.
-
-**Historical / rejected design:** `REACT_BROWSER_REVIEW.md`, `REACT_IMPLEMENTATION_REVIEW.md`, `react-desktop.png`, `react-mobile.png`, `react-features.png` and their earlier React receipts describe the preceding design that the user rejected. Preserve them as history; they do not validate this selected-design iteration.
-
-Website validation does not qualify Max input, rendering, animation, long sessions, licensing, production ML, a particular assistant client, or every plugin control. Educational browser drawings change only deterministic SVG illustrations. The checklist starts unreviewed, stores only local browser notes and exports those notes; it is not certification. This website iteration did not edit product/native/runtime files, artist scenes, supplied design archives or installed profiles. Concurrent product/licensing work in this shared workspace is separate and was preserved.
+The working source advanced to **0.87.6.7** during this task. Its mesh-shaped
+selection-outline patch is still under development. The last recorded qualified
+delivery is **0.87.6.4**; previous test passes do not qualify the successor.

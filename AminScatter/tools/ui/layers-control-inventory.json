@@ -75,6 +75,10 @@
       },
       {
         "kind": "button",
+        "name": "sharedViewportButton"
+      },
+      {
+        "kind": "button",
         "name": "memoryButton"
       },
       {

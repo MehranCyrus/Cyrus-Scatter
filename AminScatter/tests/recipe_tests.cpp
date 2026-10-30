@@ -50,6 +50,8 @@ int main(){std::filesystem::path temporary;try{
     Json row={{"input","c:1"},{"output","c:1"},{"source","source-a"},{"revision","scale:1"},{"order",0},{"delta",{1,0,0,0,1,0,0,0,1,.25,0,0}},{"deleted",false},{"local",true}};
     Json edits={{"version",1},{"layers",Json::array({{{"owner","canopy"},{"rows",Json::array({row})}}})}};
     authored["authored"]["edits"]=Json::array({{{"enabled",true},{"data",edits.dump()}}});validate(authored);check(cyrus::recipeauthored::parseEdits(edits.dump())==edits);
+    auto pinned=edits;pinned["version"]=2;pinned["layers"][0]["rows"][0]["pinned"]=true;check(cyrus::recipeauthored::parseEdits(pinned.dump())==pinned);
+    pinned["layers"][0]["rows"][0]["pinned"]="yes";rejected([&]{cyrus::recipeauthored::parseEdits(pinned.dump());});
     auto missingOwner=authored;edits["layers"][0]["owner"]="missing";missingOwner["authored"]["edits"][0]["data"]=edits.dump();rejected([&]{validate(missingOwner);});
     auto extra=row;extra["execute"]="bad";rejected([&]{auto data=cyrus::recipeauthored::parseEdits(Json{{"version",1},{"layers",Json::array({{{"owner","canopy"},{"rows",Json::array({extra})}}})}}.dump());});
     rejected([&]{cyrus::recipeauthored::parseEdits("{\"version\":1,\"version\":1,\"layers\":[]}");});

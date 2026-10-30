@@ -1,0 +1,88 @@
+{
+  "hover": [
+    81,
+    2,
+    1024,
+    0,
+    0,
+    false
+  ],
+  "selected_pointer_away": [
+    81,
+    3,
+    0,
+    1024,
+    1,
+    false
+  ],
+  "warm": {
+    "before": [
+      81,
+      3,
+      0,
+      1024,
+      1,
+      false
+    ],
+    "after": [
+      81,
+      3,
+      0,
+      1024,
+      1,
+      false
+    ],
+    "median_redraw_submission_ms": 18.329799990169704,
+    "max_ms": 54.70340000465512,
+    "unchanged_epochs_and_streams": true
+  },
+  "before_drag": [
+    81,
+    3,
+    0,
+    1024,
+    1,
+    false
+  ],
+  "during_drag": [
+    81,
+    3,
+    0,
+    1024,
+    1,
+    true
+  ],
+  "after_drag": [
+    81,
+    4,
+    0,
+    1024,
+    1,
+    false
+  ],
+  "undo": [
+    83,
+    6,
+    1024,
+    1024,
+    1,
+    false
+  ],
+  "redo": [
+    84,
+    8,
+    12,
+    1024,
+    1,
+    false
+  ],
+  "exit_edit": [
+    84,
+    8,
+    12,
+    0,
+    0,
+    false
+  ],
+  "status": "complete"
+}

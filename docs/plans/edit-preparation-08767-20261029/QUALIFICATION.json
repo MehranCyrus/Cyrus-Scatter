@@ -1,0 +1,109 @@
+{
+  "schema": "cyrus.scatter.scoped-delivery/1",
+  "version": "0.87.6.7",
+  "status": "qualified-for-artist-testing",
+  "sealed_utc": "2026-10-29T19:05:19.677821+00:00",
+  "max_year": 2027,
+  "branch": "codex/workflow-0.75",
+  "head": "75c60d54dbfd736ffef135d211863516a63543a7",
+  "workspace": "pre-existing dirty checkout; frozen file hashes are authoritative",
+  "source_files": 648,
+  "source_manifest": "evidence/frozen-08767-source.json",
+  "evidence_files": "evidence/FILES.json",
+  "package": {
+    "path": "dist/CyrusScatter-0.87.6.7-20261029/CyrusScatter-0.87.6.7-Max2027.mzp",
+    "sha256": "92eb40e16751c0f3fdf4bef63001959e70f8b9290e77b9f45d93c3e05321eefa",
+    "bytes": 2830152,
+    "archive_crc": true,
+    "all_manifest_hashes": true,
+    "exact_runtime_payload": true,
+    "max_2027_guard": true,
+    "installer_helper_sha_and_mvid_guard": true
+  },
+  "runtime_payload_sha256": {
+    "AminScatter.dlx": "0f133728457e18cac499307e94f0141fd6ac7ec2e1bbfc1d1cd8cd0e42423a20",
+    "CyrusBrush.dlx": "f7bda93ebedb800d91d771cbb3311fcaf01e4fdc0379bfe0de7988af66a22183",
+    "CyrusBrushStorage.dlh": "c79464a787c0b33f0adfd771e86c12a3389357bca975e0f61a694aab0c02670b",
+    "CyrusScatterEdit.dlm": "d8c638ba9bd54d247bccb3ea945e26f883abe86ddf7d6a4abda817b9d2fc8804",
+    "CyrusScatter.ms": "abf0091215234fda569160951554af60181029cf4fdcd88f2768fc9c649beeee",
+    "CyrusGallery.dll": "475c170730e92d18be72bd79783cba9c6ba7d3a7c2ea5ff12889ad136e0e91f1"
+  },
+  "versions": {
+    "scene": 65,
+    "recipe_envelope": 9,
+    "edit_capability": 5,
+    "edit_storage": 4,
+    "authored_edit": 2,
+    "interactions": 17,
+    "prepared_envelope_source": 3,
+    "preparation_intent": 2,
+    "viewport_selection": 2,
+    "gallery": "0.87.6.7"
+  },
+  "checks": {
+    "native_suites": 62,
+    "python_tests": 54,
+    "ui_generator_suites": 2,
+    "managed_transaction_assertions": 261,
+    "generated_controls": 379,
+    "generated_delimiter_fixtures": 32,
+    "hosts": {
+      "host": {
+        "status": "pass",
+        "receipt": "evidence/final-08767-host/receipt.json",
+        "loaded_identity": "evidence/final-08767-host/loaded-identity.json",
+        "assertions": 27,
+        "callback_median_ms": 0.2492000348865986,
+        "held_samples": 3
+      },
+      "terraces": {
+        "status": "pass",
+        "receipt": "evidence/final-08767-terraces/receipt.json",
+        "loaded_identity": "evidence/final-08767-terraces/loaded-identity.json",
+        "assertions": 20,
+        "callback_median_ms": 0.34360005520284176,
+        "held_samples": 3
+      },
+      "migration": {
+        "status": "pass",
+        "receipt": "evidence/final-08767-migration/receipt.json",
+        "loaded_identity": "evidence/final-08767-migration/loaded-identity.json"
+      },
+      "ui": {
+        "status": "pass",
+        "receipt": "evidence/final-08767-ui/receipt.json",
+        "loaded_identity": "evidence/final-08767-ui/loaded-identity.json",
+        "assertions": 21
+      },
+      "violet": {
+        "status": "pass",
+        "receipt": "evidence/final-08767-violet/receipt.json",
+        "loaded_identity": "evidence/final-08767-violet/loaded-identity.json",
+        "assertions": 43
+      }
+    },
+    "violet_portable_capture": "pass",
+    "violet_physical_dropdown": "pass",
+    "violet_native_source_roundtrip": "pass",
+    "violet_native_contacts": 2
+  },
+  "preservation": {
+    "scene_sha256": "ed764dc7140ea46ded27d544db8ab201ed6daada4fb0de594ad56d1986d63449",
+    "original_unchanged": true,
+    "test_copy_unchanged": true,
+    "artist_ini_unchanged_all_final_hosts": true,
+    "source_files_still_equal_frozen_snapshot": 648
+  },
+  "limits": [
+    "Max 2027 only; no artist-profile installation or restart",
+    "Controlled held SDK callbacks and presented matrices; not physical input latency or GPU FPS",
+    "Extra guide detail improves rest-curve sampling; existing deformation can stretch mesh edges",
+    "No new visible petiole geometry or source mesh subdivision",
+    "No broad extreme-memory, arbitrary modifier-stack cloning or renderer qualification",
+    "Historical 0.87.6.3 review counts and previous candidate runs are not final-build evidence",
+    "UI harness fixed pixel coordinates were inapplicable; physical final inspection supplies caption evidence",
+    "Initial Node invocation used wrong cwd; corrected run and both logs are retained"
+  ],
+  "delivery": "DELIVERY.md",
+  "artist_guide": "ARTIST_GUIDE.md"
+}

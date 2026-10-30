@@ -1,5 +1,5 @@
 namespace {
-constexpr unsigned editLegacyChunk=0x7301,editSourceChunk=0x7302,editStorageVersion=3;
+constexpr unsigned editLegacyChunk=0x7301,editSourceChunk=0x7302,editStorageVersion=4;
 constexpr unsigned editStorageGuard=0xffffffffu,editLayerLimit=1000,editSavedRowLimit=10000000;
 constexpr std::size_t editLegacyKeyBytes=400000; // preserves bounded old UTF-16 keys
 static void validateStoredEditLayer(const EditLayer& l){
@@ -18,6 +18,11 @@ static void validateStoredEditLayer(const EditLayer& l){
     std::unordered_map<EditKey,std::uint64_t,EditKeyHash,std::equal_to<EditKey>,ce::Allocator<std::pair<const EditKey,std::uint64_t>>> outputOrders;
     for(std::size_t i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);
         if(!finiteEditMatrix(row.delta)||row.lineage>lineages||row.order>=l.nextOrder)throw std::invalid_argument("Invalid saved Edit row");
+        if(row.pin){const auto& p=row.pin->base;
+            if(!l.sourceAware||!row.lineage||row.recipeLocal||row.recipePinned||!p.face||p.face>INT_MAX||p.receiver>=128||p.band>std::uint64_t(INT64_MAX))throw std::invalid_argument("Invalid saved Edit pin");
+            for(auto v:p.transform)if(!std::isfinite(v))throw std::invalid_argument("Nonfinite saved pin transform");
+            for(auto v:p.bary)if(!std::isfinite(v))throw std::invalid_argument("Nonfinite saved pin anchor");
+        }
         if(!variants.insert({row.outputId,row.lineage}).second)throw std::invalid_argument("Duplicate saved Edit identity and source");
         if(row.inputId!=row.outputId&&!clones.insert(row.outputId).second)throw std::invalid_argument("Duplicate saved Edit clone");
         const auto order=orders.emplace(row.order,row.outputId);if(!order.second&&order.first->second!=row.outputId)throw std::invalid_argument("Ambiguous saved Edit order");
@@ -46,7 +51,7 @@ IOResult CSEdit::Save(ISave* s){
             if(!write(&key,sizeof(key))||!str(l.signature,cyrus::editbinding::maxDescriptorBytes)||!str(l.legacyProof,cyrus::editbinding::maxSignatureBytes)||!boolean(l.invalid)||!boolean(l.sourceAware)||!boolean(l.recipeUnbound)||!write(&l.nextOrder,sizeof(l.nextOrder))||!write(&sources,sizeof(sources)))return IO_ERROR;
             if(l.lineages)for(const auto& id:l.lineages->ids)if(!str(std::wstring(id.begin(),id.end()),cyrus::editbinding::maxIdentityBytes))return IO_ERROR;
             if(!write(&size,sizeof(size)))return IO_ERROR;
-            for(std::size_t i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);if(!write(&row.savedSource,sizeof(row.savedSource))||!write(&row.lineage,sizeof(row.lineage))||!write(&row.order,sizeof(row.order))||!matrix(row.delta)||!boolean(row.deleted)||!boolean(row.recipeLocal)||!boolean(l.selection.get(i))||!str(row.inputId.text(),editLegacyKeyBytes)||!str(row.outputId.text(),editLegacyKeyBytes))return IO_ERROR;}
+            for(std::size_t i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);if(!write(&row.savedSource,sizeof(row.savedSource))||!write(&row.lineage,sizeof(row.lineage))||!write(&row.order,sizeof(row.order))||!matrix(row.delta)||!boolean(row.deleted)||!boolean(row.recipeLocal)||!boolean(l.selection.get(i))||!str(row.inputId.text(),editLegacyKeyBytes)||!str(row.outputId.text(),editLegacyKeyBytes)||!boolean(row.recipePinned)||!boolean(bool(row.pin)))return IO_ERROR;if(row.pin){const auto& p=*row.pin;if(!write(p.base.transform.data(),48)||!write(p.base.bary.data(),12)||!write(&p.base.face,4)||!write(&p.base.receiver,4)||!write(&p.base.band,8)||!boolean(p.receiverBound))return IO_ERROR;}}
         }
         s->EndChunk();return IO_OK;
     }catch(...){return IO_ERROR;}
@@ -65,7 +70,7 @@ IOResult CSEdit::Load(ILoad* s){
             if(chunk==0x3901||chunk==0x4001)return IO_ERROR; // retired development records
             if(chunk==editLegacyChunk){
                 if(guard||legacy||payload)return IO_ERROR;unsigned count=0;if(!read(&count,sizeof(count)))return IO_ERROR;
-                if(count==editStorageGuard){unsigned version=0;if(!read(&version,sizeof(version))||(version!=2&&version!=editStorageVersion))return IO_ERROR;guard=true;guardVersion=version;}
+                if(count==editStorageGuard){unsigned version=0;if(!read(&version,sizeof(version))||(version<2||version>editStorageVersion))return IO_ERROR;guard=true;guardVersion=version;}
                 else{
                     if(count>editLayerLimit)return IO_ERROR;legacy=true;
                     for(unsigned i=0;i<count;++i){int key=0;unsigned size=0;EditLayer layer;
@@ -86,7 +91,9 @@ IOResult CSEdit::Load(ILoad* s){
                     if(!read(&size,sizeof(size))||size>editSavedRowLimit-total)return IO_ERROR;total+=size;
                     for(unsigned j=0;j<size;++j){EditRow row;bool selected=false;std::wstring input,output;
                         if(!read(&row.savedSource,sizeof(row.savedSource))||!read(&row.lineage,sizeof(row.lineage))||!read(&row.order,sizeof(row.order))||!matrix(row.delta)||!boolean(row.deleted)||(version>=3&&!boolean(row.recipeLocal))||!boolean(selected)||!str(input,editLegacyKeyBytes)||!str(output,editLegacyKeyBytes)||input.empty()||output.empty())return IO_ERROR;
-                        row.inputId=EditKey(input);row.outputId=EditKey(output);layer.append(row);layer.selection.set(j,selected);
+                        row.inputId=EditKey(input);row.outputId=EditKey(output);
+                        if(version>=4){bool pinned=false;if(!boolean(row.recipePinned)||!boolean(pinned))return IO_ERROR;if(pinned){auto pin=ce::make<EditPin>();if(!read(pin->base.transform.data(),48)||!read(pin->base.bary.data(),12)||!read(&pin->base.face,4)||!read(&pin->base.receiver,4)||!read(&pin->base.band,8)||!boolean(pin->receiverBound))return IO_ERROR;row.pin=std::move(pin);}}
+                        layer.append(row);layer.selection.set(j,selected);
                     }
                     validateStoredEditLayer(layer);if(!next.emplace(key,std::move(layer)).second)return IO_ERROR;
                 }

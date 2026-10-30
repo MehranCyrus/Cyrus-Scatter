@@ -1,16 +1,25 @@
-    rollout mainUI "Cyrus Scatter 0.87.6" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.87.6.7" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.87.6" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.87.6.7" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
         timer pageTimer interval:16 active:false
-        local mountQueue=#(),deferBodies=false
+        timer repaintTimer interval:16 active:false
+        fn requestRepaint = (if controlsReady do repaintTimer.active=true;true)
+        on repaintTimer tick do (
+            repaintTimer.active=false
+            if not controlsReady or not mainUI.isDisplayed do return false
+            cyrusRepaintRolloutButtons mainUI.hwnd
+            for i=1 to editors.count where slots[i].open and editors[i].isDisplayed do cyrusRepaintRolloutButtons editors[i].hwnd
+            true
+        )
+        local mountQueue=#(),deferBodies=false,pageRevisions=#()
         local bind,requestBind,eventPage=0,eventDepth=0,eventRefresh=false,pendingPages=#(),pendingAll=false,pendingOwner=undefined
         fn beginPageEdit section refresh:true = (
             eventDepth+=1
@@ -32,6 +41,13 @@
             else for index in #(eventPage,1,2,12) where findItem pendingPages index==0 do append pendingPages index
             pendingOwner=owner;true
         )
+        fn queuePages indices = (
+            if not controlsReady do return false
+            for index in indices where index>0 and index<=editors.count and findItem pendingPages index==0 do append pendingPages index
+            pendingOwner=owner
+            if eventDepth==0 do bindTimer.active=true
+            true
+        )
         fn layoutPanels = (for i=1 to editors.count where editors[i].controlsReady and slots[i].open do editors[i].layout();true)
         fn resizeSection index = (
             if resizing or index>editors.count do return false
@@ -44,7 +60,7 @@
                 -- actual available width in logical UI units at the current DPI.
                 local available=amax 64 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
                 if section.controlsReady and section.lastLayoutWidth!=available do section.layout()
-                resizing=false;true
+                resizing=false;requestRepaint();true
             )catch(resizing=false;throw())
         )
         fn rememberViews = (
@@ -65,7 +81,7 @@
             if root.statisticsUI.controlsReady and slots[12].open do if root.statisticsUI.detailsUI_refreshStats() do root.statisticsUI.layout()
             root.syncBrushAvailability();true
         )
-        fn bindSection section = (
+        fn bindSection section refresh:true = (
             if not controlsReady or root==undefined do return false
             local index=findItem editors section
             if index==0 do return false
@@ -93,13 +109,18 @@
                     if index<=view.uiPresentationState.count do section.restoreView view.uiPresentationState[index]
                 )
                 resizeSection index
-                section.bind owner
+                local revision=#(root.uiRevision,if owner==undefined then -1L else owner.uiRevision)
+                if refresh or mounted or not section.controlsReady or index>pageRevisions.count or not CyrusPresetSameValues pageRevisions[index] revision do (
+                    section.bind owner
+                    if pageRevisions.count<editors.count do pageRevisions.count=editors.count
+                    pageRevisions[index]=#(root.uiRevision,if owner==undefined then -1L else owner.uiRevision)
+                )
                 -- Lazy bodies have their own native/Qt rollup containers. Route
                 -- their background navigation to this slot's owning column,
                 -- once after mounting; ordinary controls keep their own input.
                 if mounted do if cyrusBindRolloutScroll slots[index].hwnd==0 do throw "Cannot bind Cyrus panel navigation. Restart Max with the complete matching package."
-            ) else section.controlsReady=false
-            true
+            ) else if refresh do section.controlsReady=false
+            requestRepaint();true
         )
         fn bindEditors pages:undefined = (
             if not controlsReady or layerBinding do return false
@@ -152,7 +173,8 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.6 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.6.7 native plugin and restart Max."
+            if cyrusRepaintRolloutButtons==undefined do throw "Load the complete Cyrus 0.87.6.7 UI module and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -184,8 +206,8 @@
             cyrusSetRolloutVisible mainUI.hwnd true 0
         )
         on mainUI close do (
-            controlsReady=false;statusTimer.active=false;mountTimer.active=false;bindTimer.active=false;pageTimer.active=false
-            mountQueue=#();deferBodies=false
+            controlsReady=false;statusTimer.active=false;mountTimer.active=false;bindTimer.active=false;pageTimer.active=false;repaintTimer.active=false
+            mountQueue=#();deferBodies=false;pageRevisions=#()
             pendingPages=#();pendingAll=false;pendingOwner=undefined;eventPage=0;eventDepth=0;eventRefresh=false
             for slot in slots do cyrusReleaseRolloutScroll slot.hwnd
             for r in editors do (r.controlsReady=false;r.root=undefined;r.owner=undefined;r.obj=undefined)

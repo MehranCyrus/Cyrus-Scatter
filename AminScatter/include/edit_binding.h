@@ -29,5 +29,8 @@ std::string editableScaleSettings(const std::string& legacySettings,double model
 // compatibility proves the signature, not the ownership of an absent row.
 // Hydrating each old row still requires its exact compatible native input.
 Merge merge(const std::string& previous,const std::string& current);
+// Only callers which have captured every authored row's independent native
+// base may change generation settings. Receiver revisions and owner stay bound.
+Merge mergePinned(const std::string& previous,const std::string& current);
 const std::string* sourceRevision(const Descriptor&,const std::string& id) noexcept;
 }

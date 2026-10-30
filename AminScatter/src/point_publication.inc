@@ -1,7 +1,7 @@
 // Included inside PointDisplay and the SDK-free publication regression fixture.
 // All potentially allocating render-item preparation precedes publication.
-bool publish(INode* node,std::vector<PointLayer> layers) {
-    const auto feedback=cyrusCaptureEditFeedback(node);
+bool publish(INode* node,std::vector<PointLayer> layers,std::shared_ptr<const CyrusEditFeedback> feedback={}) {
+    if(!feedback)feedback=cyrusCaptureEditFeedback(node);
     if(candidate && !candidate->generation->failed.load() && sameLayers(candidate->generation->layers,layers)) {
         controller.SetRef(node);controller.update();
         candidate->generation->editFeedback=feedback;cyrusStageEditFeedback(feedback,bool(visibleBundle()));

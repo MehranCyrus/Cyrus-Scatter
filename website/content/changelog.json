@@ -1,7 +1,409 @@
 {
-  "reviewed": "2026-10-26",
+  "reviewed": "2026-10-29",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.87.6.7",
+      "date": "2026-10-29",
+      "title": "Pinned edits, live movement and plant guide detail",
+      "era": "recent",
+      "legacy": false,
+      "note": "Focused Max 2027 runtime qualification; distinct Max 2024/2026 payloads are SDK-build/package only. One Windows EXE includes all three.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Edited instances retain their authored transform and model across Seed and procedural size changes. Reset selected edits supports Undo/Redo."
+        },
+        {
+          "kind": "Improved",
+          "text": "Ordinary Mesh/Proxy instances move while dragging using retained source geometry."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Layout and Layers captions repaint after panel rearrangement; Band badges follow assigned model colours."
+        },
+        {
+          "kind": "Added",
+          "text": "Selected-piece Stem, Leaf and Flower head profiles and 3–16 guide points improve preparation control."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Scene-load staging recovery and saved version provenance; obsolete licensing and preparation captions removed."
+        }
+      ],
+      "evidence": [
+        "docs/plans/edit-preparation-08767-20261029/DELIVERY.md",
+        "docs/plans/edit-preparation-08767-20261029/QUALIFICATION.json"
+      ]
+    },
+    {
+      "version": "0.87.6.5",
+      "date": "2026-10-29",
+      "title": "Mesh-shaped hover and persistent selection",
+      "era": "recent",
+      "legacy": false,
+      "note": "Focused Max 2027 runtime checks; Max 2024/2026 are build/package only. One EXE includes all three host versions.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Yellow mesh edges identify the hovered instance without highlighting the whole scatter. Dense outlines use bounded detail and reuse cached lines."
+        },
+        {
+          "kind": "Improved",
+          "text": "Selected outlines stay visible after the pointer leaves, hide during instance transforms and return afterward. Selection and placement behavior remain unchanged."
+        }
+      ],
+      "evidence": [
+        "docs/plans/instance-selection-08765-20261029/DELIVERY.md",
+        "docs/plans/instance-selection-08765-20261029/ARTIST_GUIDE.md",
+        "docs/plans/instance-selection-08765-20261029/QUALIFICATION.json"
+      ]
+    },
+    {
+      "version": "0.87.6.4",
+      "date": "2026-10-29",
+      "title": "Select the individual plant you see",
+      "era": "recent",
+      "legacy": false,
+      "note": "Focused Max 2027 runtime checks. Max 2024/2026 are build/package only; installer downloads are not published on this website.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Hover now identifies one displayed instance with a simple box instead of highlighting the shared planting helper."
+        },
+        {
+          "kind": "Added",
+          "text": "A plain click selects the instance and opens the separate Cyrus Scatter Edit modifier in Instances mode."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Selection binds the retained displayed result without applying pending Manual settings; picking helpers retire with their owners."
+        }
+      ],
+      "evidence": [
+        "docs/plans/instance-selection-08764-20261029/DELIVERY.md"
+      ]
+    },
+    {
+      "version": "0.87.6.3",
+      "date": "2026-10-29",
+      "title": "Interaction reliability and local-edit efficiency",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 review repair. Artistic Bend/Trim behavior and saved formats are preserved; no universal FPS claim.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Off and collider-only roles no longer participate as reacting neighbors. Root hiding considers margin and overhead reach across response modes."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Fixed source parts retain visibility, and render bounds include geometry beyond the bending guides."
+        },
+        {
+          "kind": "Improved",
+          "text": "Local edits use sparse transform feedback and reuse override maps; pose packing follows display limits without committing pending Manual edits."
+        }
+      ],
+      "evidence": [
+        "docs/plans/interaction-review-08763-20261029/DELIVERY.md"
+      ]
+    },
+    {
+      "version": "0.87.6.2",
+      "date": "2026-10-29",
+      "title": "Shared setup controls and displayed-mesh picking",
+      "era": "recent",
+      "legacy": false,
+      "note": "The later 0.87.6.4 release refines hover and direct instance entry. Max 2027 runtime scope; older hosts build/package only.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Multiple Scatters controls apply display, visibility, enable and explicit Update actions to a chosen controller scope."
+        },
+        {
+          "kind": "Added",
+          "text": "Displayed-mesh picking connects viewport geometry with its stable Scatter instance and separate Edit modifier."
+        }
+      ],
+      "evidence": [
+        "docs/plans/viewport-selection-08762-20261029/DELIVERY.md"
+      ]
+    },
+    {
+      "version": "0.87.6.1",
+      "date": "2026-10-29",
+      "title": "Lighter contact work and panel reuse",
+      "era": "recent",
+      "legacy": false,
+      "note": "Preserves the artistic response baseline. Measured native contact improvements do not represent GPU FPS.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Point labels refresh after Band assignment, and unchanged mounted panels reuse their controls."
+        },
+        {
+          "kind": "Improved",
+          "text": "Skip guide contact work that cannot bend or trim while preserving independent hiding and movement inherited from a parent."
+        }
+      ],
+      "evidence": [
+        "docs/plans/terraces-performance-20261029/DELIVERY.md"
+      ]
+    },
+    {
+      "version": "0.87.6",
+      "date": "2026-10-28",
+      "title": "Clearer controls and Point source repairs",
+      "era": "recent",
+      "legacy": false,
+      "note": "UI/settings follow-up; the existing Bend/Trim and shared-display foundation remains.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Point sources and Band button labels behave consistently with the selected source assignment."
+        },
+        {
+          "kind": "Improved",
+          "text": "Painting fades, mask previews and less-used controls have clearer contextual labels and grouping."
+        }
+      ],
+      "evidence": [
+        "docs/plans/ui-settings-0876-20261028/DELIVERY.md"
+      ]
+    },
+    {
+      "version": "0.87.5.6",
+      "date": "2026-10-28",
+      "title": "Responsive bending and trunk falloff",
+      "era": "recent",
+      "legacy": false,
+      "note": "Artistic response prioritizes editing speed. Max 2027 scripted viewport qualification is retained; Max 2024/2026 are compilation/package only. No universal FPS claim.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Bend/Trim uses coarse guide spans and one response, with workload-aware parallel CPU work and refreshed GPU presentation while a collider moves."
+        },
+        {
+          "kind": "Added",
+          "text": "Trunk bend, Fixed base and Bend fade control rigid lower regions and flexible upper growth without preparing the source again."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Inactive source-history rows no longer disrupt supported Cyrus Edit movement or response-setting updates."
+        },
+        {
+          "kind": "Changed",
+          "text": "Primary response controls use Bend, Trim and Bend and trim. Technical limits move under More settings; older Detailed-contact scenes open in Bend."
+        }
+      ],
+      "evidence": [
+        "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md"
+      ]
+    },
+    {
+      "version": "0.87.5.5",
+      "date": "2026-10-28",
+      "title": "Application callback correction",
+      "era": "recent",
+      "legacy": false,
+      "note": "Corrected EXE: Max 2024/2026/2027 payloads. Runtime testing is Max 2027 only; older hosts are build-only.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Corrects the count-in-undefined callback error on empty or populated Scatter controllers. Scene collider time invalidation now reaches the controller member."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md"
+      ]
+    },
+    {
+      "version": "0.87.5.4",
+      "date": "2026-10-28",
+      "title": "Ordinary scene colliders and branch adaptation",
+      "era": "recent",
+      "legacy": false,
+      "note": "The original callback defect is corrected in 0.87.5.5. Guide envelopes are approximate; protected trunks and blocked branches can remain.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Enroll ordinary walls/stones and use Bend, Prune or Bend then prune with reversible subtree visibility and opt-in neighboring-tree response."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Separates nonuniform/mirrored collider transforms from reacting plant restrictions and permits retained color changes after failed geometry updates."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scene-adaptation-08754-20261028/DELIVERY_08754.md"
+      ]
+    },
+    {
+      "version": "0.87.5.3",
+      "date": "2026-10-28",
+      "title": "Source identity, scale and dense scene repair",
+      "era": "recent",
+      "legacy": false,
+      "note": "Historical Max 2027 qualification retains its own scope.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Canonical source rows handle missing-source removal and source scale consistently, including supported Models Scale changes after Cyrus Edit."
+        },
+        {
+          "kind": "Improved",
+          "text": "Batches exact output construction and exposes bounded Fast navigation without changing accepted placements."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scene-repair-08753-20261028/DELIVERY_08753.md"
+      ]
+    },
+    {
+      "version": "0.87.5.2",
+      "date": "2026-10-27",
+      "title": "Contact work audit and reuse",
+      "era": "recent",
+      "legacy": false,
+      "note": "CPU observations are separate from viewport FPS and renderer output.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Reuses source bindings and candidate frame work, reduces repeated contact checks and exposes work counters for measured diagnosis."
+        }
+      ],
+      "evidence": [
+        "docs/plans/contact-audit-08752-20261027/DELIVERY_08752.md"
+      ]
+    },
+    {
+      "version": "0.87.5.1",
+      "date": "2026-10-27",
+      "title": "Native Scene presets in your Library",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 user-test delivery. Earlier packages retain their own host qualification.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Scene preset, Portable preset and Settings only save choices. Native Scene presets retain complete setups, collected files, preparation, Paint, controllers and instance edits."
+        },
+        {
+          "kind": "Improved",
+          "text": "Merge independent copies from the Library; repeated imports keep separate identities. Metadata revisions reuse saved files and collections transfer through the existing Library archive."
+        },
+        {
+          "kind": "Changed",
+          "text": "Scene loading uses standard Max merge with a short history notice. Matching units and required plug-ins are needed."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scene-presets-08751/DELIVERY_08751.md"
+      ]
+    },
+    {
+      "version": "0.87.5",
+      "date": "2026-10-27",
+      "title": "Shared plant geometry and compact display poses",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Mesh and Textured mesh reuse shared plant geometry while compact accepted poses drive nearby deformations. Final render and Bake retain CPU mesh output; this is not a universal FPS guarantee."
+        }
+      ],
+      "evidence": [
+        "docs/plans/shared-pose-viewport-0875-20261027/DELIVERY_0875.md"
+      ]
+    },
+    {
+      "version": "0.87.4.4",
+      "date": "2026-10-27",
+      "title": "Authored planting travels with portable recipes",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Portable format 9 carries supported instance moves, rotations, scales, copies, deletions and prepared interactions. Static asset, size and receiver limits remain; Scene presets provide the complete native setup route."
+        }
+      ],
+      "evidence": [
+        "docs/plans/recipe-authored-08744-20261027/ARTIST_GUIDE_08744.md"
+      ]
+    },
+    {
+      "version": "0.87.4.3",
+      "date": "2026-10-27",
+      "title": "Separate hiding controls and Wireframe",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Hide margin controls exclusion separately from Contact gap. Choose Inside solid or Under collider. Retained Mesh and Textured mesh previews follow viewport Wireframe."
+        }
+      ],
+      "evidence": [
+        "docs/plans/interaction-hide-wireframe-20261027/DELIVERY_08743.md"
+      ]
+    },
+    {
+      "version": "0.87.4.2",
+      "date": "2026-10-27",
+      "title": "Prepare selected leaves around a fixed base",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Selected or isolated preparation keeps remaining geometry fixed. Failed drafts retain problem-guide review, and editor framing, orbit and pan are more predictable."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preparation-editor-repair-20261027/DELIVERY_08742.md"
+      ]
+    },
+    {
+      "version": "0.87.4.1",
+      "date": "2026-10-27",
+      "title": "Reuse plant preparation and nearby contact work",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Shared preparation and nearby-collider queries reduce repeated work. Shape-change diagnostics expose difficult contacts. Complex models and dense contacts still need review."
+        }
+      ],
+      "evidence": [
+        "docs/plans/interactions-performance-08741-20261027/DELIVERY_08741.md"
+      ]
+    },
+    {
+      "version": "0.87.4",
+      "date": "2026-10-27",
+      "title": "Source Preparation Editor",
+      "era": "recent",
+      "legacy": false,
+      "note": "Documented artist workflow; qualification remains scoped to this delivery. Later work has separate evidence.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Select connected source pieces, assign Bend, Follow stem or Keep fixed, repair supported guides and test contact with a private sphere before committing preparation."
+        }
+      ],
+      "evidence": [
+        "docs/plans/source-preparation-editor-20261026/DELIVERY_0874.md"
+      ]
+    },
     {
       "version": "0.87.3",
       "date": "2026-10-26",

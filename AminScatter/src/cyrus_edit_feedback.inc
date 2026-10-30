@@ -11,7 +11,7 @@ static CSEdit* feedbackModifier(AnimHandle handle)noexcept{
     auto* value=Animatable::GetAnimByHandle(handle);return value&&value->ClassID()==CS_EDIT_ID?static_cast<CSEdit*>(value):nullptr;
 }
 }
-std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node){
+std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node,const std::vector<ep::View>& viewport,std::uint64_t edited){
     if(!node)return {};
     auto result=ce::make<CyrusEditFeedback>();result->owner=Animatable::GetHandleByAnim(node);
     if(nextEditFeedbackSerial==std::uint64_t(INT64_MAX))throw std::overflow_error("Edit feedback ticket exhausted");result->serial=++nextEditFeedbackSerial;
@@ -28,6 +28,11 @@ std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node){
                     const auto view=cyrus::interactionFeedbackView(result->owner,key);
                     if(view&&!(view->token()==presentation->final->native->token())){auto next=ce::make<EditPresentation>(*presentation);next->final=nativeEditInput(*view);presentation=std::move(next);
                         auto current=ce::make<EditPublishedLocal>();current->input=layer.input;current->rows=layer.rows;local=std::move(current);interaction=true;}}
+                if(presentation&&presentation->final&&presentation->final->native)for(const auto& view:viewport)if(view.token().owner==presentation->final->native->token().owner){
+                    auto next=ce::make<EditPresentation>(*presentation);auto final=ce::make<EditDerived>();
+                    final->lookupBase=presentation->final->lookupBase?presentation->final->lookupBase:presentation->final;final->native=view;next->final=std::move(final);presentation=std::move(next);
+                    if(target.modifier==edited){auto current=ce::make<EditPublishedLocal>();current->input=layer.input;current->rows=layer.rows;local=std::move(current);}interaction=true;break;
+                }
                 target.layers.push_back({key,std::move(presentation),std::move(local),interaction});}
             result->targets.push_back(std::move(target));
         }
@@ -35,6 +40,7 @@ std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node){
     }
     return result->targets.empty()?std::shared_ptr<const CyrusEditFeedback>{}:result;
 }
+std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node){return cyrusCaptureEditFeedback(node,{},0);}
 void cyrusWakeEditFrameReady(const std::shared_ptr<const CyrusEditFeedback>& feedback,std::uint64_t display)noexcept{
     if(!feedback||!display)return;
     for(const auto& target:feedback->targets)if(target.panel&&target.readyMessage)

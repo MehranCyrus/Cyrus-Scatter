@@ -18,6 +18,35 @@ Record record(std::uint64_t id=0) {
     r.bary={.2f,.3f,.5f};return r;
 }
 bool equal(const Record& a,const Record& b){return std::memcmp(&a,&b,sizeof(Record))==0;}
+void sparseTransforms(){
+    const auto before=metrics();
+    {
+        Builder builder(newOwner(),Stage::Edited,1,1000000);
+        for(unsigned i=0;i<1000000;++i)builder.appendGenerated(record(i));
+        auto base=builder.freeze();const auto original=base.token();auto matrix=base.at(123).transform;matrix[9]=-55;
+        const auto start=metrics();auto changed=base.withTransforms({{123,matrix}});const auto after=metrics();
+        check(after.totalBytes-start.totalBytes<1024,"One changed transform must not copy a million-row placement payload");
+        check(changed.token().generation==original.generation&&changed.token().view!=original.view,"Sparse successor shares base with distinct view identity");
+        check(base.at(123).transform[9]==123&&changed.at(123).transform[9]==-55,"Sparse transform does not mutate predecessor");
+        check(&base.at(122)==&changed.at(122)&&changed.textIdentity(123)==base.textIdentity(123),"Untouched records and exact stable IDs are shared");
+        check(changed.withTransforms({{123,matrix}}).token()==changed.token(),"No-op transform update reuses its view token");
+        auto selected=changed.select({900,123,7});check(selected.at(1).transform[9]==-55,"Selection retains sparse transform correspondence");
+        matrix[9]=8;auto nested=selected.withTransforms({{1,matrix}}).select({1});
+        check(nested.textIdentity(0)=="c:123"&&nested.at(0).transform[9]==8,"Selected sparse updates bind physical rows without changing identity");
+        check(nested.compact().at(0).transform[9]==8&&nested.compactIfSparse().baseBytes()<1024,"Compaction emits patched rows and releases large parent retention");
+        auto restored=changed.withTransforms({{123,base.at(123).transform}});
+        check(restored.transformBytes()==0&&&restored.at(123)==&base.at(123),"Restoring base transform drops overlay storage");
+        rejects([&]{changed.withTransforms({{123,matrix},{123,matrix}});},"Duplicate sparse rows rejected");
+        rejects([&]{changed.withTransforms({{1000000,matrix}});},"Out-of-view sparse row rejected");
+        matrix[0]=std::numeric_limits<float>::infinity();rejects([&]{changed.withTransforms({{123,matrix}});},"Nonfinite sparse transform rejected");
+        check(changed.at(123).transform[9]==-55,"Rejected sparse successor retains complete previous result");
+        rejects([&]{changed.require(original);},"Sparse view cannot pass the base view token check");
+        Builder authored(newOwner(),Stage::Edited,1,1);authored.appendAuthored(record(),"manual:exact");auto a=authored.freeze();
+        matrix=a.at(0).transform;matrix[10]=42;auto b=a.withTransforms({{0,matrix}});
+        check(b.textIdentity(0)=="manual:exact"&&b.compact().textIdentity(0)=="manual:exact","Authored identity table stays pinned through sparse changes and compaction");
+    }
+    check(metrics().liveBytes==before.liveBytes&&metrics().liveStores==before.liveStores,"Sparse views release base and overlay allocations at last owner");
+}
 void basic() {
     static_assert(std::is_same<decltype(std::declval<const View>().at(0)),const Record&>::value,"Read-only native access");
     const auto baseline=metrics();const auto owner=newOwner();
@@ -152,4 +181,4 @@ void normalizationAndObservation() {
     const auto on=materializations();check(on[0].rows==off[0].rows+1&&on[0].matrices==off[0].matrices+1&&on[0].strings==off[0].strings+1&&on[0].populationArrays==off[0].populationArrays+1,"Completed allocations survive exceptional scope exit");observeMaterializations(false);
 }
 }
-int main(){try{basic();identitiesAndViews();malformed();capacity();workerPins();normalizationAndObservation();std::cout<<"Native immutable placement layout, identities, tokens, views, bounded readback and release passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{sparseTransforms();basic();identitiesAndViews();malformed();capacity();workerPins();normalizationAndObservation();std::cout<<"Native immutable placement layout, identities, tokens, views, bounded readback and release passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

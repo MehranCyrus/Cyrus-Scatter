@@ -1,0 +1,11 @@
+{
+  "identity": "c:4294967296",
+  "moved_hit": "#(1L, \"c:4294967296\", 1, [7.16016,8.78918,12], 3994.0)",
+  "occluder_pick": true,
+  "after_occluder_delete": true,
+  "authored_deleted": [
+    "c:4294967296"
+  ],
+  "deleted_hit": "None",
+  "status": "complete"
+}

@@ -1,0 +1,2060 @@
+ M AminScatter/CMakeLists.txt
+ M AminScatter/include/deformation_preview.h
+ M AminScatter/include/interactions_deformation.h
+ M AminScatter/include/interactions_engine.h
+ M AminScatter/include/interactions_source.h
+ M AminScatter/include/placement_store.h
+ M AminScatter/include/point_preview.h
+ M AminScatter/include/viewport_policy.h
+ M AminScatter/scripts/AminScatterObject.ms
+ M AminScatter/src/cyrus_edit.cpp
+ M AminScatter/src/geometry_preview.inc
+ M AminScatter/src/interactions_deformation.cpp
+ M AminScatter/src/interactions_engine.cpp
+ M AminScatter/src/interactions_fast_bend.inc
+ M AminScatter/src/interactions_host.cpp
+ M AminScatter/src/interactions_preview.cpp
+ M AminScatter/src/interactions_render.cpp
+ M AminScatter/src/interactions_source.cpp
+ M AminScatter/src/placement_store.cpp
+ M AminScatter/src/point_display.cpp
+ M AminScatter/src/preview_rows.inc
+ M AminScatter/tests/interactions_adaptation.inc
+ M AminScatter/tests/interactions_tests.cpp
+ M AminScatter/tests/placement_store_tests.cpp
+ M AminScatter/tests/viewport_policy_tests.cpp
+ M AminScatter/tools/ui/approved-layout-manifest.json
+ M AminScatter/tools/ui/approved-layout-rows.cjs
+ M AminScatter/tools/ui/approved-layout.test.cjs
+ M AminScatter/tools/ui/generate.cjs
+ M AminScatter/tools/ui/layers-control-inventory.json
+ M AminScatter/tools/ui/lazy-pages.cjs
+ M AminScatter/tools/ui/templates/approved-main-ui.ms
+ M AminScatter/tools/ui/templates/interactions-authoring.ms
+ M AminScatter/tools/ui/templates/presets.ms
+ M AminScatter/tools/ui/templates/recipes-authored.ms
+ M AminScatter/tools/ui/templates/recipes.ms
+ M AminScatter/tools/ui/templates/scene-presets.ms
+ M AminScatter/tools/ui/templates/shared-library.ms
+ M AminScatter/tools/ui/templates/unified-core.ms
+ M AminScatter/tools/ui/templates/viewport-memory.ms
+ M CyrusArrange/CMakeLists.txt
+ M CyrusArrange/README.md
+ M CyrusArrange/docs/GEOMETRY_USER_WORKFLOW_0.3.2.md
+ M CyrusArrange/docs/README.md
+ M CyrusArrange/docs/RELEASE_POLICY_0.3.2.md
+ M CyrusArrange/docs/UNIFIED_MODIFY_0.3.2.md
+ M CyrusArrange/include/cyrus_arrange/arrangement.h
+ M CyrusArrange/include/cyrus_arrange/assets.h
+ M CyrusArrange/include/cyrus_arrange/document_state.h
+ M CyrusArrange/include/cyrus_arrange/path.h
+ M CyrusArrange/installer/CyrusArrange.mcr
+ M CyrusArrange/installer/install.ms
+ M CyrusArrange/scripts/ArrangeModifier.ms
+ M CyrusArrange/scripts/ArrangeWorkflow.ms
+ M CyrusArrange/scripts/CyrusArrange.ms
+ M CyrusArrange/src/arrange_bridge.cpp
+ M CyrusArrange/src/arrange_presentation.cpp
+ M CyrusArrange/src/arrangement.cpp
+ M CyrusArrange/src/assets.cpp
+ M CyrusArrange/src/document_state.cpp
+ M CyrusArrange/src/max_bridge.cpp
+ M CyrusArrange/src/path.cpp
+ M CyrusArrange/src/storage_plugin.cpp
+ M CyrusArrange/tests/composition_tests.cpp
+ M CyrusArrange/tests/document_state_tests.cpp
+ M CyrusArrange/tests/max/arrange_fit_feedback_tests.ms
+ M CyrusArrange/tests/max/arrange_legacy_minimum_workflow_tests.ms
+ M CyrusArrange/tests/max/arrange_unified_modify_tests.ms
+ M CyrusArrange/tests/max/arrange_workflow_tests.ms
+ M CyrusArrange/tests/max/installed_startup_tests.ms
+ M CyrusArrange/tests/path_tests.cpp
+ M CyrusArrange/tools/build.py
+ M CyrusArrange/tools/package.py
+ M CyrusArrange/tools/run_max_tests.py
+ M CyrusMCP/README.md
+ M CyrusMCP/cyrus_mcp/agent_help.py
+ M CyrusMCP/cyrus_mcp/feature-catalog.json
+ M CyrusMCP/cyrus_mcp/max_host.py
+ M CyrusMCP/cyrus_mcp/models.py
+ M CyrusMCP/cyrus_mcp/panel.py
+ M CyrusMCP/cyrus_mcp/publication.py
+ M CyrusMCP/cyrus_mcp/records.py
+ M CyrusMCP/cyrus_mcp/server.py
+ M CyrusMCP/cyrus_mcp/service.py
+ M CyrusMCP/cyrus_mcp/settings.py
+ M CyrusMCP/tests/test_feature_catalog.py
+ M CyrusMCP/tests/test_license_boundary.py
+ M CyrusMCP/tests/test_mcp.py
+ M CyrusMCP/tests/test_publication.py
+ M CyrusMCP/tests/test_service.py
+ M CyrusMCP/tests/test_transport.py
+ M CyrusPhysicsLab/CMakeLists.txt
+ M CyrusPhysicsLab/README.md
+ M CyrusPhysicsLab/include/core.h
+ M CyrusPhysicsLab/include/live_session.h
+ M CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms
+ M CyrusPhysicsLab/src/core.cpp
+ M CyrusPhysicsLab/src/diagnostics.cpp
+ M CyrusPhysicsLab/src/jolt_world.cpp
+ M CyrusPhysicsLab/src/live_session.cpp
+ D CyrusPhysicsLab/src/max_bake.inc
+ M CyrusPhysicsLab/src/max_collision.inc
+ M CyrusPhysicsLab/src/max_host.cpp
+ M CyrusPhysicsLab/src/max_live.inc
+ M CyrusPhysicsLab/src/physx_world.cpp
+ M CyrusPhysicsLab/src/storage_plugin.cpp
+ M CyrusPhysicsLab/tests/collider_cook_tests.cpp
+ M CyrusPhysicsLab/tests/collision_tests.cpp
+ M CyrusPhysicsLab/tests/compare.cpp
+ M CyrusPhysicsLab/tests/grip_tests.cpp
+ M CyrusPhysicsLab/tests/host_continuous_crash_common.ms
+ M CyrusPhysicsLab/tests/host_continuous_fatal.ms
+ M CyrusPhysicsLab/tests/host_continuous_faults.ms
+ M CyrusPhysicsLab/tests/host_continuous_hardkill.ms
+ M CyrusPhysicsLab/tests/host_continuous_lifecycle.ms
+ M CyrusPhysicsLab/tests/host_continuous_performance.ms
+ M CyrusPhysicsLab/tests/host_continuous_rebuild.ms
+ M CyrusPhysicsLab/tests/host_continuous_recover.ms
+ M CyrusPhysicsLab/tests/host_continuous_secondary.ms
+ M CyrusPhysicsLab/tests/host_proxy_previous_scene.ms
+ M CyrusPhysicsLab/tests/host_regression.ms
+ M CyrusPhysicsLab/tests/host_scaled_ui.ms
+ M CyrusPhysicsLab/tests/hull_tests.cpp
+ M CyrusPhysicsLab/tests/live_stress.cpp
+ M CyrusPhysicsLab/tests/live_tests.cpp
+ M CyrusPhysicsLab/tests/mountain_tests.cpp
+ M CyrusPhysicsLab/tools/build.py
+ M CyrusPhysicsLab/tools/host_test.py
+ M CyrusPhysicsLab/tools/installer_test.py
+ M CyrusPhysicsLab/tools/package.py
+ M README.md
+ M docs/AGENT_START.md
+ M docs/ARTIST_GUIDE.md
+ M docs/BACKLOG.md
+ M docs/GitHub_Tools_Inventory_2026-10-15/NEW_CONVERSATION.md
+ M docs/GitHub_Tools_Inventory_2026-10-15/README.md
+ M docs/KNOWLEDGE_BASELINE.json
+ M docs/PERFORMANCE_BASELINE.md
+ M docs/README.md
+ M docs/Release_Versioning.md
+ M docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md
+ M docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md
+ M docs/Scatter_Physics_Research_2026-10-16/PHASED_PLAN.md
+ M docs/Scatter_Physics_Research_2026-10-16/README.md
+ M docs/plans/improvement-program/PROGRESS.md
+ M tools/procedural_lab/check_generated.py
+ M website/CPANEL_UPLOAD.md
+ M website/README.md
+ M website/content/README.md
+ M website/content/WEBSITE_STATUS.md
+ M website/content/changelog.json
+ M website/content/control-explanations.json
+ M website/content/guide-chapters.json
+ M website/content/release.json
+ M website/content/source-manifest.json
+ M website/src/components/selected-landing.html
+ M website/src/content/controlSections.ts
+ M website/src/content/featureStories.ts
+ M website/src/content/reference.json
+ M website/src/pages/Download.tsx
+ M website/src/pages/Roadmap.tsx
+ M website/tools/import_reference.py
+ M website/tools/package_site.py
+ M website/tools/stage_release.py
+ M website/tools/verify_reference.py
+ M website/verification/react-static-checks.json
+?? AminScatter/include/viewport_pick.h
+?? AminScatter/include/viewport_plan.h
+?? AminScatter/src/cyrus_edit_viewport.inc
+?? AminScatter/src/viewport_pick.inc
+?? AminScatter/src/viewport_pick_bridge.inc
+?? AminScatter/tests/interactions_review.inc
+?? AminScatter/tools/ui/templates/viewport-selection.ms
+?? CyrusArrange/docs/AMOUNTS_COMPACT_3.3.md
+?? CyrusArrange/docs/ICON_FIRST_0.3.2.md
+?? CyrusArrange/docs/ICON_FIRST_DELIVERY_0.3.2.md
+?? CyrusArrange/docs/ICON_FIRST_QUICKSTART_0.3.2.md
+?? CyrusArrange/docs/LIST_UI_2026-10-22.md
+?? CyrusArrange/docs/LIST_UI_DELIVERY_2026-10-22.md
+?? CyrusArrange/docs/LIST_UI_QUICKSTART_0.3.2.md
+?? CyrusArrange/docs/PACKAGE_WORKER_IDENTITY_0.3.2.md
+?? CyrusArrange/docs/PROPS_3.3_DELIVERY.md
+?? CyrusArrange/docs/PROPS_3.3_IMPLEMENTATION.md
+?? CyrusArrange/docs/PROPS_3.3_QUICKSTART.md
+?? CyrusArrange/docs/PROPS_3.3_UI_LOAD_FIX.md
+?? CyrusArrange/docs/RELEASE_VALIDATION_0.3.2.md
+?? CyrusArrange/docs/ROW_BALANCE_COLLIDER_FIX_0.3.2.md
+?? CyrusArrange/examples/CyrusArrange-Gallery-Performance.csv
+?? CyrusArrange/examples/CyrusArrange-Original-Accessories.cyalib
+?? CyrusArrange/examples/book-rows-0.1.2/book-row-performance.csv
+?? CyrusArrange/examples/book-rows-0.1.3/README.md
+?? CyrusArrange/examples/book-rows-0.1.3/book-row-performance.csv
+?? CyrusArrange/examples/book-rows-0.1.3/bookrows46-visual-review-01.json
+?? CyrusArrange/examples/book-rows-0.1.3/bookrows46-visual-review-01.md
+?? CyrusArrange/examples/book-rows-0.1.3/example-manifest.json
+?? CyrusArrange/examples/book-rows-0.1.3/receipt.json
+?? CyrusArrange/examples/book-rows-0.1.3/result.txt
+?? CyrusArrange/examples/imported-0.1.3/ABOUT-IMPORTED-TRIAL.txt
+?? CyrusArrange/examples/imported-0.1.3/README.md
+?? CyrusArrange/examples/imported-0.1.3/Relocate-Imported-Textures.ms
+?? CyrusArrange/examples/imported-0.1.3/adapter-inputs.csv
+?? CyrusArrange/examples/imported-0.1.3/analyzed-surfaces.csv
+?? CyrusArrange/examples/imported-0.1.3/authored-surfaces.csv
+?? CyrusArrange/examples/imported-0.1.3/authored-transforms.csv
+?? CyrusArrange/examples/imported-0.1.3/credits.csv
+?? CyrusArrange/examples/imported-0.1.3/example-manifest.json
+?? CyrusArrange/examples/imported-0.1.3/generation-results.csv
+?? CyrusArrange/examples/imported-0.1.3/import-settings.csv
+?? CyrusArrange/examples/imported-0.1.3/imported-geometry.csv
+?? CyrusArrange/examples/imported-0.1.3/imported-visual-review-01.json
+?? CyrusArrange/examples/imported-0.1.3/imported-visual-review-01.md
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/ceramic_vase_02/ceramic_vase_02_1k.fbx
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/ceramic_vase_02/textures/ceramic_vase_02_diff_1k.jpg
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/modern_wooden_cabinet/textures/modern_wooden_cabinet_diff_1k.jpg
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/standing_picture_frame_02/standing_picture_frame_02_1k.fbx
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/standing_picture_frame_02/textures/standing_picture_frame_02_artwork_diff_1k.png
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/standing_picture_frame_02/textures/standing_picture_frame_02_diff_1k.jpg
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_diff_1k.jpg
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/wooden_bowl_02/textures/wooden_bowl_02_diff_1k.jpg
+?? CyrusArrange/examples/imported-0.1.3/inputs/assets/wooden_bowl_02/wooden_bowl_02_1k.fbx
+?? CyrusArrange/examples/imported-0.1.3/material-adapter.csv
+?? CyrusArrange/examples/imported-0.1.3/output-visual-checks.csv
+?? CyrusArrange/examples/imported-0.1.3/portable-textures.csv
+?? CyrusArrange/examples/imported-0.1.3/probe-receipt.json
+?? CyrusArrange/examples/imported-0.1.3/receipt.json
+?? CyrusArrange/examples/imported-0.1.3/result.txt
+?? CyrusArrange/examples/imported-0.1.3/source-provenance.csv
+?? CyrusArrange/examples/imported-0.1.3/unbound-original-components.csv
+?? CyrusArrange/examples/imported-0.1.3/warnings.csv
+?? CyrusArrange/examples/manifest-0.1.1.json
+?? CyrusArrange/examples/manifest-0.1.2.json
+?? CyrusArrange/examples/real-world-0.3.1/README.md
+?? CyrusArrange/examples/real-world-0.3.1/independent-geometry-validation.json
+?? CyrusArrange/examples/real-world-0.3.1/manifest.json
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_001.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_002.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_003.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_004.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_005.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_006.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_007.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_008.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_009.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_010.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_011.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_012.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_013.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_014.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_015.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_016.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_017.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_018.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_019.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_020.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_021.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_022.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_023.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_024.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_025.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_026.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_027.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_028.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_029.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_030.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_031.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_032.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_033.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_034.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_035.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_036.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_037.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_038.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_039.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_040.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_041.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_042.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_043.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_044.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_045.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_046.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_047.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_048.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_049.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_050.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_051.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_052.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_053.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_054.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_055.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_056.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_057.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_058.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_059.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_060.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_061.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_062.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_063.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_064.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_065.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_066.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_067.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_068.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_069.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_070.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_071.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_072.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_073.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_074.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_075.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_076.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_077.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_078.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_079.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_080.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_081.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_082.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_083.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_084.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_085.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_086.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_087.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_088.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_089.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_090.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_091.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_092.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_093.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_094.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_095.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_096.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_097.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_098.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_099.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Books_01_Cover_100.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Coffee_Table_04_Texture_001.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_001.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_002.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_003.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_004.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_005.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_006.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_007.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_008.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_009.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_010.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_011.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_012.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_013.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_014.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_015.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_016.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_017.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_018.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_019.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_020.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_021.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_022.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_023.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_024.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_025.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_026.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_027.jpg
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_028.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_Texture_029.png
+?? CyrusArrange/examples/real-world-0.3.1/maps/Decor_Set_01_UV_Checker_001.png
+?? CyrusArrange/examples/real-world-0.3.1/provenance/appearance-acceptance.json
+?? CyrusArrange/examples/real-world-0.3.1/provenance/native-build-receipt.json
+?? CyrusArrange/examples/real-world-0.3.1/provenance/physical-host-receipt.json
+?? CyrusArrange/examples/real-world-0.3.1/provenance/readback-render-receipt.json
+?? CyrusArrange/examples/real-world-0.3.1/real-models-coffee.png
+?? CyrusArrange/examples/real-world-0.3.1/real-models-overview.png
+?? CyrusArrange/examples/real-world-0.3.1/real-models-side.png
+?? CyrusArrange/examples/real-world-0.3.1/real-world-geometry.csv
+?? CyrusArrange/examples/real-world-0.3.1/real-world-report.json
+?? CyrusArrange/examples/simple-0.2.0/README.md
+?? CyrusArrange/examples/simple-0.2.0/manifest.json
+?? CyrusArrange/examples/simple-0.3.0/README.md
+?? CyrusArrange/examples/simple-0.3.0/manifest.json
+?? CyrusArrange/include/cyrus_arrange/source_distribution.h
+?? CyrusArrange/src/source_distribution.cpp
+?? CyrusArrange/tests/data/baseline-011/CyrusArrange-Original-Accessories.cyalib
+?? CyrusArrange/tests/data/imported-model-assets/assets/ceramic_vase_02/ceramic_vase_02_1k.fbx
+?? CyrusArrange/tests/data/imported-model-assets/assets/ceramic_vase_02/textures/ceramic_vase_02_diff_1k.jpg
+?? CyrusArrange/tests/data/imported-model-assets/assets/modern_wooden_cabinet/modern_wooden_cabinet_1k.fbx
+?? CyrusArrange/tests/data/imported-model-assets/assets/modern_wooden_cabinet/textures/modern_wooden_cabinet_diff_1k.jpg
+?? CyrusArrange/tests/data/imported-model-assets/assets/standing_picture_frame_02/standing_picture_frame_02_1k.fbx
+?? CyrusArrange/tests/data/imported-model-assets/assets/standing_picture_frame_02/textures/standing_picture_frame_02_artwork_diff_1k.png
+?? CyrusArrange/tests/data/imported-model-assets/assets/standing_picture_frame_02/textures/standing_picture_frame_02_diff_1k.jpg
+?? CyrusArrange/tests/data/imported-model-assets/assets/wooden_bookshelf_worn/textures/wooden_bookshelf_worn_diff_1k.jpg
+?? CyrusArrange/tests/data/imported-model-assets/assets/wooden_bookshelf_worn/wooden_bookshelf_worn_1k.fbx
+?? CyrusArrange/tests/data/imported-model-assets/assets/wooden_bowl_02/textures/wooden_bowl_02_diff_1k.jpg
+?? CyrusArrange/tests/data/imported-model-assets/assets/wooden_bowl_02/wooden_bowl_02_1k.fbx
+?? CyrusArrange/tests/data/stack-closed.cyalib
+?? CyrusArrange/tests/data/stack-open.cyalib
+?? CyrusArrange/tests/max/arrange_icon_first_tests.ms
+?? CyrusArrange/tests/max/arrange_list_ui_tests.ms
+?? CyrusArrange/tests/source_distribution_tests.cpp
+?? CyrusArrange/tools/preview_delivery.py
+?? CyrusBotanyLab/CMakeLists.txt
+?? CyrusBotanyLab/README.md
+?? CyrusBotanyLab/docs/CONVERSION_020.md
+?? CyrusBotanyLab/docs/DELIVERY.md
+?? CyrusBotanyLab/docs/DELIVERY_020.md
+?? CyrusBotanyLab/docs/IMPLEMENTATION.md
+?? CyrusBotanyLab/docs/MAPLE_TEST_020.md
+?? CyrusBotanyLab/docs/QUALIFICATION.json
+?? CyrusBotanyLab/docs/QUALIFICATION_020.json
+?? CyrusBotanyLab/include/botany/conversion.hpp
+?? CyrusBotanyLab/include/botany/core.hpp
+?? CyrusBotanyLab/installer/Install.ms
+?? CyrusBotanyLab/installer/OpenCyrusBotanyLab.ms
+?? CyrusBotanyLab/installer/Startup.ms
+?? CyrusBotanyLab/scripts/BotanyConversion.ms
+?? CyrusBotanyLab/scripts/CreateBotanyDemo.ms
+?? CyrusBotanyLab/scripts/CyrusBotanyLab.ms
+?? CyrusBotanyLab/src/conversion.cpp
+?? CyrusBotanyLab/src/conversion_max.cpp
+?? CyrusBotanyLab/src/core.cpp
+?? CyrusBotanyLab/src/max_host.cpp
+?? CyrusBotanyLab/src/storage.cpp
+?? CyrusBotanyLab/tests/conversion_host.ms
+?? CyrusBotanyLab/tests/conversion_maple.ms
+?? CyrusBotanyLab/tests/conversion_maple_published.ms
+?? CyrusBotanyLab/tests/conversion_maple_reopen.ms
+?? CyrusBotanyLab/tests/conversion_published.ms
+?? CyrusBotanyLab/tests/conversion_reopen.ms
+?? CyrusBotanyLab/tests/conversion_tests.cpp
+?? CyrusBotanyLab/tests/core_tests.cpp
+?? CyrusBotanyLab/tests/demo.ms
+?? CyrusBotanyLab/tests/host.ms
+?? CyrusBotanyLab/tests/reopen.ms
+?? CyrusBotanyLab/tools/build.py
+?? CyrusBotanyLab/tools/host_test.py
+?? CyrusBotanyLab/tools/package.py
+?? CyrusDesignLab/CMakeLists.txt
+?? CyrusDesignLab/README.md
+?? CyrusDesignLab/native/main.cpp
+?? CyrusDesignLab/native/shared_sources.cmake
+?? CyrusDesignLab/native/worker.cpp
+?? CyrusDesignLab/native/worker.h
+?? CyrusDesignLab/schemas/PROTOCOL.md
+?? CyrusDesignLab/schemas/worker-request-v0.schema.json
+?? CyrusDesignLab/tests/fixtures/courtyard.json
+?? CyrusDesignLab/tests/native_tests.cpp
+?? CyrusDesignLab/tests/test_worker.py
+?? CyrusDesignLab/tools/build.py
+?? CyrusDesignLab/tools/inspect_result.py
+?? CyrusDesignLab/tools/preview_result.py
+?? CyrusMCP/AUDIT_20261023.md
+?? CyrusMCP/CHANGE_IMPACT_20261029.md
+?? CyrusMCP/CHECKPOINT_20261024.md
+?? CyrusMCP/IMPLEMENTATION_GOAL.md
+?? CyrusMCP/M00_BASELINE.md
+?? CyrusMCP/M01_CHANGES.md
+?? CyrusMCP/M01_OPERATIONS.md
+?? CyrusMCP/M01_PROCESS_LOSS.md
+?? CyrusMCP/M01_RECOVERY_BOUNDS.md
+?? CyrusMCP/M01_UNDO.md
+?? CyrusMCP/M02_HANDOFF.md
+?? CyrusMCP/M02_SCENE_CONTEXT.md
+?? CyrusMCP/M03_ASSET_USE.md
+?? CyrusMCP/M03_DESTINATION_SETTINGS.md
+?? CyrusMCP/M03_INSTALLED_SOURCES.md
+?? CyrusMCP/M03_LIBRARY_DISCOVERY.md
+?? CyrusMCP/M03_PRESET_APPLICATION.md
+?? CyrusMCP/M03_RECIPES.md
+?? CyrusMCP/M03_RECIPE_READER.md
+?? CyrusMCP/M03_SETTINGS_PRESETS.md
+?? CyrusMCP/M03_SOURCE_METADATA.md
+?? CyrusMCP/OPERATION_COVERAGE.md
+?? CyrusMCP/QUALIFICATION_20261029.json
+?? CyrusMCP/RESEARCH_20261023.md
+?? CyrusMCP/RESUME_20261029.md
+?? CyrusMCP/SCENE_ONBOARDING_WORKFLOW_20261023.md
+?? CyrusMCP/SYSTEM_DESIGN_REVIEW_20261023.md
+?? CyrusMCP/cyrus_mcp/asset_use.py
+?? CyrusMCP/cyrus_mcp/changes.py
+?? CyrusMCP/cyrus_mcp/destination_settings.py
+?? CyrusMCP/cyrus_mcp/installed_sources.py
+?? CyrusMCP/cyrus_mcp/library.py
+?? CyrusMCP/cyrus_mcp/preset_application.py
+?? CyrusMCP/cyrus_mcp/preset_application_host.py
+?? CyrusMCP/cyrus_mcp/preset_provenance.py
+?? CyrusMCP/cyrus_mcp/presets.py
+?? CyrusMCP/cyrus_mcp/recipes.py
+?? CyrusMCP/cyrus_mcp/recovery.py
+?? CyrusMCP/cyrus_mcp/scene.py
+?? CyrusMCP/cyrus_mcp/source_assets_host.py
+?? CyrusMCP/cyrus_mcp/source_metadata.py
+?? CyrusMCP/cyrus_mcp/source_scale.py
+?? CyrusMCP/tests/test_asset_use.py
+?? CyrusMCP/tests/test_changes.py
+?? CyrusMCP/tests/test_destination_settings.py
+?? CyrusMCP/tests/test_installed_sources.py
+?? CyrusMCP/tests/test_library.py
+?? CyrusMCP/tests/test_native_readback.py
+?? CyrusMCP/tests/test_operation_integrity.py
+?? CyrusMCP/tests/test_preset_application.py
+?? CyrusMCP/tests/test_preset_application_host.py
+?? CyrusMCP/tests/test_preset_provenance.py
+?? CyrusMCP/tests/test_presets.py
+?? CyrusMCP/tests/test_recipes.py
+?? CyrusMCP/tests/test_recovery.py
+?? CyrusMCP/tests/test_scene_context.py
+?? CyrusMCP/tests/test_source_metadata.py
+?? CyrusMCP/tests/test_source_scale.py
+?? CyrusMCP/tests/test_task_handoff.py
+?? CyrusMCP/tests/test_undo_integrity.py
+?? CyrusPhysicsLab/src/max_height.inc
+?? CyrusPhysicsLab/src/max_instances.inc
+?? CyrusPhysicsLab/src/primitives.cpp
+?? CyrusPhysicsLab/tests/instance_tests.cpp
+?? LOGO.psd
+?? "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html"
+?? "Landing Page Design/Design 1/ARTWORK-REVIEW.md"
+?? "Landing Page Design/Design 1/MANIFEST.json"
+?? "Landing Page Design/Design 1/OPEN-ME.html"
+?? "Landing Page Design/Design 1/README.md"
+?? "Landing Page Design/Design 1/START-HERE.txt"
+?? "Landing Page Design/Design 1/history/01-Original-Guide.html"
+?? "Landing Page Design/Design 1/history/01-Original-Preview.png"
+?? "Landing Page Design/Design 1/history/01-Original-Source.zip"
+?? "Landing Page Design/Design 1/history/02-First-Illustrated-Guide.html"
+?? "Landing Page Design/Design 1/history/Original-Artist-Reference.zip"
+?? "Landing Page Design/Design 1/history/Original-Website-README.md"
+?? "Landing Page Design/Design 1/validation/FINAL-VALIDATION.md"
+?? "Landing Page Design/Design 1/validation/content-validation.json"
+?? "Landing Page Design/Design 1/validation/final-package/checks.json"
+?? "Landing Page Design/Design 1/validation/final-package/desktop-feature-poster.png"
+?? "Landing Page Design/Design 1/validation/final-package/desktop-overview.png"
+?? "Landing Page Design/Design 1/validation/final-package/mobile-poster.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/1440-diagram.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/1440-overview.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/1440-reference.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/390-diagram.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/390-overview.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/390-reference.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/834-diagram.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/834-overview.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/834-reference.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/VALIDATION.md"
+?? "Landing Page Design/Design 1/validation/historical-first-version/browser-validation.json"
+?? "Landing Page Design/Design 1/validation/historical-first-version/content-validation.json"
+?? "Landing Page Design/Design 1/validation/historical-first-version/contrast-validation.json"
+?? "Landing Page Design/Design 1/validation/historical-first-version/control-coverage.json"
+?? "Landing Page Design/Design 1/validation/historical-first-version/print-style-preview.png"
+?? "Landing Page Design/Design 1/validation/historical-first-version/source-integrity.json"
+?? "Landing Page Design/Design 1/validation/source-integrity-final.json"
+?? "Landing Page Design/Design 1/website/.gitignore"
+?? "Landing Page Design/Design 1/website/README.md"
+?? "Landing Page Design/Design 1/website/assets/originals/companion_workflows_analyze_assign_refine.png"
+?? "Landing Page Design/Design 1/website/assets/originals/companion_workflows_from_analysis_to_detail.png"
+?? "Landing Page Design/Design 1/website/assets/originals/coverage_accepted_planting_results.png"
+?? "Landing Page Design/Design 1/website/assets/originals/coverage_versus_accepted_plants.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_layered_planting_infographic.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_feature_atlas.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_natural_variation_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_setup_receiving_surfaces.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_visual_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_workflow_overview.png"
+?? "Landing Page Design/Design 1/website/assets/originals/cyrus_three_spacing_relationships.png"
+?? "Landing Page Design/Design 1/website/assets/originals/include_exclude_masks_falloff_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/layers_paint_sets_visual_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/manual_vs._live_garden_updates.png"
+?? "Landing Page Design/Design 1/website/assets/originals/source_containers_plant_model_workflow.png"
+?? "Landing Page Design/Design 1/website/assets/originals/sources_source_containers_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/spacing_cleanup_visual_guide.png"
+?? "Landing Page Design/Design 1/website/assets/originals/viewport_preview_to_final_garden_output.png"
+?? "Landing Page Design/Design 1/website/assets/originals/viewport_vs_final_planting_design.png"
+?? "Landing Page Design/Design 1/website/assets/visuals/areas-falloff.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/companion-automation.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/companion-workflows.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/coverage-painting.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/coverage-vs-accepted.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/feature-atlas.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/layer-setup-guide.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/layers-and-paint-sets.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/layers-paint-sets.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/manual-vs-live.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/setup-receivers.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/source-containers.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/sources-containers.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/spacing-cleanup.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/spacing-relationships.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/transforms-variation.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/viewport-output.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/viewport-vs-final.webp"
+?? "Landing Page Design/Design 1/website/assets/visuals/workflow-overview.webp"
+?? "Landing Page Design/Design 1/website/content/control-map.json"
+?? "Landing Page Design/Design 1/website/content/gallery.json"
+?? "Landing Page Design/Design 1/website/content/reference/01_SETUP_AND_LAYERS.md"
+?? "Landing Page Design/Design 1/website/content/reference/02_MODELS_AND_CONTAINERS.md"
+?? "Landing Page Design/Design 1/website/content/reference/03_SOURCE_ASSIGNMENT.md"
+?? "Landing Page Design/Design 1/website/content/reference/04_POPULATION.md"
+?? "Landing Page Design/Design 1/website/content/reference/05_COVERAGE_AND_PAINTING.md"
+?? "Landing Page Design/Design 1/website/content/reference/06_AREAS_AND_FALLOFF.md"
+?? "Landing Page Design/Design 1/website/content/reference/07_TRANSFORMS.md"
+?? "Landing Page Design/Design 1/website/content/reference/08_SPACING_AND_CLEANUP.md"
+?? "Landing Page Design/Design 1/website/content/reference/09_VIEWPORT_AND_RENDER.md"
+?? "Landing Page Design/Design 1/website/content/reference/10_STATISTICS_AND_RECORDING.md"
+?? "Landing Page Design/Design 1/website/content/reference/11_OTHER_EDITING_VIEWS.md"
+?? "Landing Page Design/Design 1/website/content/reference/12_SURFACE_ANALYZER.md"
+?? "Landing Page Design/Design 1/website/content/reference/13_AUTOMATION_AND_LIMITS.md"
+?? "Landing Page Design/Design 1/website/content/reference/14_REVIEW_AND_WALKTHROUGH.md"
+?? "Landing Page Design/Design 1/website/content/reference/15_CONTROL_INDEX.md"
+?? "Landing Page Design/Design 1/website/content/reference/README.md"
+?? "Landing Page Design/Design 1/website/content/site.json"
+?? "Landing Page Design/Design 1/website/scripts/build.py"
+?? "Landing Page Design/Design 1/website/scripts/content.py"
+?? "Landing Page Design/Design 1/website/scripts/validate_content.py"
+?? "Landing Page Design/Design 1/website/src/app.js"
+?? "Landing Page Design/Design 1/website/src/diagrams.js"
+?? "Landing Page Design/Design 1/website/src/index.html"
+?? "Landing Page Design/Design 1/website/src/styles.css"
+?? "Landing Page Design/Design 1/website/tests/browser_checks.py"
+?? "Landing Page Design/Design 1/website/tests/final_package_checks.py"
+?? "Landing Page Design/Design 1/website/tests/visual_checks.py"
+?? "Landing Page Design/Design 2/MANIFEST.sha256"
+?? "Landing Page Design/Design 2/OPEN-WEBSITE.html"
+?? "Landing Page Design/Design 2/README.md"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Coverage.json"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Desktop.png"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Mobile.png"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Validation.md"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Visual-Guide-source.zip"
+?? "Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Visual-Guide.html"
+?? "Landing Page Design/Design 2/archive/first-version/website-README.md"
+?? "Landing Page Design/Design 2/artwork/ARTWORK-NOTES.md"
+?? "Landing Page Design/Design 2/artwork/originals/coverage_vs_accepted_plants.png"
+?? "Landing Page Design/Design 2/artwork/originals/cyrus_scatter_layers_and_paint_sets.png"
+?? "Landing Page Design/Design 2/artwork/originals/cyrus_scatter_visual_guide_homepage.png"
+?? "Landing Page Design/Design 2/artwork/originals/manual_vs_live_mode_workflows.png"
+?? "Landing Page Design/Design 2/artwork/originals/source_containers_a_natural_scattering_guide.png"
+?? "Landing Page Design/Design 2/artwork/originals/three_spacing_relationships.png"
+?? "Landing Page Design/Design 2/artwork/originals/viewport_vs_final_scatter.png"
+?? "Landing Page Design/Design 2/previews/desktop-containers.png"
+?? "Landing Page Design/Design 2/previews/desktop-coverage.png"
+?? "Landing Page Design/Design 2/previews/desktop-gallery.png"
+?? "Landing Page Design/Design 2/previews/desktop-home.png"
+?? "Landing Page Design/Design 2/previews/desktop-layers.png"
+?? "Landing Page Design/Design 2/previews/desktop-spacing.png"
+?? "Landing Page Design/Design 2/previews/desktop-updates.png"
+?? "Landing Page Design/Design 2/previews/desktop-viewport.png"
+?? "Landing Page Design/Design 2/previews/home-1024.png"
+?? "Landing Page Design/Design 2/previews/home-1440.png"
+?? "Landing Page Design/Design 2/previews/home-320.png"
+?? "Landing Page Design/Design 2/previews/home-390.png"
+?? "Landing Page Design/Design 2/previews/home-768.png"
+?? "Landing Page Design/Design 2/previews/mobile-coverage.png"
+?? "Landing Page Design/Design 2/reference-upload/Artist_Reference_0.73_2026-10-07.zip"
+?? "Landing Page Design/Design 2/website/.gitignore"
+?? "Landing Page Design/Design 2/website/README.md"
+?? "Landing Page Design/Design 2/website/VALIDATION.md"
+?? "Landing Page Design/Design 2/website/assets/illustrations/containers.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/coverage-candidates.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/coverage-survivors.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/final.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/flower-sources.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/grass-sources.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/live-result.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/manifest.json"
+?? "Landing Page Design/Design 2/website/assets/illustrations/manual-result.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/meadow.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/planting-strip.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/preview.webp"
+?? "Landing Page Design/Design 2/website/assets/illustrations/spacing.webp"
+?? "Landing Page Design/Design 2/website/content/art-assets.json"
+?? "Landing Page Design/Design 2/website/content/artist-reference/01_SETUP_AND_LAYERS.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/02_MODELS_AND_CONTAINERS.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/03_SOURCE_ASSIGNMENT.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/04_POPULATION.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/05_COVERAGE_AND_PAINTING.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/06_AREAS_AND_FALLOFF.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/07_TRANSFORMS.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/08_SPACING_AND_CLEANUP.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/09_VIEWPORT_AND_RENDER.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/10_STATISTICS_AND_RECORDING.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/11_OTHER_EDITING_VIEWS.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/12_SURFACE_ANALYZER.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/13_AUTOMATION_AND_LIMITS.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/14_REVIEW_AND_WALKTHROUGH.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/15_CONTROL_INDEX.md"
+?? "Landing Page Design/Design 2/website/content/artist-reference/README.md"
+?? "Landing Page Design/Design 2/website/content/control-overrides.json"
+?? "Landing Page Design/Design 2/website/content/guide.json"
+?? "Landing Page Design/Design 2/website/content/illustrations.json"
+?? "Landing Page Design/Design 2/website/content/source-manifest.json"
+?? "Landing Page Design/Design 2/website/src/app.js"
+?? "Landing Page Design/Design 2/website/src/diagrams.js"
+?? "Landing Page Design/Design 2/website/src/icons.js"
+?? "Landing Page Design/Design 2/website/src/illustrations.js"
+?? "Landing Page Design/Design 2/website/src/index.html"
+?? "Landing Page Design/Design 2/website/src/styles.css"
+?? "Landing Page Design/Design 2/website/tests/audit_rendered.py"
+?? "Landing Page Design/Design 2/website/tests/test_browser.py"
+?? "Landing Page Design/Design 2/website/tests/test_illustrations.py"
+?? "Landing Page Design/Design 2/website/tools/build.py"
+?? "Landing Page Design/Design 2/website/tools/verify.py"
+?? "Landing Page Design/Design 2/website/validation/browser-report.json"
+?? "Landing Page Design/Design 2/website/validation/coverage-report.json"
+?? "Landing Page Design/Design 2/website/validation/illustrations-report.json"
+?? "Landing Page Design/Design 2/website/validation/rendered-audit.json"
+?? "Landing Page Design/Design 2/website/validation/static-report.json"
+?? "Landing Page Design/Design 3/MANIFEST_SHA256.txt"
+?? "Landing Page Design/Design 3/START_HERE.html"
+?? "Landing Page Design/Design 3/START_HERE.md"
+?? "Landing Page Design/Design 3/archive/Cyrus_Scatter_Original_Website.zip"
+?? "Landing Page Design/Design 3/archive/Original_Artist_Reference.zip"
+?? "Landing Page Design/Design 3/archive/Original_Desktop_Preview.png"
+?? "Landing Page Design/Design 3/archive/Original_Mobile_Preview.png"
+?? "Landing Page Design/Design 3/archive/Original_Website_Brief.txt"
+?? "Landing Page Design/Design 3/artwork/README.md"
+?? "Landing Page Design/Design 3/artwork/generated-originals/areas_and_falloff_shape_the_edge.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/coverage_painting_from_mask_to_courtyard.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/cs_edit_refine_every_instance.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/cyrus_scatter_field_guide_homepage.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/population_guides_abundance.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/source_containers_shape_variation.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/spacing_creates_breathing_room.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/surface_analyzer_smarter_planting_zones.png"
+?? "Landing Page Design/Design 3/artwork/generated-originals/transforms_prevent_repetition.png"
+?? "Landing Page Design/Design 3/artwork/index.html"
+?? "Landing Page Design/Design 3/previews/illustrated-desktop-analyzer.png"
+?? "Landing Page Design/Design 3/previews/illustrated-desktop-atlas.png"
+?? "Landing Page Design/Design 3/previews/illustrated-desktop-home.png"
+?? "Landing Page Design/Design 3/previews/illustrated-mobile-atlas.png"
+?? "Landing Page Design/Design 3/previews/illustrated-mobile-home.png"
+?? "Landing Page Design/Design 3/website/.gitignore"
+?? "Landing Page Design/Design 3/website/Cyrus_Scatter_Field_Guide.html"
+?? "Landing Page Design/Design 3/website/DESIGN_NOTES.md"
+?? "Landing Page Design/Design 3/website/README.md"
+?? "Landing Page Design/Design 3/website/assets/illustrations.js"
+?? "Landing Page Design/Design 3/website/assets/mark.svg"
+?? "Landing Page Design/Design 3/website/assets/media/analyzer.svg"
+?? "Landing Page Design/Design 3/website/assets/media/analyzer.webp"
+?? "Landing Page Design/Design 3/website/assets/media/coverage.webp"
+?? "Landing Page Design/Design 3/website/assets/media/falloff.svg"
+?? "Landing Page Design/Design 3/website/assets/media/falloff.webp"
+?? "Landing Page Design/Design 3/website/assets/media/local-edit.webp"
+?? "Landing Page Design/Design 3/website/assets/media/population.webp"
+?? "Landing Page Design/Design 3/website/assets/media/source-pools.svg"
+?? "Landing Page Design/Design 3/website/assets/media/source-pools.webp"
+?? "Landing Page Design/Design 3/website/assets/media/spacing.svg"
+?? "Landing Page Design/Design 3/website/assets/media/spacing.webp"
+?? "Landing Page Design/Design 3/website/assets/media/transforms.webp"
+?? "Landing Page Design/Design 3/website/content/editorial.js"
+?? "Landing Page Design/Design 3/website/content/editorial.json"
+?? "Landing Page Design/Design 3/website/content/features.js"
+?? "Landing Page Design/Design 3/website/content/features.json"
+?? "Landing Page Design/Design 3/website/content/guide.js"
+?? "Landing Page Design/Design 3/website/content/guide.json"
+?? "Landing Page Design/Design 3/website/content/source/01_SETUP_AND_LAYERS.md"
+?? "Landing Page Design/Design 3/website/content/source/02_MODELS_AND_CONTAINERS.md"
+?? "Landing Page Design/Design 3/website/content/source/03_SOURCE_ASSIGNMENT.md"
+?? "Landing Page Design/Design 3/website/content/source/04_POPULATION.md"
+?? "Landing Page Design/Design 3/website/content/source/05_COVERAGE_AND_PAINTING.md"
+?? "Landing Page Design/Design 3/website/content/source/06_AREAS_AND_FALLOFF.md"
+?? "Landing Page Design/Design 3/website/content/source/07_TRANSFORMS.md"
+?? "Landing Page Design/Design 3/website/content/source/08_SPACING_AND_CLEANUP.md"
+?? "Landing Page Design/Design 3/website/content/source/09_VIEWPORT_AND_RENDER.md"
+?? "Landing Page Design/Design 3/website/content/source/10_STATISTICS_AND_RECORDING.md"
+?? "Landing Page Design/Design 3/website/content/source/11_OTHER_EDITING_VIEWS.md"
+?? "Landing Page Design/Design 3/website/content/source/12_SURFACE_ANALYZER.md"
+?? "Landing Page Design/Design 3/website/content/source/13_AUTOMATION_AND_LIMITS.md"
+?? "Landing Page Design/Design 3/website/content/source/14_REVIEW_AND_WALKTHROUGH.md"
+?? "Landing Page Design/Design 3/website/content/source/15_CONTROL_INDEX.md"
+?? "Landing Page Design/Design 3/website/content/source/README.md"
+?? "Landing Page Design/Design 3/website/index.html"
+?? "Landing Page Design/Design 3/website/reference-print.html"
+?? "Landing Page Design/Design 3/website/reports/artwork-notes.md"
+?? "Landing Page Design/Design 3/website/reports/browser-checks.json"
+?? "Landing Page Design/Design 3/website/reports/content-checks.json"
+?? "Landing Page Design/Design 3/website/reports/control-coverage.csv"
+?? "Landing Page Design/Design 3/website/reports/coverage-checklist.md"
+?? "Landing Page Design/Design 3/website/reports/design-inspection.json"
+?? "Landing Page Design/Design 3/website/reports/desktop-control.png"
+?? "Landing Page Design/Design 3/website/reports/desktop-home.png"
+?? "Landing Page Design/Design 3/website/reports/desktop-learn.png"
+?? "Landing Page Design/Design 3/website/reports/desktop-reference.png"
+?? "Landing Page Design/Design 3/website/reports/desktop-spacing.png"
+?? "Landing Page Design/Design 3/website/reports/illustrated-browser-checks.json"
+?? "Landing Page Design/Design 3/website/reports/illustrated-desktop-analyzer.png"
+?? "Landing Page Design/Design 3/website/reports/illustrated-desktop-atlas.png"
+?? "Landing Page Design/Design 3/website/reports/illustrated-desktop-home.png"
+?? "Landing Page Design/Design 3/website/reports/illustrated-edition-verification.md"
+?? "Landing Page Design/Design 3/website/reports/illustrated-mobile-atlas.png"
+?? "Landing Page Design/Design 3/website/reports/illustrated-mobile-home.png"
+?? "Landing Page Design/Design 3/website/reports/mapping-diagnostics.json"
+?? "Landing Page Design/Design 3/website/reports/mobile-chapter.png"
+?? "Landing Page Design/Design 3/website/reports/mobile-home.png"
+?? "Landing Page Design/Design 3/website/reports/mobile-reference.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/browser-checks.json"
+?? "Landing Page Design/Design 3/website/reports/original-edition/content-checks.json"
+?? "Landing Page Design/Design 3/website/reports/original-edition/control-coverage.csv"
+?? "Landing Page Design/Design 3/website/reports/original-edition/coverage-checklist.md"
+?? "Landing Page Design/Design 3/website/reports/original-edition/design-inspection.json"
+?? "Landing Page Design/Design 3/website/reports/original-edition/desktop-control.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/desktop-home.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/desktop-learn.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/desktop-reference.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/desktop-spacing.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/mapping-diagnostics.json"
+?? "Landing Page Design/Design 3/website/reports/original-edition/mobile-chapter.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/mobile-home.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/mobile-reference.png"
+?? "Landing Page Design/Design 3/website/reports/original-edition/source-integrity.json"
+?? "Landing Page Design/Design 3/website/reports/original-edition/verification.md"
+?? "Landing Page Design/Design 3/website/reports/revision-source-integrity.json"
+?? "Landing Page Design/Design 3/website/reports/source-integrity.json"
+?? "Landing Page Design/Design 3/website/reports/verification.md"
+?? "Landing Page Design/Design 3/website/requirements-dev.txt"
+?? "Landing Page Design/Design 3/website/scripts/app.js"
+?? "Landing Page Design/Design 3/website/scripts/build.py"
+?? "Landing Page Design/Design 3/website/scripts/build_content.py"
+?? "Landing Page Design/Design 3/website/scripts/media.js"
+?? "Landing Page Design/Design 3/website/scripts/prepare_media.py"
+?? "Landing Page Design/Design 3/website/styles/main.css"
+?? "Landing Page Design/Design 3/website/tests/browser_helpers.py"
+?? "Landing Page Design/Design 3/website/tests/check_content.py"
+?? "Landing Page Design/Design 3/website/tests/inspect_design.py"
+?? "Landing Page Design/Design 3/website/tests/test_illustrated.py"
+?? "Landing Page Design/Design 3/website/tests/test_site.py"
+?? "Landing Page Design/New folder/01-Original-Preview.png"
+?? "Landing Page Design/New folder/1440-diagram.png"
+?? "Landing Page Design/New folder/1440-overview.png"
+?? "Landing Page Design/New folder/1440-reference.png"
+?? "Landing Page Design/New folder/390-diagram.png"
+?? "Landing Page Design/New folder/390-overview.png"
+?? "Landing Page Design/New folder/390-reference.png"
+?? "Landing Page Design/New folder/834-diagram.png"
+?? "Landing Page Design/New folder/834-overview.png"
+?? "Landing Page Design/New folder/834-reference.png"
+?? "Landing Page Design/New folder/Cyrus-Scatter-Desktop.png"
+?? "Landing Page Design/New folder/Cyrus-Scatter-Mobile.png"
+?? "Landing Page Design/New folder/MANIFEST.sha256"
+?? "Landing Page Design/New folder/MANIFEST_SHA256.txt"
+?? "Landing Page Design/New folder/Original_Desktop_Preview.png"
+?? "Landing Page Design/New folder/Original_Mobile_Preview.png"
+?? "Landing Page Design/New folder/Original_Website_Brief.txt"
+?? "Landing Page Design/New folder/START-HERE.txt"
+?? "Landing Page Design/New folder/analyzer.webp"
+?? "Landing Page Design/New folder/areas-falloff.webp"
+?? "Landing Page Design/New folder/areas_and_falloff_shape_the_edge.png"
+?? "Landing Page Design/New folder/audit_rendered.py"
+?? "Landing Page Design/New folder/browser_checks.py"
+?? "Landing Page Design/New folder/browser_helpers.py"
+?? "Landing Page Design/New folder/build.py"
+?? "Landing Page Design/New folder/build_content.py"
+?? "Landing Page Design/New folder/check_content.py"
+?? "Landing Page Design/New folder/companion-automation.webp"
+?? "Landing Page Design/New folder/companion-workflows.webp"
+?? "Landing Page Design/New folder/companion_workflows_analyze_assign_refine.png"
+?? "Landing Page Design/New folder/companion_workflows_from_analysis_to_detail.png"
+?? "Landing Page Design/New folder/containers.webp"
+?? "Landing Page Design/New folder/content.py"
+?? "Landing Page Design/New folder/coverage-candidates.webp"
+?? "Landing Page Design/New folder/coverage-painting.webp"
+?? "Landing Page Design/New folder/coverage-survivors.webp"
+?? "Landing Page Design/New folder/coverage-vs-accepted.webp"
+?? "Landing Page Design/New folder/coverage.webp"
+?? "Landing Page Design/New folder/coverage_accepted_planting_results.png"
+?? "Landing Page Design/New folder/coverage_painting_from_mask_to_courtyard.png"
+?? "Landing Page Design/New folder/coverage_versus_accepted_plants.png"
+?? "Landing Page Design/New folder/coverage_vs_accepted_plants.png"
+?? "Landing Page Design/New folder/cs_edit_refine_every_instance.png"
+?? "Landing Page Design/New folder/cyrus_layered_planting_infographic.png"
+?? "Landing Page Design/New folder/cyrus_scatter_feature_atlas.png"
+?? "Landing Page Design/New folder/cyrus_scatter_field_guide_homepage.png"
+?? "Landing Page Design/New folder/cyrus_scatter_layers_and_paint_sets.png"
+?? "Landing Page Design/New folder/cyrus_scatter_natural_variation_guide.png"
+?? "Landing Page Design/New folder/cyrus_scatter_setup_receiving_surfaces.png"
+?? "Landing Page Design/New folder/cyrus_scatter_visual_guide.png"
+?? "Landing Page Design/New folder/cyrus_scatter_visual_guide_homepage.png"
+?? "Landing Page Design/New folder/cyrus_scatter_workflow_overview.png"
+?? "Landing Page Design/New folder/cyrus_three_spacing_relationships.png"
+?? "Landing Page Design/New folder/desktop-containers.png"
+?? "Landing Page Design/New folder/desktop-control.png"
+?? "Landing Page Design/New folder/desktop-coverage.png"
+?? "Landing Page Design/New folder/desktop-feature-poster.png"
+?? "Landing Page Design/New folder/desktop-gallery.png"
+?? "Landing Page Design/New folder/desktop-home.png"
+?? "Landing Page Design/New folder/desktop-layers.png"
+?? "Landing Page Design/New folder/desktop-learn.png"
+?? "Landing Page Design/New folder/desktop-overview.png"
+?? "Landing Page Design/New folder/desktop-reference.png"
+?? "Landing Page Design/New folder/desktop-spacing.png"
+?? "Landing Page Design/New folder/desktop-updates.png"
+?? "Landing Page Design/New folder/desktop-viewport.png"
+?? "Landing Page Design/New folder/falloff.webp"
+?? "Landing Page Design/New folder/feature-atlas.webp"
+?? "Landing Page Design/New folder/final.webp"
+?? "Landing Page Design/New folder/final_package_checks.py"
+?? "Landing Page Design/New folder/flower-sources.webp"
+?? "Landing Page Design/New folder/grass-sources.webp"
+?? "Landing Page Design/New folder/home-1024.png"
+?? "Landing Page Design/New folder/home-1440.png"
+?? "Landing Page Design/New folder/home-320.png"
+?? "Landing Page Design/New folder/home-390.png"
+?? "Landing Page Design/New folder/home-768.png"
+?? "Landing Page Design/New folder/illustrated-desktop-analyzer.png"
+?? "Landing Page Design/New folder/illustrated-desktop-atlas.png"
+?? "Landing Page Design/New folder/illustrated-desktop-home.png"
+?? "Landing Page Design/New folder/illustrated-mobile-atlas.png"
+?? "Landing Page Design/New folder/illustrated-mobile-home.png"
+?? "Landing Page Design/New folder/include_exclude_masks_falloff_guide.png"
+?? "Landing Page Design/New folder/inspect_design.py"
+?? "Landing Page Design/New folder/layer-setup-guide.webp"
+?? "Landing Page Design/New folder/layers-and-paint-sets.webp"
+?? "Landing Page Design/New folder/layers-paint-sets.webp"
+?? "Landing Page Design/New folder/layers_paint_sets_visual_guide.png"
+?? "Landing Page Design/New folder/live-result.webp"
+?? "Landing Page Design/New folder/local-edit.webp"
+?? "Landing Page Design/New folder/manual-result.webp"
+?? "Landing Page Design/New folder/manual-vs-live.webp"
+?? "Landing Page Design/New folder/manual_vs._live_garden_updates.png"
+?? "Landing Page Design/New folder/manual_vs_live_mode_workflows.png"
+?? "Landing Page Design/New folder/meadow.webp"
+?? "Landing Page Design/New folder/mobile-chapter.png"
+?? "Landing Page Design/New folder/mobile-coverage.png"
+?? "Landing Page Design/New folder/mobile-home.png"
+?? "Landing Page Design/New folder/mobile-poster.png"
+?? "Landing Page Design/New folder/mobile-reference.png"
+?? "Landing Page Design/New folder/planting-strip.webp"
+?? "Landing Page Design/New folder/population.webp"
+?? "Landing Page Design/New folder/population_guides_abundance.png"
+?? "Landing Page Design/New folder/prepare_media.py"
+?? "Landing Page Design/New folder/preview.webp"
+?? "Landing Page Design/New folder/print-style-preview.png"
+?? "Landing Page Design/New folder/requirements-dev.txt"
+?? "Landing Page Design/New folder/setup-receivers.webp"
+?? "Landing Page Design/New folder/source-containers.webp"
+?? "Landing Page Design/New folder/source-pools.webp"
+?? "Landing Page Design/New folder/source_containers_a_natural_scattering_guide.png"
+?? "Landing Page Design/New folder/source_containers_plant_model_workflow.png"
+?? "Landing Page Design/New folder/source_containers_shape_variation.png"
+?? "Landing Page Design/New folder/sources-containers.webp"
+?? "Landing Page Design/New folder/sources_source_containers_guide.png"
+?? "Landing Page Design/New folder/spacing-cleanup.webp"
+?? "Landing Page Design/New folder/spacing-relationships.webp"
+?? "Landing Page Design/New folder/spacing.webp"
+?? "Landing Page Design/New folder/spacing_cleanup_visual_guide.png"
+?? "Landing Page Design/New folder/spacing_creates_breathing_room.png"
+?? "Landing Page Design/New folder/surface_analyzer_smarter_planting_zones.png"
+?? "Landing Page Design/New folder/test_browser.py"
+?? "Landing Page Design/New folder/test_illustrated.py"
+?? "Landing Page Design/New folder/test_illustrations.py"
+?? "Landing Page Design/New folder/test_site.py"
+?? "Landing Page Design/New folder/three_spacing_relationships.png"
+?? "Landing Page Design/New folder/transforms-variation.webp"
+?? "Landing Page Design/New folder/transforms.webp"
+?? "Landing Page Design/New folder/transforms_prevent_repetition.png"
+?? "Landing Page Design/New folder/validate_content.py"
+?? "Landing Page Design/New folder/verify.py"
+?? "Landing Page Design/New folder/viewport-output.webp"
+?? "Landing Page Design/New folder/viewport-vs-final.webp"
+?? "Landing Page Design/New folder/viewport_preview_to_final_garden_output.png"
+?? "Landing Page Design/New folder/viewport_vs_final_planting_design.png"
+?? "Landing Page Design/New folder/viewport_vs_final_scatter.png"
+?? "Landing Page Design/New folder/visual_checks.py"
+?? "Landing Page Design/New folder/workflow-overview.webp"
+?? "Landing Page Design/cyrus-scatter-site/README.md"
+?? "Landing Page Design/cyrus-scatter-site/app.js"
+?? "Landing Page Design/cyrus-scatter-site/assets/courtyard-480.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/courtyard-960.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/courtyard-mobile.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/detail-480.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/detail-960.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/detail-mobile.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/favicon.svg"
+?? "Landing Page Design/cyrus-scatter-site/assets/landscape-480.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/landscape-960.webp"
+?? "Landing Page Design/cyrus-scatter-site/assets/landscape-mobile.webp"
+?? "Landing Page Design/cyrus-scatter-site/config.js"
+?? "Landing Page Design/cyrus-scatter-site/file-manifest.json"
+?? "Landing Page Design/cyrus-scatter-site/index.html"
+?? "Landing Page Design/cyrus-scatter-site/styles.css"
+?? "Landing Page Design/cyrus-scatter-site/tests/browser-report.json"
+?? "Landing Page Design/cyrus-scatter-site/tests/browser_test.py"
+?? "Landing Page Design/cyrus-scatter-site/tools/build_standalone.py"
+?? SplineDynamics_Pack/ProxyTextures.v1.11/readme.txt
+?? SplineDynamics_Pack/ProxyTextures.v1.11/uninstaller.mse
+?? SplineDynamics_Pack/QProxies.v1.20/QProxies.v1.20/readme.txt
+?? SplineDynamics_Pack/QProxies.v1.20/QProxies.v1.20/uninstaller.mse
+?? SplineDynamics_Pack/QProxies.v1.20/readme.txt
+?? SplineDynamics_Pack/QProxies.v1.20/uninstaller.mse
+?? SplineDynamics_Pack/Spiros_v1.08/readme.txt
+?? SplineDynamics_Pack/Spiros_v1.08/uninstaller.mse
+?? SplineDynamics_Pack/SplineCleaner.v1.89/readme.txt
+?? SplineDynamics_Pack/SplineCleaner.v1.89/uninstaller.mse
+?? SplineDynamics_Pack/SplineData.v1.10/readme.txt
+?? SplineDynamics_Pack/SplineData.v1.10/uninstaller.mse
+?? SplineDynamics_Pack/SplineRefiner.v1.08/readme.txt
+?? SplineDynamics_Pack/SplineRefiner.v1.08/uninstaller.mse
+?? SplineDynamics_Pack/SubSpline.v1.18/readme.txt
+?? SplineDynamics_Pack/SubSpline.v1.18/uninstaller.mse
+?? SplineDynamics_Pack/SuperHelix.v1.25/uninstaller.mse
+?? SplineDynamics_Pack/TurboSplines.v1.23/readme.txt
+?? SplineDynamics_Pack/TurboSplines.v1.23/uninstaller.mse
+?? docs/GitHub_Tools_Update_2026-10-26/EVIDENCE.json
+?? docs/GitHub_Tools_Update_2026-10-26/README.md
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030.md
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030_EVIDENCE.json
+?? docs/Scatter_Physics_Research_2026-10-16/INSTANCES_030_PLAN.md
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/build_fault_variant.py
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/collect_evidence.py
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_all.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_controls.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_extra_final.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_failures.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_faults.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_height.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_installed.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_mountain.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_pilot.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_pilot_all.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_primitives.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_remaining.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_scale.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/host_ui.ms
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/package_testing_kit.py
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/popup_layout.py
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/run_capacity.py
+?? docs/Scatter_Physics_Research_2026-10-16/instances-030-fixtures/static_capacity.cpp
+?? docs/plans/cyrus-design-lab/GPT_WEB_RESEARCH_PROMPT.md
+?? docs/plans/cyrus-design-lab/IMPLEMENTATION_PLAN.md
+?? docs/plans/cyrus-design-lab/PROTOTYPE_01.md
+?? docs/plans/cyrus-design-lab/PROTOTYPE_01_EVIDENCE.json
+?? docs/plans/cyrus-design-lab/RESEARCH_CONSOLIDATION.md
+?? docs/plans/cyrus-design-lab/RESEARCH_HANDOFF.md
+?? docs/plans/instance-selection-08764-20261029/IMPLEMENTATION.md
+?? docs/plans/interaction-review-08763-20261029/DELIVERY.md
+?? docs/plans/interaction-review-08763-20261029/PLAN.md
+?? docs/plans/interaction-review-08763-20261029/QUALIFICATION.json
+?? docs/plans/interaction-review-08763-20261029/evidence/baseline-probe-recheck.json
+?? docs/plans/interaction-review-08763-20261029/evidence/driver-hashes.json
+?? docs/plans/interaction-review-08763-20261029/evidence/garden-drag.json
+?? docs/plans/interaction-review-08763-20261029/evidence/garden-pick.json
+?? docs/plans/interaction-review-08763-20261029/evidence/generated-check.json
+?? docs/plans/interaction-review-08763-20261029/evidence/host-regressions.json
+?? docs/plans/interaction-review-08763-20261029/evidence/loaded-identity.json
+?? docs/plans/interaction-review-08763-20261029/evidence/native-source-hashes.json
+?? docs/plans/interaction-review-08763-20261029/evidence/native-tests.log
+?? docs/plans/interaction-review-08763-20261029/evidence/navigation.json
+?? docs/plans/interaction-review-08763-20261029/evidence/package-manifest.json
+?? docs/plans/interaction-review-08763-20261029/evidence/package-verification.json
+?? docs/plans/interaction-review-08763-20261029/evidence/persistence-events.txt
+?? docs/plans/interaction-review-08763-20261029/evidence/posed-pick.json
+?? docs/plans/interaction-review-08763-20261029/evidence/probe-results.json
+?? docs/plans/interaction-review-08763-20261029/evidence/review-original.md
+?? docs/plans/interaction-review-08763-20261029/evidence/smoke.json
+?? docs/plans/landscape-presentation/GPT_WEB_MODELING_PROMPT.txt
+?? docs/plans/landscape-presentation/GPT_WEB_PROJECT_INSTRUCTIONS.txt
+?? docs/plans/terraces-performance-20261029/ARTIST_GUIDE.md
+?? docs/plans/terraces-performance-20261029/DELIVERY.md
+?? docs/plans/terraces-performance-20261029/EVIDENCE_MANIFEST.json
+?? docs/plans/terraces-performance-20261029/FINAL_CHECK.json
+?? docs/plans/terraces-performance-20261029/MEASUREMENTS.md
+?? docs/plans/terraces-performance-20261029/PLAN.md
+?? docs/plans/terraces-performance-20261029/QUALIFICATION.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/clearance-performance-08681-20261020.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/clearance-relax-08682-20261021.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/combined-installer-08685-20261022.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/compatibility-0862-20261019.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v1-final.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v1.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v2-final.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v2-regression-check.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v3-check.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v4-check.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/cpu-benchmark-v4-final.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/eleven-phases-20261014-01.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/final-08672-20261020.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/gallery-0851-20261016-01.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/installer-0862-20261019-01.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/installer-panels-08684-20261022.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/native-fields-0860-20261018-01.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/playback-20261006.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/refinement-08683-20261022.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/removed.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/spline-bands-20261012-01.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/summary.json
+?? docs/plans/terraces-performance-20261029/evidence/cleanup/vector-brush-078.json
+?? docs/plans/terraces-performance-20261029/evidence/generated-final/generated-check.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/contact-sweep.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/inventory.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/loaded-identity.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/palette.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/planting-design.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/ui-fixture.json
+?? docs/plans/terraces-performance-20261029/evidence/host-baseline/ui-warm.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/contact-sweep.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/edit-settings-check.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-drag-attempt-duplicate-modifier.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-drag-attempt-stale-owner.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-drag-finish.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-final-render.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-navigation.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/garden-reload.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/loaded-identity.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/locality-sweep.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/proxy-sweep.json
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/rapid-edit.txt
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/rapid-scene.txt
+?? docs/plans/terraces-performance-20261029/evidence/host-candidate/ui-final-check.json
+?? docs/plans/terraces-performance-20261029/evidence/host-ui-01/ui-fixture.json
+?? docs/plans/terraces-performance-20261029/evidence/host-ui-01/ui-warm.json
+?? docs/plans/terraces-performance-20261029/evidence/native-2024/receipt.json
+?? docs/plans/terraces-performance-20261029/evidence/native-2026/receipt.json
+?? docs/plans/terraces-performance-20261029/evidence/native-2027/receipt.json
+?? docs/plans/terraces-performance-20261029/evidence/native-2027/tests.log
+?? docs/plans/terraces-performance-20261029/evidence/packages/PACKAGE_VERIFICATION.json
+?? docs/plans/terraces-performance-20261029/evidence/packages/SHA256SUMS.txt
+?? docs/plans/terraces-performance-20261029/images/Terraces_Garden_0.87.6.1.png
+?? docs/plans/viewport-selection-08762-20261029/ARTIST_GUIDE.md
+?? docs/plans/viewport-selection-08762-20261029/DELIVERY.md
+?? docs/plans/viewport-selection-08762-20261029/IMPLEMENTATION.md
+?? docs/plans/viewport-selection-08762-20261029/PLAN.md
+?? docs/plans/viewport-selection-08762-20261029/QUALIFICATION.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/batch-events.txt
+?? docs/plans/viewport-selection-08762-20261029/evidence/garden-pick.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/generated-check.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/loaded-identity.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/native-2027-tests.log
+?? docs/plans/viewport-selection-08762-20261029/evidence/navigation.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/pick-lifecycle.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/picking-host.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/posed-pick.json
+?? docs/plans/viewport-selection-08762-20261029/evidence/smoke.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/01_EXECUTIVE_SUMMARY_FA.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/02_FEASIBILITY_AND_CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/03_PRODUCT_WORKFLOW_AND_INPUTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/04_ARCHITECTURE_AND_DECISIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/05_DATA_GEOMETRY_AND_PERSISTENCE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/06_AI_AND_PERSONAL_LEARNING.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/07_MCP_SCATTER_INTEGRATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/08_REVISED_IMPLEMENTATION_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/09_RISKS_QUESTIONS_AND_EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/10_FIRST_IMPLEMENTATION_SPRINT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/ORIGINAL_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/SHA256SUMS.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/INPUT_COVERAGE.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/PACKAGE_VALIDATION.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/example_validation.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/experiments/E-G01_NATIVE_SUBSET.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/experiments/native_subset_probe.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/experiments/native_subset_probe_output.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/experiments/native_subset_probe_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/geometry_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/geometry_sources.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/input_archive_identity.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/input_verification.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_audit.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_execution/input_hashes_after.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_execution/input_hashes_before.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_execution/receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_execution/stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_execution/stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/learning_sources.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/mcp_audit.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/mcp_catalog_probe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/mcp_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/mcp_sources.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/native_audit.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/presentation_contract_probe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/root_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/evidence/root_sources.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/courtyard_design_A.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/courtyard_design_B.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/courtyard_palette.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/courtyard_plan.png
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/courtyard_site.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/feedback_event.proposed.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/placement_witness.bin
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/examples/placement_witness.manifest.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/experiments/build_examples.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/experiments/learning_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/experiments/mcp_catalog_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/experiments/presentation_contract_probe.mjs
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/sources/CLAIM_EVIDENCE_MAP.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-A/sources/SOURCE_LEDGER.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/01_EXECUTIVE_SUMMARY_FA.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/02_FEASIBILITY_AND_CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/03_PRODUCT_WORKFLOW_AND_INPUTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/04_ARCHITECTURE_AND_DECISIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/05_DATA_GEOMETRY_AND_PERSISTENCE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/06_AI_AND_PERSONAL_LEARNING.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/07_MCP_SCATTER_INTEGRATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/08_REVISED_IMPLEMENTATION_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/09_RISKS_QUESTIONS_AND_EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/10_FIRST_IMPLEMENTATION_SPRINT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/ORIGINAL_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/SHA256SUMS.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/INPUT_COVERAGE.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/PACKAGE_CHECK.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/REQUIREMENT_COVERAGE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/environment.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/input_verification.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/learning/learning_probes.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/learning/learning_probes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/catalog_drift_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/catalog_drift_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/full_scatter.build.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/full_scatter.build.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/native_full_scatter_link_probe.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/native_probe_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/native_subset_probe.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/run_native_probes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/subset.build.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/subset.build.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/subset.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/subset.stdout.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/native/tool_inventory_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/catalog.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/catalog.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/catalog_drift_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/contracts.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/contracts.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/learning.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/learning.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/full_scatter.build.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/full_scatter.build.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/native_probe_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/subset.build.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/subset.build.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/subset.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/native/subset.stdout.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/reproduction_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/storage.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/storage.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/studio.stderr.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/reproduction/studio.stdout.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/root/contract_probes.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/root/contract_probes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/root/storage_crash_probe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/root/storage_crash_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/studio_pure_probe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/studio_pure_probe.mjs
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/evidence/verify_package.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/candidate.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/execution_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/placement_header.schema.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/placement_set.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/placements.bin
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/placements_inspection.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/plant_palette.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/planting_design.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/proposed_correction.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/rejections.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/examples/courtyard/site_document.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/sources/CLAIM_EVIDENCE_MAP.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-B/sources/SOURCE_LEDGER.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/01_EXECUTIVE_SUMMARY_FA.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/02_FEASIBILITY_AND_CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/03_PRODUCT_WORKFLOW_AND_INPUTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/04_ARCHITECTURE_AND_DECISIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/05_DATA_GEOMETRY_AND_PERSISTENCE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/06_AI_AND_PERSONAL_LEARNING.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/07_MCP_SCATTER_INTEGRATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/08_REVISED_IMPLEMENTATION_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/09_RISKS_QUESTIONS_AND_EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/10_FIRST_IMPLEMENTATION_SPRINT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/ORIGINAL_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/SHA256SUMS.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/BASELINE_DISCREPANCY.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/INPUT_CAPTURE_MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/INPUT_COVERAGE.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ORIGINAL_PLAN_REFERENCES.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/PACKAGE_VALIDATION.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/REQUIREMENT_COVERAGE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai/ai_probe_results.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai/ai_probes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai/environment.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai/suite_attempt.log
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/ai_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/mcp/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/mcp/catalog_contract_probe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/mcp/catalog_contract_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/mcp_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/absent_optional_guards.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/probe.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/run_probe.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/run_scatter_call.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/scatter_call_probe.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/scatter_call_receipt.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native/source_copy_manifest.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/native_coverage.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/probes/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/probes/contracts_probe_results.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/probes/contracts_probes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/probes/presentation_probe_results.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/probes/presentation_probes.mjs
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/evidence/validate_package.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/candidate.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/courtyard.svg
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/placement_control.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/plant_palette.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/planting_design.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/site_document.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/worker_request.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/examples/worker_request.schema.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/sources/CLAIM_EVIDENCE_MAP.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-C/sources/SOURCE_LEDGER.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/01_EXECUTIVE_SUMMARY_FA.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/02_FEASIBILITY_AND_CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/03_PRODUCT_WORKFLOW_AND_INPUTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/04_ARCHITECTURE_AND_DECISIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/05_DATA_GEOMETRY_AND_PERSISTENCE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/06_AI_AND_PERSONAL_LEARNING.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/07_MCP_SCATTER_INTEGRATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/08_REVISED_IMPLEMENTATION_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/09_RISKS_QUESTIONS_AND_EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/10_FIRST_IMPLEMENTATION_SPRINT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/ORIGINAL_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/SHA256SUMS.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/INPUT_COVERAGE.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/logs/cmake-off-configure.log
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/logs/executed-summary.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/logs/history-clone-probe.jsonl
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/logs/input-hash-check.log
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/evidence/logs/pytest-design-lab.log
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/execution-receipt-v1.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/mcp-design-handoff-v1.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/native-job-request-v1.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/native-job-result-v1.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/examples/site-document-v1.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/sources/CLAIM_EVIDENCE_MAP.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-D/sources/SOURCE_LEDGER.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029.zip
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/CyrusDesignLab-Research-Input-20261029.zip
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/GPT_WEB_RESEARCH_PROMPT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/INPUT_MANIFEST.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/INPUT_README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/READING_MAP.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/SHA256SUMS.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/CMakeLists.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/area_mask.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/brush.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/density_image.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/edit_binding.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/execution.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/grid.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/group_spacing.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/mesh_density.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/placement_binding.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/placement_publication.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/placement_store.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/presets.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/preview_budget.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/procedural.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/projected_movement.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/projection_work.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/receiver_plan.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/recipe_authored.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/recipe_library.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/recipe_store.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/recipes.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/render_publication.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/scatter.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/scene_preset.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/script_buffers.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/source_radius.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/spline_bands.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/surface_filter.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/include/viewport_memory.h
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/boundary_falloff.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/cluster.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/edge_border.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/execution.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/final.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/grid.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/group_spacing.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/orientation.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/point_presentation.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/point_publication.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/point_ready_wake.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/prepared_band.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/procedural.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/projected_movement.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/receiver_plan.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/recipe_fields.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/recipe_library.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/recipe_store.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/recipes.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/scatter.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/source_clearance.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/spacing.inc
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/src/surface_filter.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/grid_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/procedural_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/publication_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/receiver_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/recipe_library_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tests/source_radius_tests.cpp
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tools/ui/templates/recipes.ms
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/tools/ui/templates/scene-presets.ms
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/AminScatter/ui/LibraryGallery.cs
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/AUDIT_20261023.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/CHANGE_IMPACT_20261029.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/CHECKPOINT_20261024.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/IMPLEMENTATION_GOAL.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M00_BASELINE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M01_CHANGES.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M01_OPERATIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M01_PROCESS_LOSS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M01_RECOVERY_BOUNDS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M01_UNDO.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M02_HANDOFF.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M02_SCENE_CONTEXT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_ASSET_USE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_DESTINATION_SETTINGS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_INSTALLED_SOURCES.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_LIBRARY_DISCOVERY.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_RECIPES.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_RECIPE_READER.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_SETTINGS_PRESETS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/M03_SOURCE_METADATA.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/OPERATION_COVERAGE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/RESEARCH_20261023.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/SCENE_ONBOARDING_WORKFLOW_20261023.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/SYSTEM_DESIGN_REVIEW_20261023.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/__init__.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/agent_help.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/asset_use.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/changes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/contracts.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/design_lab/__init__.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/design_lab/__main__.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/design_lab/ranking.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/design_lab/store.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/destination_settings.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/diagnostics.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/geometry.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/installed_sources.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/library.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/max_host.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/models.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/panel.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/presets.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/procedural.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/procedural_plan.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/publication.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/recipes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/records.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/recovery.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/scene.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/server.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/service.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/settings.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/source_assets_host.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/source_metadata.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/cyrus_mcp/transport.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/pyproject.toml
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/requirements-pinned.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/requirements.txt
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_changes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_design_lab.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_library.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_operation_integrity.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_procedural_plan.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_publication.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_recipes.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_recovery.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_task_handoff.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/CyrusMCP/tests/test_transport.py
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/cmake/CyrusMaxSDK.cmake
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AGENT_START.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/01_RECOMMENDATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/02_CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/03_ARTIST_WORKFLOW.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/04_REFERENCE_AND_COMPOSITION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/05_SEARCH_AND_LEARNING.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/06_MCP_ROADMAP.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/07_ARCHITECTURE_AND_GRAPHS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/08_DATA_AND_EVALUATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/09_DIAGNOSTICS_AND_PERFORMANCE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/10_ROADMAP.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/11_EXPERIMENTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/12_RESEARCH_LEDGER.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/13_REQUIREMENTS_AND_DECISIONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/14_HOUDINI_ENGINEERING_LESSONS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/15_AUTODESK_HOST_CONTRACTS.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/16_SECOND_PASS_REPORT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/17_VENDOR_SOURCE_LEDGER.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/batch_scope.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/candidate_pair.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/dataset_manifest.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/diagnostic_event.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/feedback_event.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/AI_Design_Learning_Research_2026-10-05/examples/scene_graph.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/ARCHITECTURE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/ARCHITECTURE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/CODEBASE_AUDIT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/DATA_AND_EVALUATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/RESEARCH.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/ROADMAP.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/examples/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/examples/artist-style-profile.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/examples/compiled-plan-v2.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/examples/design-recipe.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Artist_Style_ML_2026-10-04/sources.csv
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/ENGINEERING_FOUNDATION.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/KNOWLEDGE_BASELINE.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/Offline_Implementation_2026-10-05/DESIGN_LAB.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/PERFORMANCE_BASELINE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/cyrus-design-lab/IMPLEMENTATION_PLAN.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/preset-gallery-improvements/STYLE_CONTRACT.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/scene-presets-08751/ARTIST_GUIDE.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/terraces-performance-20261029/DELIVERY.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/docs/plans/terraces-performance-20261029/QUALIFICATION.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/README.md
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/package-lock.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/package.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/bounds.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/demo.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/glb.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/images.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/meshopt.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/assets/worker-import.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/core/hash.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/core/history.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/core/model.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/render/framing.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/render/host.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/render/quality.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/render/resources.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/storage/archive.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/storage/local.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/src/studio/contracts.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/tests/browser/recovery.spec.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/tests/integration/portable.test.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/tests/unit/contracts.test.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/tsconfig.json
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/vite.studio.config.ts
+?? docs/research/design-lab-research-handoff-20261029-01/CyrusDesignLab-Research-Input-20261029/repo/presentation-studio/vitest.config.ts
+?? docs/research/design-lab-research-handoff-20261029-01/PACKET_VERIFICATION.json
+?? docs/research/design-lab-research-handoff-20261029-01/SHA256.txt
+?? docs/research/procedural-tree-reconstruction/GPT_WEB_RESEARCH_PROMPT.md
+?? docs/research/procedural-tree-reconstruction/library/01-USEFUL-FINDINGS.md
+?? docs/research/procedural-tree-reconstruction/library/02-TECHNICAL-MAP.md
+?? docs/research/procedural-tree-reconstruction/library/03-REVIEW-QUESTIONS.md
+?? docs/research/procedural-tree-reconstruction/library/04-VALIDATION-PLAN.md
+?? docs/research/procedural-tree-reconstruction/library/README.md
+?? docs/research/procedural-tree-reconstruction/library/VERIFICATION.md
+?? docs/research/procedural-tree-reconstruction/library/references/PRIMARY-CHECKS.md
+?? docs/research/procedural-tree-reconstruction/library/references/SPEEDTREE-1020-EVIDENCE.json
+?? docs/research/procedural-tree-reconstruction/library/references/SPEEDTREE-1020-SURVEY.md
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R02-ARITHMETIC.json
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R02-CHECKS.md
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R02-REFERENCE-CHECKS.json
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R03-ARITHMETIC.json
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R03-CHECKS.md
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R04-ARITHMETIC.json
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R04-CHECKS.md
+?? docs/research/procedural-tree-reconstruction/library/references/TREE-R04-FORMATS.json
+?? docs/research/procedural-tree-reconstruction/library/references/intake-checks-TREE-R01.json
+?? docs/research/procedural-tree-reconstruction/library/references/intake-checks-TREE-R02.json
+?? docs/research/procedural-tree-reconstruction/library/references/intake-checks-TREE-R03.json
+?? docs/research/procedural-tree-reconstruction/library/references/intake-checks-TREE-R04.json
+?? docs/research/procedural-tree-reconstruction/library/references/intake-checks.json
+?? docs/research/procedural-tree-reconstruction/library/references/repository-snapshot.json
+?? docs/research/procedural-tree-reconstruction/library/references/reproduce/speedtree_survey.py
+?? docs/research/procedural-tree-reconstruction/library/sources/README.md
+?? docs/research/procedural-tree-reconstruction/library/sources/REVIEW-TEMPLATE.md
+?? docs/research/procedural-tree-reconstruction/library/sources/TREE-R01-REVIEW.md
+?? docs/research/procedural-tree-reconstruction/library/sources/TREE-R02-REVIEW.md
+?? docs/research/procedural-tree-reconstruction/library/sources/TREE-R03-REVIEW.md
+?? docs/research/procedural-tree-reconstruction/library/sources/TREE-R04-REVIEW.md
+?? docs/research/procedural-tree-reconstruction/library/sources/citation-register-TREE-R02.json
+?? docs/research/procedural-tree-reconstruction/library/sources/citation-register-TREE-R03.json
+?? docs/research/procedural-tree-reconstruction/library/sources/citation-register-TREE-R04.json
+?? docs/research/procedural-tree-reconstruction/library/sources/citation-register.json
+?? docs/research/procedural-tree-reconstruction/library/sources/extracted/TREE-R01.txt
+?? docs/research/procedural-tree-reconstruction/library/sources/extracted/TREE-R02.txt
+?? docs/research/procedural-tree-reconstruction/library/sources/extracted/TREE-R03.txt
+?? docs/research/procedural-tree-reconstruction/library/sources/extracted/TREE-R04-PDF.txt
+?? docs/research/procedural-tree-reconstruction/library/sources/extracted/TREE-R04.txt
+?? docs/research/procedural-tree-reconstruction/library/sources/manifest.json
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/CyrusScatter_Tree_Generation_Reconstruction_Research_2026-10-26.html
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/Cyrus_Tree_Generation_and_Reconstruction_Study_2026-10-26(1).html
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/Cyrus_Tree_Generation_and_Reconstruction_Study_2026-10-26.html
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/cyrus_vegetation_research_2026-10-26.html
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/cyrus_vegetation_research_2026-10-26.pdf
+?? docs/research/procedural-tree-reconstruction/library/sources/originals/cyrus_vegetation_source_register_2026-10-26.json
+?? docs/research/procedural-tree-reconstruction/library/sources/section-coverage-TREE-R02.json
+?? docs/research/procedural-tree-reconstruction/library/sources/section-coverage-TREE-R03.json
+?? docs/research/procedural-tree-reconstruction/library/sources/section-coverage-TREE-R04.json
+?? docs/research/procedural-tree-reconstruction/library/sources/section-coverage.json
+?? docs/research/scatter-comparison-20261027/EVIDENCE.json
+?? docs/research/scatter-comparison-20261027/REPORT.md
+?? docs/review-briefs/FULL_SYSTEM_REVIEW_08763_PROMPT.txt
+?? docs/reviews/full-system-08763-20261029-01/00_SUMMARY.md
+?? docs/reviews/full-system-08763-20261029-01/01_FINDINGS.md
+?? docs/reviews/full-system-08763-20261029-01/02_COVERAGE.md
+?? docs/reviews/full-system-08763-20261029-01/03_PERFORMANCE.md
+?? docs/reviews/full-system-08763-20261029-01/04_LIBRARY_AND_RECIPES.md
+?? docs/reviews/full-system-08763-20261029-01/05_LICENSING_AND_SECURITY.md
+?? docs/reviews/full-system-08763-20261029-01/06_TEST_REPORT.md
+?? docs/reviews/full-system-08763-20261029-01/07_RECOMMENDED_SEQUENCE.md
+?? docs/reviews/full-system-08763-20261029-01/REVIEW_BRIEF.txt
+?? docs/reviews/full-system-08763-20261029-01/coverage.csv
+?? docs/reviews/full-system-08763-20261029-01/drivers/collect_evidence.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/extra_probe.cpp
+?? docs/reviews/full-system-08763-20261029-01/drivers/finalize_bundle.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/host_garden.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/host_library.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/host_render.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/host_review.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/library_probe.cs
+?? docs/reviews/full-system-08763-20261029-01/drivers/repair_probe.cpp
+?? docs/reviews/full-system-08763-20261029-01/drivers/run_native_probe.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/run_supplemental.py
+?? docs/reviews/full-system-08763-20261029-01/drivers/test_authority.py
+?? docs/reviews/full-system-08763-20261029-01/evidence/benchmark-first.csv
+?? docs/reviews/full-system-08763-20261029-01/evidence/benchmark-summary.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/benchmark.csv
+?? docs/reviews/full-system-08763-20261029-01/evidence/coverage-summary.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-drag.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-host-loaded-identity.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-host-receipt.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-navigation.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-pick.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/garden-review.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/generated-check.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/git-status-end.txt
+?? docs/reviews/full-system-08763-20261029-01/evidence/git-status-start.txt
+?? docs/reviews/full-system-08763-20261029-01/evidence/historical-control-ports.csv
+?? docs/reviews/full-system-08763-20261029-01/evidence/host-loaded-identity.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/host-receipt.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/host-regressions.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/host-review.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/identity.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/initial-diff-hash.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/knowledge-status.txt
+?? docs/reviews/full-system-08763-20261029-01/evidence/library-host-loaded-identity.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/library-host-receipt.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/library-host.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/library-probe.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/managed-tests.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/mcp-tests.xml
+?? docs/reviews/full-system-08763-20261029-01/evidence/native-receipt.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/native-regression.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/native-tests.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/package-check.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/permit-benchmark.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/python-tests.xml
+?? docs/reviews/full-system-08763-20261029-01/evidence/render-host-loaded-identity.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/render-host-receipt.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/render-host.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/scanline.png
+?? docs/reviews/full-system-08763-20261029-01/evidence/selection-smoke.json
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-activation.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-claims.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-isolation.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-lifecycle.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-permits.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-profile.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-publication.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-scope.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-signature.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/signed-transfer.log
+?? docs/reviews/full-system-08763-20261029-01/evidence/source-hashes.json
+?? presentation-studio/tools/nkr-20261029/CONTRACT.md
+?? presentation-studio/tools/nkr-20261029/README.md
+?? presentation-studio/tools/nkr-20261029/architectural-notes.md
+?? presentation-studio/tools/nkr-20261029/architecture-parameters.json
+?? presentation-studio/tools/nkr-20261029/architecture.mjs
+?? presentation-studio/tools/nkr-20261029/assemble-project.ts
+?? presentation-studio/tools/nkr-20261029/build.mjs
+?? presentation-studio/tools/nkr-20261029/export-glb.mjs
+?? presentation-studio/tools/nkr-20261029/generate_textures.py
+?? presentation-studio/tools/nkr-20261029/helpers.mjs
+?? presentation-studio/tools/nkr-20261029/material-notes-preview.png
+?? presentation-studio/tools/nkr-20261029/material-notes.json
+?? presentation-studio/tools/nkr-20261029/material-notes.md
+?? presentation-studio/tools/nkr-20261029/materials.mjs
+?? presentation-studio/tools/nkr-20261029/publish.ts
+?? presentation-studio/tools/nkr-20261029/serve.mjs
+?? presentation-studio/tools/nkr-20261029/site-notes.md
+?? presentation-studio/tools/nkr-20261029/site-notes.validation.json
+?? presentation-studio/tools/nkr-20261029/site-parameters.json
+?? presentation-studio/tools/nkr-20261029/site.mjs
+?? presentation-studio/tools/nkr-20261029/textures/asphalt-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/asphalt-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/asphalt-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/bark-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/bark-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/bark-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/bark-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/bronze-anodized-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/bronze-anodized-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/bronze-anodized-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/bronze-anodized-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/grass-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/linen-weave-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/linen-weave-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/linen-weave-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/manifest.json
+?? presentation-studio/tools/nkr-20261029/textures/meranti-wood-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/meranti-wood-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/meranti-wood-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/meranti-wood-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/muschelkalk-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/muschelkalk-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/muschelkalk-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/muschelkalk-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/oak-interior-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/oak-interior-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/oak-interior-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/oak-interior-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/paving-600-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/paving-600-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/paving-600-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/paving-600-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/pv-cells-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/pv-cells-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/soil-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/soil-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/soil-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/soil-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/street-herringbone-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/street-herringbone-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/street-herringbone-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/street-herringbone-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/warm-concrete-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/warm-concrete-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/warm-concrete-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/warm-concrete-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/water-ripple-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/water-ripple-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-standing-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-standing-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-standing-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-standing-normal.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-white-basecolor.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-white-height-source.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-white-mr.png
+?? presentation-studio/tools/nkr-20261029/textures/weimar-white-normal.png
+?? presentation-studio/tools/nkr-20261029/validate-model.ts
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/README.md"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/checksums.sha256"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/browser_reload_validation.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/glb_validation.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/package_integrity.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/pdf_trace_audit.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_MKS-staat.pdf_contact1.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_pakketboek_details_contact1.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_pakketboek_details_contact2.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_pakketboek_details_contact3.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_pakketboek_details_contact4.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_tekeningenset_contact1.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_tekeningenset_contact2.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/260309_StAM_NK-f_VO_tekeningenset_contact3.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/Final_Renders_sheet1.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/Final_Renders_sheet2.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/White_renders_sheet1.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/White_renders_sheet2.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/White_renders_sheet3.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_contact_sheets/viewpoint_maps.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_inventory.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reference_review.md"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/reproducibility.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/evidence/unavailable_external_checks.txt"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/handoff.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/model/nkr-phase-10-v001.glb"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/contact_sheet.jpg"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/front.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/left.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/perspective.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/rear.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/rear_perspective.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/reference_matched.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/right.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/previews/roof.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/README.md"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/build_model.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/capture_previews.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/check_reproducibility.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/data/build_statistics.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/data/geometry_outlines.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/data/node_correspondences.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/data/parameters.json"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/make_contact_sheet.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/make_textures.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/meshlib.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/requirements-preview.txt"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/requirements-trace.txt"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/requirements-validation.txt"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/requirements.txt"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/trace_pdf_geometry.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/validate_glb.py"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/viewer/index.html"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/source/viewer/viewer.js"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/brick_weimar_white_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/brick_weimar_white_normal.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/interior_oak_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/lobby_meranti_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/muschelkalk_grey_beige_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/muschelkalk_normal.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/pv_cell_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/textures/terrace_600mm_tile_basecolor.png"
+?? "presentation-studio/tools/nkr-phase-10-model-v001 gptweb/validation.md"
+?? tools/mcp/accepted_target_campaign.py
+?? tools/mcp/accepted_target_host.py
+?? tools/mcp/content_prepare_campaign.py
+?? tools/mcp/content_prepare_host.py
+?? tools/mcp/content_seal_campaign.py
+?? tools/mcp/destination_settings_campaign.py
+?? tools/mcp/destination_settings_host.py
+?? tools/mcp/foundation_boot.ms
+?? tools/mcp/foundation_campaign.py
+?? tools/mcp/foundation_host.py
+?? tools/mcp/handoff_campaign.py
+?? tools/mcp/increment_receipt.py
+?? tools/mcp/installed_planting_campaign.py
+?? tools/mcp/installed_sources_campaign.py
+?? tools/mcp/library_campaign.py
+?? tools/mcp/loss_boot.ms
+?? tools/mcp/loss_campaign.py
+?? tools/mcp/loss_host.py
+?? tools/mcp/mixed_catalog_campaign.py
+?? tools/mcp/mixed_catalog_current_campaign.py
+?? tools/mcp/mixed_catalog_host.py
+?? tools/mcp/model_merge_boundary.ms
+?? tools/mcp/planting_probe.ms
+?? tools/mcp/planting_refinement_campaign.py
+?? tools/mcp/planting_source_setup.ms
+?? tools/mcp/planting_source_setup.py
+?? tools/mcp/planting_sources_campaign.py
+?? tools/mcp/portable_source_host.py
+?? tools/mcp/portable_source_probe.py
+?? tools/mcp/portable_sources_campaign.py
+?? tools/mcp/prepared_assets_campaign.py
+?? tools/mcp/prepared_assets_lifecycle.ms
+?? tools/mcp/prepared_assets_lifecycle_campaign.py
+?? tools/mcp/prepared_assets_old_campaign.py
+?? tools/mcp/preset_application_campaign.py
+?? tools/mcp/preset_application_host.py
+?? tools/mcp/preset_curve_probe.ms
+?? tools/mcp/preset_editor_interaction_campaign.py
+?? tools/mcp/preset_range_undo_probe.ms
+?? tools/mcp/presets_campaign.py
+?? tools/mcp/presets_lifecycle.ms
+?? tools/mcp/presets_lifecycle_campaign.py
+?? tools/mcp/presets_lifecycle_host.py
+?? tools/mcp/public_presets_campaign.py
+?? tools/mcp/public_presets_host.py
+?? tools/mcp/recipe_catalog_campaign.py
+?? tools/mcp/recipe_catalog_host.py
+?? tools/mcp/recipes_campaign.py
+?? tools/mcp/recipes_lifecycle.ms
+?? tools/mcp/recipes_lifecycle_campaign.py
+?? tools/mcp/recipes_lifecycle_host.py
+?? tools/mcp/recovery_campaign.py
+?? tools/mcp/scene_campaign.py
+?? tools/mcp/scene_lifecycle_campaign.py
+?? tools/mcp/scene_passive.ms
+?? tools/mcp/scene_passive_campaign.py
+?? tools/mcp/source_debug.ms
+?? tools/mcp/source_use_campaign.py
+?? tools/mcp/source_use_host.py
+?? tools/mcp/undo_campaign.py
+?? tools/procedural_lab/review08763/build_probe.py
+?? tools/procedural_lab/review08763/close_owned.py
+?? tools/procedural_lab/review08763/garden_drag.py
+?? tools/procedural_lab/review08763/garden_finish.py
+?? tools/procedural_lab/review08763/host_regressions.py
+?? tools/procedural_lab/review08763/package_delivery.py
+?? tools/procedural_lab/review08763/persistence_debug.py
+?? tools/procedural_lab/review08763/persistence_events.ms
+?? tools/procedural_lab/review08763/persistence_prepare.py
+?? tools/procedural_lab/review08763/persistence_redo.py
+?? tools/procedural_lab/review08763/persistence_undo.py
+?? tools/procedural_lab/review08763/probe.cpp
+?? tools/procedural_lab/review08763/run_probe.py
+?? tools/procedural_lab/review08763/seal_delivery.py
+?? tools/procedural_lab/review08763/selection_smoke.py
+?? tools/procedural_lab/selection08762/batch_events.ms
+?? tools/procedural_lab/selection08762/build_probe.py
+?? tools/procedural_lab/selection08762/close_owned.py
+?? tools/procedural_lab/selection08762/diagnose.py
+?? tools/procedural_lab/selection08762/garden_navigation.py
+?? tools/procedural_lab/selection08762/garden_pick.py
+?? tools/procedural_lab/selection08762/mesh_probe.cpp
+?? tools/procedural_lab/selection08762/package_delivery.py
+?? tools/procedural_lab/selection08762/pick_lifecycle.py
+?? tools/procedural_lab/selection08762/picking_host.py
+?? tools/procedural_lab/selection08762/posed_pick.py
+?? tools/procedural_lab/selection08762/reload_ui.py
+?? tools/procedural_lab/selection08762/run_smoke.ms
+?? tools/procedural_lab/selection08762/seal_delivery.py
+?? tools/procedural_lab/selection08762/selection_probe.cpp
+?? tools/procedural_lab/selection08762/smoke.py
+?? tools/procedural_lab/selection08762/verify_delivery.py
+?? tools/procedural_lab/selection08764/host.py
+?? tools/procedural_lab/selection08764/package_delivery.py
+?? tools/procedural_lab/terraces0877/assign_stone_proxy.py
+?? tools/procedural_lab/terraces0877/bootstrap.py
+?? tools/procedural_lab/terraces0877/build_stone_proxy.py
+?? tools/procedural_lab/terraces0877/cleanup_old_builds.ps1
+?? tools/procedural_lab/terraces0877/close_owned.py
+?? tools/procedural_lab/terraces0877/collect_evidence.py
+?? tools/procedural_lab/terraces0877/contact_bootstrap.py
+?? tools/procedural_lab/terraces0877/contact_fixture.py
+?? tools/procedural_lab/terraces0877/contact_inspect.py
+?? tools/procedural_lab/terraces0877/contact_prepare.py
+?? tools/procedural_lab/terraces0877/contact_sweep.py
+?? tools/procedural_lab/terraces0877/dispatch.py
+?? tools/procedural_lab/terraces0877/edit_prepare.py
+?? tools/procedural_lab/terraces0877/edit_settings_check.py
+?? tools/procedural_lab/terraces0877/export_stone_proxy.py
+?? tools/procedural_lab/terraces0877/far_diagnose.py
+?? tools/procedural_lab/terraces0877/garden_boulders.py
+?? tools/procedural_lab/terraces0877/garden_candidate.py
+?? tools/procedural_lab/terraces0877/garden_drag_finish.py
+?? tools/procedural_lab/terraces0877/garden_final_render.py
+?? tools/procedural_lab/terraces0877/garden_inspect.py
+?? tools/procedural_lab/terraces0877/garden_interaction.py
+?? tools/procedural_lab/terraces0877/garden_material_audit.py
+?? tools/procedural_lab/terraces0877/garden_navigation.py
+?? tools/procedural_lab/terraces0877/garden_refine.py
+?? tools/procedural_lab/terraces0877/garden_reload.py
+?? tools/procedural_lab/terraces0877/garden_reopen.py
+?? tools/procedural_lab/terraces0877/garden_resolve_textures.py
+?? tools/procedural_lab/terraces0877/garden_views_final.py
+?? tools/procedural_lab/terraces0877/garden_water_finish.py
+?? tools/procedural_lab/terraces0877/landscape_setup.py
+?? tools/procedural_lab/terraces0877/locality_sweep.py
+?? tools/procedural_lab/terraces0877/package_delivery.py
+?? tools/procedural_lab/terraces0877/plant_garden.py
+?? tools/procedural_lab/terraces0877/proxy_sweep.py
+?? tools/procedural_lab/terraces0877/rapid_scene.py
+?? tools/procedural_lab/terraces0877/stage_delivery.py
+?? tools/procedural_lab/terraces0877/textured_garden.py
+?? tools/procedural_lab/terraces0877/ui_final_check.py
+?? tools/procedural_lab/terraces0877/ui_fixture_warm.py
+?? tools/procedural_lab/terraces0877/ui_probe.py
+?? tools/procedural_lab/terraces0877/ui_warm.py
+?? tools/procedural_lab/terraces0877/verify_delivery.py
+?? tools/procedural_lab/terraces0877/verify_docs.py
+?? tools/procedural_lab/terraces0877/views.py
+?? website/prototypes/botanical-islands/README.md
+?? website/prototypes/botanical-islands/VECTOR_PROVENANCE.md
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/01-western-meadow.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/02-upper-garden-fork.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/03-meeting-clearing.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/04-pavilion-finale.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/asset-verification.json
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/capture-manifest.json
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/generation-prompts.json
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-01-frame-ink.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-02-frame-ink.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-03-frame-ink.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-04-frame-ink.png
+?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-04-material-reference.png
+?? website/prototypes/botanical-islands/index.html
+?? website/prototypes/botanical-islands/package-lock.json
+?? website/prototypes/botanical-islands/package.json
+?? website/prototypes/botanical-islands/public/assets/brand/favicon-32.png
+?? website/prototypes/botanical-islands/public/assets/brand/logo-192.png
+?? website/prototypes/botanical-islands/public/assets/data/botanical-islands-layout.json
+?? website/prototypes/botanical-islands/public/assets/data/vector-manifest.json
+?? website/prototypes/botanical-islands/public/assets/data/verification.json
+?? website/prototypes/botanical-islands/public/assets/fonts/instrument-serif-italic-latin.woff2
+?? website/prototypes/botanical-islands/public/assets/fonts/instrument-serif-latin.woff2
+?? website/prototypes/botanical-islands/public/assets/fonts/instrumentserif-OFL.txt
+?? website/prototypes/botanical-islands/public/assets/fonts/manrope-OFL.txt
+?? website/prototypes/botanical-islands/public/assets/fonts/manrope-latin.woff2
+?? website/prototypes/botanical-islands/public/assets/models/botanical-islands-garden.glb
+?? website/prototypes/botanical-islands/public/assets/photographs/01-western-meadow.png
+?? website/prototypes/botanical-islands/public/assets/photographs/02-upper-garden-fork.png
+?? website/prototypes/botanical-islands/public/assets/photographs/03-meeting-clearing.png
+?? website/prototypes/botanical-islands/public/assets/photographs/04-pavilion-finale.png
+?? website/prototypes/botanical-islands/public/assets/vectors/01-base-blueprint.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/02-plantable-areas.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/03-placement-points.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/04-ground-cover.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/05-understory.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/06-tree-canopy.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/07-camera-route-plan.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/08-color-planting-plan.svg
+?? website/prototypes/botanical-islands/public/assets/vectors/botanical-islands-master.svg
+?? website/prototypes/botanical-islands/references/camera-route-20261013.png
+?? website/prototypes/botanical-islands/scripts/export-vectors.mjs
+?? website/prototypes/botanical-islands/src/botany.js
+?? website/prototypes/botanical-islands/src/garden-data.js
+?? website/prototypes/botanical-islands/src/garden.js
+?? website/prototypes/botanical-islands/src/main.js
+?? website/prototypes/botanical-islands/src/pavilion.js
+?? website/prototypes/botanical-islands/src/presentation.js
+?? website/prototypes/botanical-islands/src/style.css
+?? website/prototypes/scroll-garden/README.md
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/01-base-blueprint.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/02-scatter-areas.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/03-placement-points.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/04-ground-cover.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/05-understory.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/06-full-planted-blueprint.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/07-forest-building-line.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/08-forest-building-color.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/base-prompt.json
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/generation.json
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/image-manifest.json
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/prompts.json
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/selected-reference.png
+?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/storyboard.json
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/01-meadow-loop.png
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/02-terrace-ribbons.png
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/03-woodland-clearing.png
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/04-courtyard-orchard.png
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/05-botanical-islands.png
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/generation.json
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/image-manifest.json
+?? website/prototypes/scroll-garden/concepts/plans-20261013-01/prompts.json
+?? website/prototypes/scroll-garden/index.html
+?? website/prototypes/scroll-garden/package-lock.json
+?? website/prototypes/scroll-garden/package.json
+?? website/prototypes/scroll-garden/public/assets/brand/favicon-32.png
+?? website/prototypes/scroll-garden/public/assets/brand/logo-192.png
+?? website/prototypes/scroll-garden/public/assets/fonts/instrument-serif-italic-latin.woff2
+?? website/prototypes/scroll-garden/public/assets/fonts/instrument-serif-latin.woff2
+?? website/prototypes/scroll-garden/public/assets/fonts/instrumentserif-OFL.txt
+?? website/prototypes/scroll-garden/public/assets/fonts/manrope-OFL.txt
+?? website/prototypes/scroll-garden/public/assets/fonts/manrope-latin.woff2
+?? website/prototypes/scroll-garden/src/main.js
+?? website/prototypes/scroll-garden/src/scene.js
+?? website/prototypes/scroll-garden/src/style.css
+?? website/verification/ARTIST_COVERAGE_08751.md
+?? website/verification/WEBSITE_08751_20261027.md
+?? website/verification/WEBSITE_08755_20261028.json
+?? website/verification/WEBSITE_08755_20261028.md
+?? website/verification/WEBSITE_08756_20261028.json
+?? website/verification/WEBSITE_08756_20261028.md

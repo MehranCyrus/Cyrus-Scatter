@@ -80,6 +80,10 @@ struct View::Selection {
     Selection(){++selections;}
     ~Selection(){--selections;}
 };
+struct View::Transforms {
+    struct Entry {std::uint32_t physical=0;Record record;};
+    Buffer<Entry> entries;
+};
 struct Builder::Impl {
     std::shared_ptr<View::Data> data;
     std::shared_ptr<const PreparationReceipt> preparation;
@@ -101,7 +105,15 @@ const std::shared_ptr<const ReceiverCohort>& View::receiverCohort() const {valid
 Token View::token() const {valid();return {data_->owner,data_->generation,view_};}
 void View::require(Token t) const {check(token()==t,"Stale or foreign native placement token");}
 std::size_t View::physical(std::size_t i) const {if(i>=size())throw std::out_of_range("Native placement index");return selection_?selection_->indices[i]:i;}
-const Record& View::at(std::size_t i) const {const auto index=physical(i);return data_->rows[index];}
+const Record& View::at(std::size_t i) const {
+    const auto index=physical(i);
+    if(transforms_){
+        const auto& entries=transforms_->entries;
+        auto found=std::lower_bound(entries.begin(),entries.end(),index,[](const auto& entry,std::size_t key){return entry.physical<key;});
+        if(found!=entries.end()&&found->physical==index)return found->record;
+    }
+    return data_->rows[index];
+}
 std::string_view View::authored(std::size_t i) const {
     const auto& r=at(i);check((r.flags&Authored)!=0&&r.identity<data_->identities.size(),"Native record has no authored identity in this generation");
     const auto t=data_->identities[std::size_t(r.identity)];return {data_->text.data()+t.offset,t.length};
@@ -110,7 +122,8 @@ std::string View::textIdentity(std::size_t i) const {
     check(stage()==Stage::Edited,"Raw candidate identity is numeric");const auto& r=at(i);
     return (r.flags&Authored)?std::string(authored(i)):"c:"+std::to_string(r.identity);
 }
-std::size_t View::baseBytes() const {valid();return data_->rows.capacity()*sizeof(Record)+data_->identities.capacity()*sizeof(Text)+data_->text.capacity();}
+std::size_t View::baseBytes() const {valid();return data_->rows.capacity()*sizeof(Record)+data_->identities.capacity()*sizeof(Text)+data_->text.capacity()+transformBytes();}
+std::size_t View::transformBytes() const {valid();return transforms_?transforms_->entries.capacity()*sizeof(Transforms::Entry):0;}
 std::size_t View::selectionBytes() const {valid();return selection_?selection_->indices.capacity()*sizeof(std::uint32_t):0;}
 std::vector<std::uint32_t> View::sourceUsage() const {
     std::vector<std::uint32_t> result(sources(),0);
@@ -130,7 +143,37 @@ View View::select(const std::vector<std::uint32_t>& indices) const {
     // Scratch is bounded by the selected view's logical population, not by IDs.
     std::vector<bool> used(size(),false);
     for(auto i:indices){check(i<size()&&!used[i],"Duplicate or invalid native selection index");used[i]=true;selected->indices.push_back(static_cast<std::uint32_t>(physical(i)));}
-    View result(data_,std::move(selected));result.stage_=stage_;result.preparation_=preparation_;return result;
+    View result(data_,std::move(selected));result.stage_=stage_;result.preparation_=preparation_;result.transforms_=transforms_;return result;
+}
+View View::withTransforms(const std::vector<TransformPatch>& patches) const {
+    valid();check(patches.size()<=4096,"Transient placement transforms exceed 4096 changes");
+    if(patches.empty())return *this;
+    Buffer<Transforms::Entry> updates;updates.reserve(patches.size());
+    bool changed=false;
+    for(const auto& patch:patches){
+        const auto index=physical(patch.row);auto record=at(patch.row);
+        for(float value:patch.transform)check(std::isfinite(value),"Nonfinite transient placement transform");
+        changed|=record.transform!=patch.transform;record.transform=patch.transform;
+        updates.push_back({static_cast<std::uint32_t>(index),record});
+    }
+    std::sort(updates.begin(),updates.end(),[](const auto& a,const auto& b){return a.physical<b.physical;});
+    for(std::size_t i=1;i<updates.size();++i)check(updates[i-1].physical!=updates[i].physical,"Duplicate transient placement transform");
+    if(!changed)return *this;
+    auto overlay=std::make_shared<Transforms>();
+    const auto oldSize=transforms_?transforms_->entries.size():0;
+    overlay->entries.reserve(std::min<std::size_t>(4096,oldSize+updates.size()));
+    auto append=[&](const auto& entry){
+        if(entry.record.transform==data_->rows[entry.physical].transform)return;
+        check(overlay->entries.size()<4096,"Transient placement transforms exceed 4096 changes");
+        overlay->entries.push_back(entry);
+    };
+    std::size_t a=0,b=0;
+    while(a<oldSize||b<updates.size()){
+        if(b==updates.size()||(a<oldSize&&transforms_->entries[a].physical<updates[b].physical))append(transforms_->entries[a++]);
+        else {if(a<oldSize&&transforms_->entries[a].physical==updates[b].physical)++a;append(updates[b++]);}
+    }
+    View result=*this;result.transforms_=overlay->entries.empty()?nullptr:std::move(overlay);
+    result.preparation_.reset();result.view_=next();return result;
 }
 View View::edited() const {
     valid();if(stage_==Stage::Edited)return *this;

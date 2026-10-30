@@ -1,0 +1,49 @@
+{
+  "contacts": [
+    {
+      "active_guides": 4,
+      "audit": {
+        "audit_ms": 91.6637,
+        "delivered_float": false,
+        "maximum_rigid_part_edge_change": 3.68594044175552e-14,
+        "maximum_stem_edge_change": 0.06139948124687289,
+        "minimum_surface_gap_m": 0.006618089203724697,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 17110
+      },
+      "flower_rigid_error_m": 2.5153490401663703e-17,
+      "location": [
+        -0.012,
+        0.067,
+        -0.07
+      ],
+      "rest_error_m": 0.0,
+      "source_unchanged": true
+    },
+    {
+      "active_guides": 3,
+      "audit": {
+        "audit_ms": 85.8008,
+        "delivered_float": false,
+        "maximum_rigid_part_edge_change": 0.0,
+        "maximum_stem_edge_change": 0.44302062950898513,
+        "minimum_surface_gap_m": 0.000615939908987409,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 17110
+      },
+      "flower_rigid_error_m": 0.0,
+      "location": [
+        0.075,
+        0.04,
+        -0.02
+      ],
+      "rest_error_m": 0.0,
+      "source_unchanged": true
+    }
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,36 @@
+{
+  "pid": 3316,
+  "host": 2027,
+  "command": [
+    "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+    "-q",
+    "-silent",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\library-host\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\library-host\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\library-host\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\library-host\\listener.log"
+  ],
+  "script": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\reviews\\full-system-08763-20261029-01\\drivers\\host_library.py",
+  "script_sha256": "3e6d88e39794e70db514c50217d32b2fde112197f76a808f6cbd9f3c532c3d4d",
+  "payload": {
+    "AminScatter.dlx": "1538d63421157e5cc3e7b964011cec2d4638d07c1affa15b9d8de9626413ac18",
+    "CyrusBrush.dlx": "f58f94ebb6ffcc372f51a3f9931082775039e01adbaa98127c34f5b97a5d8cde",
+    "CyrusBrushStorage.dlh": "a7dbaa1c504e559be35a578e36ffdf1e1108ce3da33f5d74345b4d8f90588dc2",
+    "CyrusScatterEdit.dlm": "20ad280f2c7086431be9e9f5c3f5c13d4d244fbc770242d9702082c01408a97d",
+    "CyrusScatter.ms": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+    "CyrusGallery.dll": "efe7199d27e31bd101ad32ed1b8d934d7284813c064523ea0564c9a1484e0222"
+  },
+  "artist_ini_sha256": "55238388f69494af9a04931b7237f5cb50771b2a62ce032c4957a1460e03570e",
+  "data": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\r8763data02",
+  "explicit_test_ocio_default": true,
+  "status": "pass",
+  "exit_code": 0,
+  "timed_out": false,
+  "artist_ini_unchanged": true,
+  "errors": {}
+}

@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-baseline\\AminScatter.dlx",
+      "sha256": "987dd99b7f59029e7be0054b439f1cf347730f0905fa57fd8c6d530a7b9637da"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-baseline\\CyrusBrush.dlx",
+      "sha256": "f7c58a0f47117f9ef4adc8aa22c2400111aaa1c882b4d2327080b9d2ee999894"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-baseline\\CyrusBrushStorage.dlh",
+      "sha256": "df8d8dd6c41a715d6ee152eac181074f7e60e793015aa4083e3483501b90eac5"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\payload-baseline\\CyrusScatterEdit.dlm",
+      "sha256": "89fd77402c2a1abfadbb96c46b0361781d538c4c6ab96bc84a1378a81e263f0a"
+    }
+  },
+  "script_fingerprint": "8181e46461662016ac7d33b6e0996402c55dc120268c4970c705d32244bf37e6"
+}

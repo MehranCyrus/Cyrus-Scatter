@@ -1,0 +1,52 @@
+{
+  "passed": [
+    "rollout change 1 preserves placement/preparation/upload work",
+    "rollout change 2 preserves placement/preparation/upload work",
+    "rollout change 3 preserves placement/preparation/upload work",
+    "rollout change 4 preserves placement/preparation/upload work",
+    "rollout change 5 preserves placement/preparation/upload work",
+    "rollout change 6 preserves placement/preparation/upload work",
+    "rollout change 7 preserves placement/preparation/upload work",
+    "rollout change 8 preserves placement/preparation/upload work",
+    "column resize 880 preserves cached scatter work",
+    "column resize 440 preserves cached scatter work",
+    "column resize 660 preserves cached scatter work",
+    "panel reflow leaves Manual population pending",
+    "deferred repaint timer retires while idle",
+    "single-model band uses that model badge",
+    "mixed-model band uses split model colours",
+    "unassigned band has no arbitrary badge",
+    "band follows a changed model identification colour",
+    "badge refresh preserves authored viewport Band colours",
+    "assignment-group band also uses the model badge",
+    "clearing a group assignment removes the badge",
+    "band authoring still leaves Manual placements pending"
+  ],
+  "label_pixels": {
+    "radio": 0,
+    "checks": 0
+  },
+  "palettes": [
+    [
+      [
+        201,
+        54,
+        117
+      ]
+    ],
+    [
+      [
+        201,
+        54,
+        117
+      ],
+      [
+        240,
+        190,
+        70
+      ]
+    ],
+    []
+  ],
+  "status": "complete"
+}

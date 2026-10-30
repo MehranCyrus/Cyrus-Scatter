@@ -1,0 +1,20 @@
+{
+  "scope": "Re-execution of reviewed isolated native probe; no Max host launched",
+  "probe_sha256": "e7fb1058867b4f28535ab07bfe1273e145729cca61f3d2b9368e936e1e98898a",
+  "runs": [
+    {
+      "arguments": [],
+      "exit_code": 0,
+      "hex": "0x0",
+      "output": "HIDING under-overhead response=0 direct_hidden=1 engine_hidden=1 affected=1\nHIDING under-overhead response=1 direct_hidden=1 engine_hidden=0 affected=0\nHIDING under-overhead response=2 direct_hidden=1 engine_hidden=0 affected=0\nHIDING under-overhead response=3 direct_hidden=1 engine_hidden=0 affected=0\nHIDING inside-margin response=0 direct_hidden=2 engine_hidden=2 affected=1\nHIDING inside-margin response=1 direct_hidden=2 engine_hidden=0 affected=0\nHIDING inside-margin response=2 direct_hidden=2 engine_hidden=0 affected=0\nHIDING inside-margin response=3 direct_hidden=2 engine_hidden=0 affected=0\nROLE both reacting control poses=1\nROLE off retained neighbors error=invalid unordered_map<K, T> key\nROLE off cleared neighbors control poses=0\nMATRIX cases=648 faces=6480 max_cpu_compact_error_m=3.26901e-09 deterministic/restoration=pass\nFIXED decoration covered_roots=8 fixed_vertices=8 wrongly_skipped_point_samples=8 visible_fixed_triangles=12\nRENDER bounds source_reach_m=0.859614 actual_fixed_hi_x_m=5.035 fixed_vertices_outside_render_packet_bound=8 all_hidden=0\nPREVIEW admission arithmetic real_prepared_guides=160 rest_words=1282 posed=13087 sampled_visible=1 current_words=16778816 needed_words=2564 current_bytes=268461056 needed_bytes=41024 rejects_before_sampling=1\nMAP copied initializer n=256 allocations=131584 allocated_bytes=17895424 elapsed_ms=6.359 sink=512\nMAP borrowed control n=256 allocations=0 allocated_bytes=0 elapsed_ms=0.0033\nMAP copied initializer n=1024 allocations=2099200 allocated_bytes=285491200 elapsed_ms=162.38 sink=2048\nMAP borrowed control n=1024 allocations=0 allocated_bytes=0 elapsed_ms=0.007\nPLACEMENT one-record change rows=100000 newly_allocated_row_bytes=9600000 copy_ms=4.7409 original_x=0 successor_x=1\nPLACEMENT one-record change rows=1000000 newly_allocated_row_bytes=96000000 copy_ms=42.1902 original_x=0 successor_x=1\nNEIGHBOR batch actual_engine n=64 allocations=9202 allocated_bytes=1153080 affected=64 contact_queries=0 query_ms=1.5206 fit_ms=0.5924 total_ms=2.1378\nNEIGHBOR batch actual_engine n=256 allocations=135830 allocated_bytes=17988799 affected=256 contact_queries=0 query_ms=17.588 fit_ms=1.1076 total_ms=18.7897\nNEIGHBOR batch actual_engine n=1024 allocations=2118614 allocated_bytes=285908326 affected=1024 contact_queries=0 query_ms=506.663 fit_ms=13.0208 total_ms=519.851\n"
+    },
+    {
+      "arguments": [
+        "--collider-only"
+      ],
+      "exit_code": 3221225477,
+      "hex": "0xc0000005",
+      "output": "ROLE both reacting control poses=1\nROLE collider-only retained neighbors entering evaluate\n"
+    }
+  ]
+}

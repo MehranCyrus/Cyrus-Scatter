@@ -1,0 +1,17 @@
+{
+  "status": "running",
+  "before_assignment": [
+    "UI source | 1.00 | Unassigned",
+    "[Point] | 1.00 | Unassigned"
+  ],
+  "after_assignment": [
+    "UI source | 1.00 | Unassigned",
+    "[Point] | 1.00 | Unassigned"
+  ],
+  "authored_band_label": "Out 1",
+  "point_label_current": false,
+  "after_forced_refresh": [
+    "UI source | 1.00 | Out 1",
+    "[Point] | 1.00 | Out 1"
+  ]
+}

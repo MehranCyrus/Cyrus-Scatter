@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\test-payload\\AminScatter.dlx",
+      "sha256": "1538d63421157e5cc3e7b964011cec2d4638d07c1affa15b9d8de9626413ac18"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\test-payload\\CyrusBrush.dlx",
+      "sha256": "f58f94ebb6ffcc372f51a3f9931082775039e01adbaa98127c34f5b97a5d8cde"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\test-payload\\CyrusBrushStorage.dlh",
+      "sha256": "a7dbaa1c504e559be35a578e36ffdf1e1108ce3da33f5d74345b4d8f90588dc2"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\full-system-review-08763-20261029-01\\test-payload\\CyrusScatterEdit.dlm",
+      "sha256": "20ad280f2c7086431be9e9f5c3f5c13d4d244fbc770242d9702082c01408a97d"
+    }
+  },
+  "script_fingerprint": "2a230680593f56fc42d3ef671860c0349e4daccdced146da2afce39851b8e6ec"
+}

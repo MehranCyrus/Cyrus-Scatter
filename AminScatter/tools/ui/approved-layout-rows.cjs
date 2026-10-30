@@ -32,7 +32,7 @@ module.exports={
    {...heading('Boundary Relax settings'),when:'spacingUI_boundaryRelaxCheck.checked'},
    ...rows('spacingUI',['finalStrengthSpin','finalIterSpin','finalMoveSpin']).map(r=>({...r,when:'spacingUI_boundaryRelaxCheck.checked'}))
   ]},
-  {name:'displayUI',title:'Viewport & render',parts:['flow_previewUI'],layerPage:false,rows:[...rows('flow_previewUI',['displayModeDrop','navigationPointsSpin','budgetSpin','navigationInstancesSpin','instancesLimitSpin','navigationFacesSpin','faceLimitSpin','limitsHint','fastNavigationButton','memoryButton','identificationDrop','previewCheck','autoRenderCheck','status'])]},
+  {name:'displayUI',title:'Viewport & render',parts:['flow_previewUI'],layerPage:false,rows:[...rows('flow_previewUI',['displayModeDrop','navigationPointsSpin','budgetSpin','navigationInstancesSpin','instancesLimitSpin','navigationFacesSpin','faceLimitSpin','limitsHint','fastNavigationButton','sharedViewportButton','memoryButton','identificationDrop','previewCheck','autoRenderCheck','status'])]},
   {name:'statisticsUI',title:'Stats & diagnostics',parts:['detailsUI','workflowUI','diagnosticsUI'],layerPage:false,rows:[...rows('detailsUI',['info',['refreshButton','helpButton']]),heading('Local diagnostic recording - setup',true),...rows('diagnosticsUI',[['startButton','stopButton'],['saveButton','refreshButton'],'statusInfo','scopeInfo'],true),{toggle:'workflowToggle',caption:'Workflow & ownership',advanced:true},...rows('workflowUI',['steps','help'],true).map(r=>({...r,when:'workflowToggle.checked'}))]},
   {name:'interactionsUI',title:'Interactions',parts:['interactionsUI'],layerPage:true,advancedLabel:'More settings',rows:[...rows('interactionsUI',['roleList','workflowInfo','modelList',['sourcePickButton','sourceRemoveButton'],'focusSourceButton','proxyList','buildTrunksButton','pickColliderButton','reviewColliderButton','prepareButton','editorButton','guideReviewButton','responseList','strengthSpin','trunkSpin','fixedBaseSpin','transitionSpin','pruneThresholdSpin','pruneAmountSpin','neighborsCheck','rootsCheck','hideAreaList','hideMarginSpin','gapSpin','foliageSpin','info']),...rows('interactionsUI',['minimumSpin','stiffnessSpin','connectionSpin','retryButton','validateButton','repairSettingsButton','verticesLimitSpin','trianglesLimitSpin','partsLimitSpin','guidesLimitSpin','previewLimitSpin','memoryLimitSpin','workLimitSpin','cleanColliderLinksButton'],true)]},
   {name:'collidersUI',title:'Scene colliders',parts:['collidersUI'],layerPage:false,rows:[...rows('collidersUI',['hint','colliderList',['addButton','selectedButton','removeButton'],'selectButton','info'])]}
@@ -141,7 +141,7 @@ for(const name of ['coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','ti
 }
 module.exports.conditions['distributionUI.resolutionList']='true';
 
-// 0.87.6: keep the common authoring path short. Disclosures are view state;
+// 0.87.6.1: keep the common authoring path short. Disclosures are view state;
 // hiding a control never clears an authored value or disables its effect.
 const pageByName=name=>module.exports.pages.find(p=>p.name===name);
 Object.assign(module.exports.labels,{

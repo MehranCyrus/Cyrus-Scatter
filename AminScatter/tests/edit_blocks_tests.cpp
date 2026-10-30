@@ -19,6 +19,8 @@ int main(){
   auto c=b;b.append(Row{200000});assert(c.size()==200000&&b.size()==200001);
   Selection s;s.set(199999,true);auto old=s;auto selected=memory();s.set(10,true);
   assert(!old.get(10)&&old.get(199999)&&s.get(10));assert(memory().live-selected.live<4096);
+  std::vector<std::size_t> indices;s.each(200000,[&](auto i){indices.push_back(i);});assert((indices==std::vector<std::size_t>{10,199999}));
+  indices.clear();old.each(199999,[&](auto i){indices.push_back(i);});assert(indices.empty());
   s.clear();assert(!s.get(199999)&&old.get(199999));
   bool failed=false;try{a.write(200000);}catch(const std::out_of_range&){failed=true;}assert(failed&&a.size()==200000);
   // Repeated history Restore(false), Redo and abandoned future are reference

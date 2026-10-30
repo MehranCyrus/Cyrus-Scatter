@@ -1,0 +1,10 @@
+SCENE writer_version=0.87.5.5
+SCENE dead_owner_stage_marker=False
+RECOVER Recovered 0 abandoned owned staging folders; retained 1 active or unverified folders. Published assets were preserved.
+SCENE stage_retained_after_owner_exit=True bytes=524288
+REJECT traversal Unsupported archive member.
+REJECT absolute Unsupported archive member.
+REJECT duplicate Duplicate or linked archive entry.
+REJECT symlink Duplicate or linked archive entry.
+REJECT file-count Archive file count exceeds its bound.
+PASS supplemental managed safety checks; scene recovery/version observations reproduced; native validator intentionally injected

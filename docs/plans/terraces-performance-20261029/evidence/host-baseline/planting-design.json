@@ -1,0 +1,282 @@
+[
+  {
+    "name": "Upper grove - rounded canopies",
+    "ids": [
+      "A072",
+      "A078"
+    ],
+    "requested": 44,
+    "scale": 1.0,
+    "receivers": [
+      "PLANTING | 08 grass footprint",
+      "PLANTING | 09 grass footprint",
+      "PLANTING | 10 grass footprint",
+      "PLANTING | 11 grass footprint"
+    ]
+  },
+  {
+    "name": "Tea trees - eastern terraces",
+    "ids": [
+      "A056"
+    ],
+    "requested": 54,
+    "scale": 1.35,
+    "receivers": [
+      "PLANTING | 04 grass footprint",
+      "PLANTING | 05 grass footprint",
+      "PLANTING | 06 grass footprint",
+      "PLANTING | 07 grass footprint",
+      "PLANTING | 08 grass footprint",
+      "PLANTING | 09 grass footprint"
+    ]
+  },
+  {
+    "name": "Slender garden trees",
+    "ids": [
+      "A103"
+    ],
+    "requested": 16,
+    "scale": 6.0,
+    "receivers": [
+      "PLANTING | 02 grass footprint",
+      "PLANTING | 03 grass footprint",
+      "PLANTING | 04 grass footprint",
+      "PLANTING | 05 grass footprint"
+    ]
+  },
+  {
+    "name": "Autumn maple accents",
+    "ids": [
+      "A098"
+    ],
+    "requested": 18,
+    "scale": 1.6,
+    "receivers": [
+      "PLANTING | 04 grass footprint",
+      "PLANTING | 05 grass footprint",
+      "PLANTING | 06 grass footprint",
+      "PLANTING | 07 grass footprint"
+    ]
+  },
+  {
+    "name": "Cypress rhythm",
+    "ids": [
+      "A075"
+    ],
+    "requested": 13,
+    "scale": 1.15,
+    "receivers": [
+      "PLANTING | 09 grass footprint",
+      "PLANTING | 10 grass footprint",
+      "PLANTING | 11 grass footprint"
+    ]
+  },
+  {
+    "name": "Flowering orchard",
+    "ids": [
+      "A049"
+    ],
+    "requested": 12,
+    "scale": 1.0,
+    "receivers": [
+      "PLANTING | 06 grass footprint",
+      "PLANTING | 07 grass footprint",
+      "PLANTING | 08 grass footprint"
+    ]
+  },
+  {
+    "name": "Fine meadow base",
+    "ids": [
+      "A069"
+    ],
+    "requested": 10000,
+    "scale": 5.8,
+    "receivers": [
+      "PLANTING | 01 grass footprint",
+      "PLANTING | 02 grass footprint",
+      "PLANTING | 03 grass footprint",
+      "PLANTING | 04 grass footprint",
+      "PLANTING | 05 grass footprint",
+      "PLANTING | 06 grass footprint",
+      "PLANTING | 07 grass footprint"
+    ]
+  },
+  {
+    "name": "Rough grass drifts",
+    "ids": [
+      "A068"
+    ],
+    "requested": 4500,
+    "scale": 6.5,
+    "receivers": [
+      "PLANTING | 04 grass footprint",
+      "PLANTING | 05 grass footprint",
+      "PLANTING | 06 grass footprint",
+      "PLANTING | 07 grass footprint",
+      "PLANTING | 08 grass footprint",
+      "PLANTING | 09 grass footprint",
+      "PLANTING | 10 grass footprint",
+      "PLANTING | 11 grass footprint"
+    ]
+  },
+  {
+    "name": "Clover along the promenade",
+    "ids": [
+      "A070"
+    ],
+    "requested": 2200,
+    "scale": 7.0,
+    "receivers": [
+      "PLANTING | 01 grass footprint",
+      "PLANTING | 02 grass footprint"
+    ]
+  },
+  {
+    "name": "Lavender ribbons",
+    "ids": [
+      "A083"
+    ],
+    "requested": 80,
+    "scale": 1.3,
+    "receivers": [
+      "PLANTING | 01 white drift 06",
+      "PLANTING | 01 white drift 07",
+      "PLANTING | 02 white drift 04",
+      "PLANTING | 02 white drift 05",
+      "PLANTING | 02 white drift 10",
+      "PLANTING | 02 white drift 11",
+      "PLANTING | 03 white drift 03",
+      "PLANTING | 03 white drift 08",
+      "PLANTING | 03 white drift 09",
+      "PLANTING | 04 white drift 06",
+      "PLANTING | 04 white drift 07",
+      "PLANTING | 04 white drift 12",
+      "PLANTING | 04 white drift 13",
+      "PLANTING | 05 white drift 04"
+    ]
+  },
+  {
+    "name": "Rose pockets",
+    "ids": [
+      "A086"
+    ],
+    "requested": 64,
+    "scale": 1.3,
+    "receivers": [
+      "PLANTING | 01 pink drift 03",
+      "PLANTING | 01 pink drift 08",
+      "PLANTING | 01 pink drift 09",
+      "PLANTING | 02 pink drift 06",
+      "PLANTING | 02 pink drift 07",
+      "PLANTING | 03 pink drift 04",
+      "PLANTING | 03 pink drift 05",
+      "PLANTING | 03 pink drift 10",
+      "PLANTING | 03 pink drift 11",
+      "PLANTING | 04 pink drift 03",
+      "PLANTING | 04 pink drift 08",
+      "PLANTING | 04 pink drift 09",
+      "PLANTING | 05 pink drift 06",
+      "PLANTING | 05 pink drift 07"
+    ]
+  },
+  {
+    "name": "Elder accents",
+    "ids": [
+      "A081"
+    ],
+    "requested": 30,
+    "scale": 1.3,
+    "receivers": [
+      "PLANTING | 01 yellow drift 04",
+      "PLANTING | 01 yellow drift 05",
+      "PLANTING | 01 yellow drift 10",
+      "PLANTING | 01 yellow drift 11",
+      "PLANTING | 02 yellow drift 03",
+      "PLANTING | 02 yellow drift 08",
+      "PLANTING | 02 yellow drift 09",
+      "PLANTING | 03 yellow drift 06",
+      "PLANTING | 03 yellow drift 07",
+      "PLANTING | 03 yellow drift 12",
+      "PLANTING | 04 yellow drift 04",
+      "PLANTING | 04 yellow drift 05",
+      "PLANTING | 04 yellow drift 10",
+      "PLANTING | 04 yellow drift 11"
+    ]
+  },
+  {
+    "name": "Myrtle structure",
+    "ids": [
+      "A085"
+    ],
+    "requested": 26,
+    "scale": 1.3,
+    "receivers": [
+      "PLANTING | 01 white drift 06",
+      "PLANTING | 01 white drift 07",
+      "PLANTING | 02 white drift 04",
+      "PLANTING | 02 white drift 05",
+      "PLANTING | 02 white drift 10",
+      "PLANTING | 02 white drift 11",
+      "PLANTING | 03 white drift 03",
+      "PLANTING | 03 white drift 08",
+      "PLANTING | 03 white drift 09",
+      "PLANTING | 04 white drift 06",
+      "PLANTING | 04 white drift 07",
+      "PLANTING | 04 white drift 12",
+      "PLANTING | 04 white drift 13",
+      "PLANTING | 05 white drift 04"
+    ]
+  },
+  {
+    "name": "Blue violet cushions",
+    "ids": [
+      "A062"
+    ],
+    "requested": 550,
+    "scale": 4.0,
+    "receivers": [
+      "PLANTING | 01 grass footprint",
+      "PLANTING | 02 grass footprint"
+    ]
+  },
+  {
+    "name": "Phlox and geranium",
+    "ids": [
+      "A064",
+      "A066"
+    ],
+    "requested": 900,
+    "scale": 3.5,
+    "receivers": [
+      "PLANTING | 02 grass footprint",
+      "PLANTING | 03 grass footprint",
+      "PLANTING | 04 grass footprint"
+    ]
+  },
+  {
+    "name": "Deadnettle pockets",
+    "ids": [
+      "A067"
+    ],
+    "requested": 300,
+    "scale": 4.0,
+    "receivers": [
+      "PLANTING | 01 grass footprint",
+      "PLANTING | 02 grass footprint"
+    ]
+  },
+  {
+    "name": "White flowers and broad leaves",
+    "ids": [
+      "A088",
+      "A090"
+    ],
+    "requested": 300,
+    "scale": 1.0,
+    "receivers": [
+      "PLANTING | 01 grass footprint",
+      "PLANTING | 02 grass footprint",
+      "PLANTING | 03 grass footprint"
+    ]
+  }
+]

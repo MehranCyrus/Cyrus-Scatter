@@ -13,6 +13,7 @@ public:
         else{type_check(value,Array,_T("preview placements"));rows_=static_cast<Array*>(value);}
         if(size()>1000000)throw RuntimeError(_T("Preview input exceeds 1,000,000 placements"));
     }
+    std::shared_ptr<const cyrus::placements::View> pickView() const{return native_?std::make_shared<const cyrus::placements::View>(*native_):nullptr;}
     std::size_t size() const{return native_?native_->size():std::size_t(rows_->size);}
     unsigned source(std::size_t i) const{return native_?native_->at(i).source:unsigned(row(i)->data[1]->to_int());}
     std::uint64_t owner(std::size_t i) const{return native_?native_->at(i).band:std::uint64_t(row(i)->data[5]->to_int64());}

@@ -1,0 +1,1708 @@
+{
+  "status": "complete",
+  "passed": [
+    "latest preparation is ready",
+    "matched native interaction capability 17",
+    "exact artist Violet baseline: 197 pieces / 17110 faces / 12 guides",
+    "selection alone does not prepare or upload geometry",
+    "latest preparation is ready",
+    "selected flower stem has 16 guide points",
+    "untouched stem 2 retains its exact guide",
+    "untouched stem 3 retains its exact guide",
+    "untouched stem 4 retains its exact guide",
+    "untouched stem 6 retains its exact guide",
+    "untouched stem 7 retains its exact guide",
+    "untouched stem 8 retains its exact guide",
+    "untouched stem 9 retains its exact guide",
+    "untouched stem 11 retains its exact guide",
+    "untouched stem 12 retains its exact guide",
+    "untouched stem 13 retains its exact guide",
+    "untouched stem 14 retains its exact guide",
+    "stem detail does not convert leaves or petals into guides",
+    "latest preparation is ready",
+    "draft Undo restores automatic stem detail",
+    "latest preparation is ready",
+    "draft Redo restores 16-point stem",
+    "out-of-range detail retains the complete draft",
+    "latest preparation is ready",
+    "latest preparation is ready",
+    "all 62 selected leaves have independent guides",
+    "selected leaf detail is independent of stem detail",
+    "leaf detail leaves both edited and automatic stem settings intact",
+    "latest preparation is ready",
+    "all selected flower heads follow stems as rigid pieces",
+    "saved profile/detail envelope and intent guards agree",
+    "unsupported tiny piece blocks accepting an incomplete successor",
+    "latest preparation is ready",
+    "Undo after failed analysis restores the complete intended preparation",
+    "Use preparation commits the staged source",
+    "accepting preparation leaves Manual amount changes pending",
+    "latest preparation is ready",
+    "reopening editor restores profiles, point counts and parents",
+    "save authored preparation scene",
+    "reopen authored preparation scene",
+    "scene roundtrip retains exact serialized preparation",
+    "latest preparation is ready",
+    "reopened scene reconstructs all 74 guides"
+  ],
+  "baseline": {
+    "analyses": 1,
+    "authoring": {
+      "fingerprint": "4fd9beb925b50e264b285eecaa60fc54e486a56a78f048f514a8b2f10ecbbb70",
+      "parts": [],
+      "version": 1
+    },
+    "busy": false,
+    "draws": 2,
+    "geometry_uploads": 2,
+    "guide_points": [
+      {
+        "part": 1,
+        "points": 3
+      },
+      {
+        "part": 2,
+        "points": 3
+      },
+      {
+        "part": 3,
+        "points": 3
+      },
+      {
+        "part": 4,
+        "points": 3
+      },
+      {
+        "part": 6,
+        "points": 3
+      },
+      {
+        "part": 7,
+        "points": 3
+      },
+      {
+        "part": 8,
+        "points": 3
+      },
+      {
+        "part": 9,
+        "points": 5
+      },
+      {
+        "part": 11,
+        "points": 3
+      },
+      {
+        "part": 12,
+        "points": 3
+      },
+      {
+        "part": 13,
+        "points": 3
+      },
+      {
+        "part": 14,
+        "points": 5
+      }
+    ],
+    "isolated": [],
+    "message": "Selected-only preparation keeps other pieces fixed. Right drag or Alt+middle orbits; middle drag pans.",
+    "open": true,
+    "parts": 197,
+    "pick_ms": 0.0,
+    "preparation_ms": 12.02369999885559,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.001,
+      "cache_realization_ms": 11.8196,
+      "can_prepare": true,
+      "connection_candidates": 16,
+      "delivered_preview_triangles": 764,
+      "folded_leaf_guides": 0,
+      "ground_level_m": 0.010176331736147404,
+      "ground_roots": 9,
+      "guides": 12,
+      "large_unresolved_parts": 0,
+      "max_attachment_distance_m": 0.08261842645674385,
+      "max_parent_distance_m": 0.00718063214136471,
+      "mixed_material_parts": 0,
+      "parts": 197,
+      "preview_triangles": 764,
+      "profile": "Round tube stems; basal roots and spatial/taper branch forest",
+      "review_required": true,
+      "root_components": [
+        1,
+        2,
+        3,
+        6,
+        7,
+        8,
+        11,
+        12,
+        13
+      ],
+      "seconds": 0.0053583,
+      "source_payload_bytes": 1467943,
+      "unresolved_components": [],
+      "unresolved_guides": 0,
+      "unsupported_tube_candidates": 24,
+      "warning": "Inspect roots, branch direction and foliage attachments. This is geometric inference; botanical correctness is not guaranteed."
+    },
+    "revision": 1,
+    "selected": [],
+    "selection_operations": 0,
+    "source_triangles": 17110,
+    "source_vertices": 10922,
+    "sphere": false,
+    "view": {
+      "height": 735,
+      "orbit": false,
+      "pan": [
+        0.0,
+        0.0
+      ],
+      "pan_active": false,
+      "pitch": -0.2,
+      "pivot": [
+        -8.046627044677734e-07,
+        -5.21540641784668e-08,
+        0.04896804690361023
+      ],
+      "span": 0.3852528525984683,
+      "width": 784,
+      "yaw": 0.35
+    }
+  },
+  "prepared": {
+    "analyses": 9,
+    "authoring": {
+      "fingerprint": "4fd9beb925b50e264b285eecaa60fc54e486a56a78f048f514a8b2f10ecbbb70",
+      "parts": [
+        {
+          "part": 1,
+          "points": 16,
+          "role": 0
+        },
+        {
+          "parent": -1,
+          "part": 15,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 16,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 17,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 18,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 19,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 20,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 21,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 22,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 23,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 24,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 25,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 26,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 27,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 28,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 29,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 30,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 31,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 32,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 33,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 34,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 35,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 36,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 37,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 38,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 39,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 40,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 41,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 42,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 43,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 44,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 45,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 46,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 47,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 48,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 49,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 50,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 51,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 52,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 53,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 54,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 55,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 56,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 57,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 58,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 59,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 60,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 61,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 62,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 63,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 64,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 65,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 66,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 67,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 68,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 69,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 70,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 71,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 72,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 73,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 74,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 75,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "parent": -1,
+          "part": 76,
+          "points": 9,
+          "profile": 2,
+          "role": 1
+        },
+        {
+          "part": 77,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 78,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 79,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 80,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 81,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 82,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 83,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 84,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 85,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 86,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 87,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 88,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 89,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 90,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 91,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 92,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 93,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 94,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 95,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 96,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 97,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 98,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 99,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 100,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 101,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 102,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 103,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 104,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 105,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 106,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 107,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 108,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 109,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 110,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 111,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 112,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 113,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 114,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 115,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 116,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 117,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 118,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 119,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 120,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 121,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 122,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 123,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 124,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 125,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 126,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 127,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 128,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 129,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 130,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 131,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 132,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 133,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 134,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 135,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 136,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 137,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 138,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 139,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 140,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 141,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 142,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 143,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 144,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 145,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 146,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 147,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 148,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 149,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 150,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 151,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 152,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 153,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 154,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 155,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 156,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 157,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 158,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 159,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 160,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 161,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 162,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 163,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 164,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 165,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 166,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 167,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 168,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 169,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 170,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 171,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 172,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 173,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 174,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 175,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 176,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 177,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 178,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 179,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 180,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 181,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 182,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 183,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 184,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 185,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 186,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 187,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 188,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 189,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 190,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 191,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 192,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 193,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 194,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 195,
+          "profile": 3,
+          "role": 2
+        },
+        {
+          "part": 196,
+          "profile": 3,
+          "role": 2
+        }
+      ],
+      "version": 2
+    },
+    "busy": false,
+    "draws": 20,
+    "geometry_uploads": 9,
+    "guide_points": [
+      {
+        "part": 2,
+        "points": 3
+      },
+      {
+        "part": 3,
+        "points": 3
+      },
+      {
+        "part": 4,
+        "points": 3
+      },
+      {
+        "part": 6,
+        "points": 3
+      },
+      {
+        "part": 7,
+        "points": 3
+      },
+      {
+        "part": 8,
+        "points": 3
+      },
+      {
+        "part": 9,
+        "points": 5
+      },
+      {
+        "part": 11,
+        "points": 3
+      },
+      {
+        "part": 12,
+        "points": 3
+      },
+      {
+        "part": 13,
+        "points": 3
+      },
+      {
+        "part": 14,
+        "points": 5
+      },
+      {
+        "part": 1,
+        "points": 16
+      },
+      {
+        "part": 15,
+        "points": 9
+      },
+      {
+        "part": 16,
+        "points": 9
+      },
+      {
+        "part": 17,
+        "points": 9
+      },
+      {
+        "part": 18,
+        "points": 9
+      },
+      {
+        "part": 19,
+        "points": 9
+      },
+      {
+        "part": 20,
+        "points": 9
+      },
+      {
+        "part": 21,
+        "points": 9
+      },
+      {
+        "part": 22,
+        "points": 9
+      },
+      {
+        "part": 23,
+        "points": 9
+      },
+      {
+        "part": 24,
+        "points": 9
+      },
+      {
+        "part": 25,
+        "points": 9
+      },
+      {
+        "part": 26,
+        "points": 9
+      },
+      {
+        "part": 27,
+        "points": 9
+      },
+      {
+        "part": 28,
+        "points": 9
+      },
+      {
+        "part": 29,
+        "points": 9
+      },
+      {
+        "part": 30,
+        "points": 9
+      },
+      {
+        "part": 31,
+        "points": 9
+      },
+      {
+        "part": 32,
+        "points": 9
+      },
+      {
+        "part": 33,
+        "points": 9
+      },
+      {
+        "part": 34,
+        "points": 9
+      },
+      {
+        "part": 35,
+        "points": 9
+      },
+      {
+        "part": 36,
+        "points": 9
+      },
+      {
+        "part": 37,
+        "points": 9
+      },
+      {
+        "part": 38,
+        "points": 9
+      },
+      {
+        "part": 39,
+        "points": 9
+      },
+      {
+        "part": 40,
+        "points": 9
+      },
+      {
+        "part": 41,
+        "points": 9
+      },
+      {
+        "part": 42,
+        "points": 9
+      },
+      {
+        "part": 43,
+        "points": 9
+      },
+      {
+        "part": 44,
+        "points": 9
+      },
+      {
+        "part": 45,
+        "points": 9
+      },
+      {
+        "part": 46,
+        "points": 9
+      },
+      {
+        "part": 47,
+        "points": 9
+      },
+      {
+        "part": 48,
+        "points": 9
+      },
+      {
+        "part": 49,
+        "points": 9
+      },
+      {
+        "part": 50,
+        "points": 9
+      },
+      {
+        "part": 51,
+        "points": 9
+      },
+      {
+        "part": 52,
+        "points": 9
+      },
+      {
+        "part": 53,
+        "points": 9
+      },
+      {
+        "part": 54,
+        "points": 9
+      },
+      {
+        "part": 55,
+        "points": 9
+      },
+      {
+        "part": 56,
+        "points": 9
+      },
+      {
+        "part": 57,
+        "points": 9
+      },
+      {
+        "part": 58,
+        "points": 9
+      },
+      {
+        "part": 59,
+        "points": 9
+      },
+      {
+        "part": 60,
+        "points": 9
+      },
+      {
+        "part": 61,
+        "points": 9
+      },
+      {
+        "part": 62,
+        "points": 9
+      },
+      {
+        "part": 63,
+        "points": 9
+      },
+      {
+        "part": 64,
+        "points": 9
+      },
+      {
+        "part": 65,
+        "points": 9
+      },
+      {
+        "part": 66,
+        "points": 9
+      },
+      {
+        "part": 67,
+        "points": 9
+      },
+      {
+        "part": 68,
+        "points": 9
+      },
+      {
+        "part": 69,
+        "points": 9
+      },
+      {
+        "part": 70,
+        "points": 9
+      },
+      {
+        "part": 71,
+        "points": 9
+      },
+      {
+        "part": 72,
+        "points": 9
+      },
+      {
+        "part": 73,
+        "points": 9
+      },
+      {
+        "part": 74,
+        "points": 9
+      },
+      {
+        "part": 75,
+        "points": 9
+      },
+      {
+        "part": 76,
+        "points": 9
+      }
+    ],
+    "isolated": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76
+    ],
+    "message": "Selected-only preparation keeps other pieces fixed. Right drag or Alt+middle orbits; middle drag pans.",
+    "open": true,
+    "parts": 197,
+    "pick_ms": 0.0,
+    "preparation_ms": 45.08340001106262,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.003,
+      "cache_realization_ms": 45.0773,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 0,
+      "delivered_preview_triangles": 980,
+      "fixed_parts": 0,
+      "ground_level_m": 0.0039003132027573884,
+      "ground_roots": 71,
+      "guides": 74,
+      "max_attachment_distance_m": 0.0013642694910765644,
+      "max_parent_distance_m": 0.00718063214136471,
+      "parts": 197,
+      "preview_triangles": 980,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 62,
+      "seconds": 0.0321878,
+      "source_payload_bytes": 1607945,
+      "tube_guides": 12,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 1021327
+    },
+    "revision": 9,
+    "selected": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76
+    ],
+    "selection_operations": 0,
+    "source_triangles": 17110,
+    "source_vertices": 10922,
+    "sphere": false,
+    "view": {
+      "height": 735,
+      "orbit": false,
+      "pan": [
+        0.0,
+        0.0
+      ],
+      "pan_active": false,
+      "pitch": -0.2,
+      "pivot": [
+        -8.046627044677734e-07,
+        -5.21540641784668e-08,
+        0.03870850056409836
+      ],
+      "span": 0.3852528525984683,
+      "width": 784,
+      "yaw": 0.35
+    }
+  }
+}

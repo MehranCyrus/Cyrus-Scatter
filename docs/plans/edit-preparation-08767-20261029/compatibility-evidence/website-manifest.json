@@ -1,0 +1,473 @@
+{
+  "kind": "static-cpanel-upload",
+  "developmentVersion": "0.87.6.7",
+  "entryScript": "index-DQN53IPJ.js",
+  "archive": "CyrusScatter-website-0.87.6.7.zip",
+  "bytes": 27815528,
+  "sha256": "d86489f843b604587e148146794146dbc8533cdb235259b931699a130e505be8",
+  "fileCount": 90,
+  "files": [
+    {
+      "path": "assets/brand/apple-touch-icon.png",
+      "bytes": 40837,
+      "sha256": "951edc1dcd2305aaa87fcdc415d9267476a85e708ce588e764a529c062710ed7"
+    },
+    {
+      "path": "assets/brand/favicon-16.png",
+      "bytes": 878,
+      "sha256": "f5da42cf8813d31881642af353f156a1534b6a44963bdfd44355a6c74e014909"
+    },
+    {
+      "path": "assets/brand/favicon-32.png",
+      "bytes": 2419,
+      "sha256": "5382e029b5c6e29aa03a7add5369e2bad4f911a84e446632ebf333cfba9c88af"
+    },
+    {
+      "path": "assets/brand/icon-512.png",
+      "bytes": 348735,
+      "sha256": "813ff3024615e5dff20c469777af661f57d26f0d2564d48726174f5eba270e59"
+    },
+    {
+      "path": "assets/brand/logo-192.png",
+      "bytes": 46444,
+      "sha256": "25fd39b8e4abd7bf2cb420c74109bd4710983f2a6a14f5153fc2a1c45aa7835d"
+    },
+    {
+      "path": "assets/brand/logo-96.png",
+      "bytes": 13274,
+      "sha256": "1587775626b26d018526b07d643d3d208557ed7cc3d97f53f644c10cd8f6f10a"
+    },
+    {
+      "path": "assets/brand/manifest.json",
+      "bytes": 1955,
+      "sha256": "8446871a8407985b034a551aca76e82fcba0e4b7c78259ead3258784c6097966"
+    },
+    {
+      "path": "assets/captures/garden-study-075.webp",
+      "bytes": 848774,
+      "sha256": "27d6ceeaa141023d045c4589bbec30d4487a67e568b2a89e27ed549e6cd7999a"
+    },
+    {
+      "path": "assets/captures/manifest.json",
+      "bytes": 1406,
+      "sha256": "a7271f4cbcf544c187a8a8f742d1d8db659771f0cf2ede535aa3a2eacbe32a4b"
+    },
+    {
+      "path": "assets/captures/spline-exclude-0783.png",
+      "bytes": 48284,
+      "sha256": "530e5820b86e17041d6bdbbaab908e42078f8e926dae4fba823c96bdbe2e19c4"
+    },
+    {
+      "path": "assets/concepts/coastal-20261011-480.webp",
+      "bytes": 102284,
+      "sha256": "6fa32af947e9924e0b9eb2d3aac48154c4a993854117d62c1e3a8c8cf2723562"
+    },
+    {
+      "path": "assets/concepts/coastal-20261011-960.webp",
+      "bytes": 400720,
+      "sha256": "05a48d04fe625aa01d05a88366a577687de0f35605258e3335337a335d6e4292"
+    },
+    {
+      "path": "assets/concepts/coastal-20261011.webp",
+      "bytes": 858350,
+      "sha256": "eb2195921e170950b0c03122c3aa66394fd5b1d4cc4f33973309efee34fc769c"
+    },
+    {
+      "path": "assets/concepts/coastal-480.webp",
+      "bytes": 34642,
+      "sha256": "d1fde4f5dc63d1ae876f936b76ccb56c1fa38ee0c36833e7fce7484d95a5c508"
+    },
+    {
+      "path": "assets/concepts/coastal-mobile.webp",
+      "bytes": 25140,
+      "sha256": "e0f22958dd9ee5bfc6f4cdf5e1d607100b177d53861a9981338b78940ff3c136"
+    },
+    {
+      "path": "assets/concepts/coastal.webp",
+      "bytes": 75972,
+      "sha256": "ce4ffadea59a4acc2bf84f818c4162cbde238ce086f28126d930430134db5761"
+    },
+    {
+      "path": "assets/concepts/courtyard-20261011-480.webp",
+      "bytes": 105138,
+      "sha256": "da494129c58449ce9821d910141601bb37adfb23d59c933d46500296e29f3335"
+    },
+    {
+      "path": "assets/concepts/courtyard-20261011-960.webp",
+      "bytes": 405968,
+      "sha256": "b20d077830306caa0df61ec6e319cd83935ccbb192ade5f37540c64bea655c85"
+    },
+    {
+      "path": "assets/concepts/courtyard-20261011.webp",
+      "bytes": 868270,
+      "sha256": "b1fcc624ed24a42eaf10d3b659b6494a1a246af8cb39a465437884b3cc876e0b"
+    },
+    {
+      "path": "assets/concepts/courtyard-480.webp",
+      "bytes": 63230,
+      "sha256": "0ae976bd0fd4ca26c4d5b5a4bfb79535a38c8756139d28d4fc457d335a925129"
+    },
+    {
+      "path": "assets/concepts/courtyard-mobile.webp",
+      "bytes": 45604,
+      "sha256": "f6a5ee8104fe164d2bea76a28615e2e2e4d4ec820a49c6e7b17f52ad8f1c0159"
+    },
+    {
+      "path": "assets/concepts/courtyard.webp",
+      "bytes": 137682,
+      "sha256": "5bb02bf65e498a8685e3413e96b68a490413bf77f8215074ac27a30f1f525965"
+    },
+    {
+      "path": "assets/concepts/manifest.json",
+      "bytes": 8900,
+      "sha256": "ce82d0998c362d46bc809b0d11e7da95c0af9e8ad085e9fd961d19294072b407"
+    },
+    {
+      "path": "assets/concepts/perennial-20261011-480.webp",
+      "bytes": 131394,
+      "sha256": "550b75ac1a83e94177b37c124971876c4fb593912ba73c0032c4fa97dc3778f3"
+    },
+    {
+      "path": "assets/concepts/perennial-20261011-960.webp",
+      "bytes": 458250,
+      "sha256": "d276e59d610cff51a95655ccfd13eb5efe4ae87b767a6012351bf7e4ba2af054"
+    },
+    {
+      "path": "assets/concepts/perennial-20261011.webp",
+      "bytes": 930496,
+      "sha256": "e66db8976c528789badbdc87dae2eb462df48d2728da1d957ed9405a12e645e1"
+    },
+    {
+      "path": "assets/concepts/perennial-480.webp",
+      "bytes": 41606,
+      "sha256": "11e03d7c573d4c9bd6a002fb1b89ed671eb40a32dd01dfb5acfa013953459b72"
+    },
+    {
+      "path": "assets/concepts/perennial.webp",
+      "bytes": 84776,
+      "sha256": "02ae001f6a514072e43bf3a70ff546ca4c85be3e57e95788b694a1542f65544a"
+    },
+    {
+      "path": "assets/favicon.svg",
+      "bytes": 286,
+      "sha256": "51cc2ce627d4fdd42a53bfd7df0ddaf43ce6bc9afb008e6fd6a51adae33dff9f"
+    },
+    {
+      "path": "assets/fonts/instrument-serif-italic-latin.woff2",
+      "bytes": 22128,
+      "sha256": "5a51946dfffa82972bc98745359c46761515641fda557c25116459a9f83da4a7"
+    },
+    {
+      "path": "assets/fonts/instrument-serif-latin.woff2",
+      "bytes": 21032,
+      "sha256": "5eb09b5ac0e28b67c2f041c8ba6d244604ca0c0980d65912ab2d47fed84ddc31"
+    },
+    {
+      "path": "assets/fonts/instrumentserif-OFL.txt",
+      "bytes": 4405,
+      "sha256": "129ed7618959716959f2941fdd5b49e0ad6e6c1d78726761786a00253d865521"
+    },
+    {
+      "path": "assets/fonts/manrope-latin.woff2",
+      "bytes": 24836,
+      "sha256": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+    },
+    {
+      "path": "assets/fonts/manrope-OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "path": "assets/hero-studies/01-meadow-ribbons-1100.webp",
+      "bytes": 501214,
+      "sha256": "d11c2a014cc6a3429ca49065b4e7b7bc4ed2341fa7c9b0d76118f00f94276eff"
+    },
+    {
+      "path": "assets/hero-studies/01-meadow-ribbons-640.webp",
+      "bytes": 167694,
+      "sha256": "7915dbd4f4ba3d96910c6c902f58b0f3c713dbd70e13f4983f2f94f38fe7184a"
+    },
+    {
+      "path": "assets/hero-studies/01-meadow-ribbons.webp",
+      "bytes": 1059894,
+      "sha256": "fdfb96e00d5e71b01683623e2d79bdf926f7bf183dd0003dd856420cec3b8ea7"
+    },
+    {
+      "path": "assets/hero-studies/02-courtyard-islands-1100.webp",
+      "bytes": 445392,
+      "sha256": "4ea07d38d6f6b5fe281a913180817aac23b0ee10f8dff8d1e2a5c8ce1de173a3"
+    },
+    {
+      "path": "assets/hero-studies/02-courtyard-islands-640.webp",
+      "bytes": 153306,
+      "sha256": "221b2b21743d54482f7b56fe20d6f863af38ca15884e752f83a5d00b54d06c76"
+    },
+    {
+      "path": "assets/hero-studies/02-courtyard-islands.webp",
+      "bytes": 968928,
+      "sha256": "39960e583cb74165a21bd671a9438d68a9fcab8b2e39f993963f9e2b0d86e7d7"
+    },
+    {
+      "path": "assets/hero-studies/03-contour-terraces-1100.webp",
+      "bytes": 511962,
+      "sha256": "5b0d83103f0594cbb5d99f6ee59a3e403bbd835e1b9f9f5acad863000464bec2"
+    },
+    {
+      "path": "assets/hero-studies/03-contour-terraces-640.webp",
+      "bytes": 173504,
+      "sha256": "5e527c20e58e7e16dcfdbcda05fd5dda28915f79bd77a45492a63e5f13592a32"
+    },
+    {
+      "path": "assets/hero-studies/03-contour-terraces.webp",
+      "bytes": 1061590,
+      "sha256": "9073d922fcc70216b3ed6326200557bec90a97235575eb5aeb2b6848da578cf6"
+    },
+    {
+      "path": "assets/hero-studies/04-reflection-garden-1100.webp",
+      "bytes": 496160,
+      "sha256": "72c5771510a30c6b4f8231e9244bdc2066c449b47b9f883b6c00236766cee7bc"
+    },
+    {
+      "path": "assets/hero-studies/04-reflection-garden-640.webp",
+      "bytes": 169828,
+      "sha256": "104bb9dbc8c63358f32a8d1153acbbf611bdab326472185e848bd4d1fe02cfe1"
+    },
+    {
+      "path": "assets/hero-studies/04-reflection-garden.webp",
+      "bytes": 1019454,
+      "sha256": "1e6716be26cf4ab4cbf31d0ca5a1964a2c8f23a0528e697cccf2644d24bc2af3"
+    },
+    {
+      "path": "assets/hero-studies/05-park-brushstrokes-1100.webp",
+      "bytes": 487168,
+      "sha256": "9c6ba15f602f6a98812823b205448b56e381447125642876b97deaa5bdcb0bfc"
+    },
+    {
+      "path": "assets/hero-studies/05-park-brushstrokes-640.webp",
+      "bytes": 170724,
+      "sha256": "7dc4630d1a9930356ebdd881a86093492ecd1279da6697c32c1ec165bf59bb19"
+    },
+    {
+      "path": "assets/hero-studies/05-park-brushstrokes.webp",
+      "bytes": 1012316,
+      "sha256": "f74584363b515e9cd1e96bf6df4a32fa81fa730c125cc443914b210c81c9e029"
+    },
+    {
+      "path": "assets/hero-studies/manifest.json",
+      "bytes": 11755,
+      "sha256": "e46adcd02d4c679331d9006e33cdffc9c24f5c2abe90f9131baddc39115135a4"
+    },
+    {
+      "path": "assets/index-CCFI7CPz.css",
+      "bytes": 187854,
+      "sha256": "ae1992d0024a3c2632a067d9bdc780e07febc224fb4e51209d13596f3cf9e0c6"
+    },
+    {
+      "path": "assets/index-DQN53IPJ.js",
+      "bytes": 748519,
+      "sha256": "d78743364f59284324b7229ddd1da21404b7a250315347304e9c2d343698f2c1"
+    },
+    {
+      "path": "assets/library-showcase/arthropodium-01.jpg",
+      "bytes": 21031,
+      "sha256": "0dda9ef248a7e0ef93efac65834418b442f65c923f603827377502d6db895ab1"
+    },
+    {
+      "path": "assets/library-showcase/broadleaf-tree-02.jpg",
+      "bytes": 67795,
+      "sha256": "2aabbba07fa74d376b7b31a6b8cbb6538be4917c8eec364bafe75a22a46b3e5c"
+    },
+    {
+      "path": "assets/library-showcase/clover-patch-04.jpg",
+      "bytes": 24765,
+      "sha256": "3748e904deaec6be4ad50b6c34d2436d995fe3720cdf9e3566339dbb804ab263"
+    },
+    {
+      "path": "assets/library-showcase/common-blue-violet-04.jpg",
+      "bytes": 30507,
+      "sha256": "8226f990c453d2128f4234f4ad282db2f68610b0d3ed24301487032312f8cac2"
+    },
+    {
+      "path": "assets/library-showcase/creeping-phlox-02.jpg",
+      "bytes": 25568,
+      "sha256": "4e2c6b36dcefbb538c6a72c209a47f9687296377d1fbd0c4a6b2ae03058df7b9"
+    },
+    {
+      "path": "assets/library-showcase/cypress-tree.jpg",
+      "bytes": 37959,
+      "sha256": "42a2988026cb98f075463bca5825808fff4bb99d18a6dd50832f749295acd73e"
+    },
+    {
+      "path": "assets/library-showcase/grass-bushy-clump.jpg",
+      "bytes": 32275,
+      "sha256": "4a942a556efbc6f5b1e0d68bfcc76e759fe115859cb91fc9f0b271cfbab9105a"
+    },
+    {
+      "path": "assets/library-showcase/lavender-01.jpg",
+      "bytes": 48073,
+      "sha256": "4a78d792d5f2f4f02a99e7168cad97d579bdd2fb2415f2e80f5f8a8f324c408f"
+    },
+    {
+      "path": "assets/library-showcase/leaf-07-curled-leaf-dry-brown.jpg",
+      "bytes": 26654,
+      "sha256": "12bff4e419dd05b59373ddf0101f4cf000e69830a50a387dd1986caa892117e7"
+    },
+    {
+      "path": "assets/library-showcase/norway-maple-red-foliage.jpg",
+      "bytes": 51208,
+      "sha256": "777b851686179afa695d7fe49b80e6290b6ee01d163b49725379ee4c7f278fc1"
+    },
+    {
+      "path": "assets/library-showcase/rugosa-rose-02.jpg",
+      "bytes": 54215,
+      "sha256": "a35a10d4a6134c40178128c856532f66d0cef10acb35b6136c0d8ee87b9dc093"
+    },
+    {
+      "path": "assets/library-showcase/sycamore-leaf-15-faded-gold.jpg",
+      "bytes": 40475,
+      "sha256": "09467b153395e6498069b4c4ecb437cb1d0ee0dcc4130aefaa878b40f1bfba37"
+    },
+    {
+      "path": "assets/posters/areas-falloff.webp",
+      "bytes": 226506,
+      "sha256": "af3a90dc878e0e92e114318ed92bb26bc55453c9a5b0adf1a44e3c1e9b9db1c8"
+    },
+    {
+      "path": "assets/posters/companion-automation.webp",
+      "bytes": 203984,
+      "sha256": "da09680f8cdbc1b09068826ad137d73d7324e76fde2f8e7ac08970b97e167a64"
+    },
+    {
+      "path": "assets/posters/companion-workflows.webp",
+      "bytes": 188730,
+      "sha256": "b9be912736b631a914c9efa0aefe7c70642441a80c068328322dfb92f55dbd54"
+    },
+    {
+      "path": "assets/posters/coverage-painting.webp",
+      "bytes": 188914,
+      "sha256": "12f76f08a7b12aae0a3578da04e61b8216e921043f5b8bc0d66c9971c0dd8fb2"
+    },
+    {
+      "path": "assets/posters/coverage-vs-accepted.webp",
+      "bytes": 207540,
+      "sha256": "c9d61504f173a2bc38a7256a5daa343087708380a4ab9565666197d0c1136ece"
+    },
+    {
+      "path": "assets/posters/feature-atlas.webp",
+      "bytes": 220142,
+      "sha256": "50334a261a6c786c7cafff31357212542222e105ed8b3125eb80e3b68552f77b"
+    },
+    {
+      "path": "assets/posters/layer-setup-guide.webp",
+      "bytes": 264038,
+      "sha256": "6e816ec914a9eba017650bf3db941f8b9f40f7e349ea20257f88aadd855b39b5"
+    },
+    {
+      "path": "assets/posters/layers-and-paint-sets.webp",
+      "bytes": 180002,
+      "sha256": "e73f490abf1afcd406f60ebefd48592bc29e09555a4f73cd8a3164e56f26a33c"
+    },
+    {
+      "path": "assets/posters/layers-paint-sets.webp",
+      "bytes": 241256,
+      "sha256": "a017e3e0e0e7649ae5069f2790cb08a3ff872f66a5becfe318ebb7acd3d8fe47"
+    },
+    {
+      "path": "assets/posters/manifest.json",
+      "bytes": 9239,
+      "sha256": "c2f859027e6132d67244d0731af43793ddad80244a5284116f7f637eaf3adfdb"
+    },
+    {
+      "path": "assets/posters/manual-vs-live.webp",
+      "bytes": 136856,
+      "sha256": "82fc553bffe2420dd5fbba5f0056380c737bdd9b12a70f3370b01cc072685122"
+    },
+    {
+      "path": "assets/posters/setup-receivers.webp",
+      "bytes": 193374,
+      "sha256": "3c6d89d52ec02cc8a80a82d9e883b70c5cffd90bb2b6acfb6e9dd65981d31c10"
+    },
+    {
+      "path": "assets/posters/source-containers.webp",
+      "bytes": 123590,
+      "sha256": "0c0a70e2fb6778f50cae343a418ec1619bde95b9f099fcf7bda8f1598833cf8d"
+    },
+    {
+      "path": "assets/posters/sources-containers.webp",
+      "bytes": 192352,
+      "sha256": "d02ddc4226b21ad0841a99399fa720d854c6b6628e215f6bb1361100d346fe31"
+    },
+    {
+      "path": "assets/posters/spacing-cleanup.webp",
+      "bytes": 195242,
+      "sha256": "cad51600179f2bdfb6259919d1ae0b51fbd8008e28cfbf4e71dfa01202809447"
+    },
+    {
+      "path": "assets/posters/spacing-relationships.webp",
+      "bytes": 162998,
+      "sha256": "9c8bef20334384a6b59305ab84e7fec790f6c4a215dcaecff4dc15acccbee0d5"
+    },
+    {
+      "path": "assets/posters/transforms-variation.webp",
+      "bytes": 237172,
+      "sha256": "cf72800e232e62f051865762908bbc9cef0e25442defab18abc66f4954743026"
+    },
+    {
+      "path": "assets/posters/viewport-output.webp",
+      "bytes": 251494,
+      "sha256": "c218193b2f011c65023e426468dc5a7860e5f949e3ceeefd1b450a9b287add79"
+    },
+    {
+      "path": "assets/posters/viewport-vs-final.webp",
+      "bytes": 265774,
+      "sha256": "61ee1e7f7da3b8dec88ed2940143a3efa2f2babb18c9adbec9a8a6a19a37aa59"
+    },
+    {
+      "path": "assets/posters/workflow-overview.webp",
+      "bytes": 172374,
+      "sha256": "5f0ebe1c95da7c26217a063f3fe08bd8dcf235a6f332a5c1aa5c54467048a550"
+    },
+    {
+      "path": "assets/react-vendor-BPWasKn7.js",
+      "bytes": 218766,
+      "sha256": "f30222ecdaa50feccce1eaaa91712e5892914124827c1ea4b023fb881ebe0cad"
+    },
+    {
+      "path": "assets/release-evidence/materials-textures-leaves.png",
+      "bytes": 155658,
+      "sha256": "7717c669ab342118a799b67c467cb2a08288f2fc25adb4dbd703ed08b46e42d8"
+    },
+    {
+      "path": "assets/rolldown-runtime-CbXtAM7H.js",
+      "bytes": 589,
+      "sha256": "bbf7c5086ae414dc3f33777e3eebf16ea8631325b8bb4690d25091c03567f31a"
+    },
+    {
+      "path": "downloads/CyrusScatter-0.87.6.7-Setup.exe",
+      "bytes": 8584192,
+      "sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235"
+    },
+    {
+      "path": "favicon.ico",
+      "bytes": 15458,
+      "sha256": "b66a8569a269819fd9077c247fbac54741af1d9ce5453489c5a2401ea18d3f6c"
+    },
+    {
+      "path": "index.html",
+      "bytes": 1052,
+      "sha256": "05372a47d58bb079151f83b728e04687f188a3bc1573e11b57c0632e472d6b7e"
+    }
+  ],
+  "download": {
+    "filename": "CyrusScatter-0.87.6.7-Setup.exe",
+    "path": "downloads/CyrusScatter-0.87.6.7-Setup.exe",
+    "format": "EXE",
+    "bytes": 8584192,
+    "sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235"
+  },
+  "installerOnlyArchive": {
+    "name": "CyrusScatter-0.87.6.7-Installer.zip",
+    "bytes": 8501700,
+    "sha256": "74422c60d0bf201fa34db8c08d8b655578292d27d0c0d3c256d2594b8a7997b1"
+  }
+}

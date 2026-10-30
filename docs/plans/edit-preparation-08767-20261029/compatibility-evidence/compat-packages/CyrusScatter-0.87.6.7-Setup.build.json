@@ -1,0 +1,186 @@
+{
+  "schema": "cyrus.managed-build/2",
+  "status": "complete",
+  "producer": "installer-exe",
+  "input_manifest": {
+    "schema": "cyrus.build-inputs/2",
+    "configuration": {
+      "producer": "installer-exe",
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\Roslyn\\csc.exe",
+        "/nologo",
+        "/noconfig",
+        "/nostdlib+",
+        "/langversion:latest",
+        "/warnaserror+",
+        "/target:winexe",
+        "/optimize+",
+        "/deterministic+",
+        "/platform:x64",
+        "/out:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Setup.exe",
+        "/win32manifest:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\app.manifest",
+        "/resource:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2024.mzp,Cyrus.Payload.2024.mzp",
+        "/resource:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2026.mzp,Cyrus.Payload.2026.mzp",
+        "/resource:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2027.mzp,Cyrus.Payload.2027.mzp",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.dll",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Core.dll",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Drawing.dll",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Windows.Forms.dll",
+        "/reference:C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.IO.Compression.dll",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\InstallEngine.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\AnalyzerInstallEngine.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\VerifiedBackup.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\LibraryOptions.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\shared\\LibraryLocation.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\shared\\ContentObjects.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\Distribution.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\frozen-08767\\AminScatter\\setup\\Program.cs",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Setup.identity.cs"
+      ],
+      "version": "0.87.6.7",
+      "core_producer": {
+        "receipt_sha256": "a247f97106439e78ba4946ad2dcf86b7973ebb34c72c89b08ea22e19f4f5c3dd",
+        "artifact_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+        "schema": "cyrus.managed-build/2",
+        "producer": "installer-core",
+        "input_manifest_sha256": "4a4dbfee4b0bb805ba54d67011dfd307d5bafab0912bd716d69338c7ea8e48dd"
+      },
+      "tool_versions": {
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\Roslyn\\csc.exe": "4.1400.26.22907"
+      }
+    },
+    "files": {
+      "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/csc.exe": "2dcddd56ae586466b687af78c1cc70fc2d8109971f777b44387fbcb626e6cb27",
+      "C:/ProgramData/miniconda3/python.exe": "124cbe6203f939ff138c0ce68e26c12e4ca5836562286572ed040173daf0b787",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.Core.dll": "d1bafee1a4dd7e7bd9adf6859e7b1b654d1b4e0d031a38795e33ba040508c09d",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.Drawing.dll": "182431d774d5b55f4c4eeda285fd61db39f49349e3673235bd9b3d5fbe865434",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.IO.Compression.dll": "3aa72611a1fdc07e6f0057bbba031fa32b7db3b6d9ae0cbe9d1e4820b58180ad",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.Windows.Forms.dll": "ce60e5fecf60f3f394988ca439084296ca099711d90a1e179fdaf4fb2d74ee50",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/System.dll": "09787b4f38f4f020c6b8a3894146085d4df7b8ae337577ed42d9acf1419660e8",
+      "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/mscorlib.dll": "94715f6991e2b9dc7481532c05aa99e74a5fff4ee147be541bca27f99e003fc7",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2024.build.json": "83622a4f62a6e266a1df98f06ab8f1ebb02a394cdcc66ced201a3e1109e5c437",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2024.mzp": "a659a48e835406141d0ad91ae7eaaaa33eaec292b2a05d3e9f47fe6f1406a785",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2026.build.json": "fa997db86385a85625b2786dce843fadbc83b257b925a0b71c2d4fd6b1a39485",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2026.mzp": "baf67483d7f0beb22d2d6d970b65f179923a715e388726c6277ac6329982ebcb",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2027.build.json": "c0b2bf01576a7956f4172b8ac141a132f7206ae6e61eff73951a974e4de0c66e",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Max2027.mzp": "92eb40e16751c0f3fdf4bef63001959e70f8b9290e77b9f45d93c3e05321eefa",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/compat-packages/CyrusScatter-0.87.6.7-Setup.identity.cs": "83f19cf6ffa7119e935ff94551b344023c5d1b232ba9e5360c508b32205b8338",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/final-08767-installer/CyrusInstaller.build.json": "a247f97106439e78ba4946ad2dcf86b7973ebb34c72c89b08ea22e19f4f5c3dd",
+      "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/edit-size-review-20261029-01/final-08767-installer/CyrusInstaller.dll": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+      "AminScatter/setup/AnalyzerInstallEngine.cs": "2ea8cf56e35dcda3febdd68d9a6327db53fba0cd44c5b69260575a5d0e5d1c12",
+      "AminScatter/setup/Distribution.cs": "5ee317c45565a6e20fefd3f4986fbf39c4e96c718bbb51f759a5201cf2c98589",
+      "AminScatter/setup/InstallEngine.cs": "c191822122c96a1381ac59d1893d39f411084114b4294d087b42cc88da77d5c8",
+      "AminScatter/setup/LibraryOptions.cs": "c5d87eecda3380a3edbefab18948d1bcfc31b593a9f4f03780c7732c891d0a51",
+      "AminScatter/setup/Program.cs": "f45d768357e31b6d06afdd443d53197e3e9acbcf35cd5143e4c89b3e42eb104c",
+      "AminScatter/setup/VerifiedBackup.cs": "503586016e27afd070890202546d9bbd96377bb98c2672ab0e83bfdeb0b4fee6",
+      "AminScatter/setup/app.manifest": "2f2c3e7084bb9282ea271230fd720bf66d426cf209afbc84545151b859671e33",
+      "AminScatter/shared/ContentObjects.cs": "b71700035fa5289242fb3915042fe1be68db169af48cb84b625d7fdbdf2f0c3f",
+      "AminScatter/shared/LibraryLocation.cs": "c80434a501c2640d92bd7abbd4d14ed152191dde7f67316b49d467558ea1fa2d",
+      "AminScatter/tools/build_installer.py": "86710582e9765c385bf283490f1885964d0d69226888f0d6f23599a56e8a343c",
+      "tools/build_inputs.py": "dc40fa58318b2ae77c87ad85e771992320014c1a54b62c6ed8624f4b1c0f22a8"
+    }
+  },
+  "input_manifest_sha256": "81f372bc74152b2bba253d462b7652d54f0cd8be01947372d27be02602d921cb",
+  "artifact_sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+  "packages": [
+    {
+      "year": "2024",
+      "version": "0.87.6.7",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2024.mzp",
+      "package_sha256": "a659a48e835406141d0ad91ae7eaaaa33eaec292b2a05d3e9f47fe6f1406a785",
+      "inventory_sha256": "5104c0063e428227042eb88e3d5bd3755d9158efe853763fc612c0d2cc244654",
+      "resource": "Cyrus.Payload.2024.mzp",
+      "external_content": {
+        "format": "cyrus.scatter.content",
+        "schema": 2,
+        "version": "0.86.7",
+        "max_year": 2024,
+        "hosts": {
+          "2024": 1,
+          "2026": 1,
+          "2027": 1
+        },
+        "manifest_sha256": "010f43f09172c084ba15407227f9776e359b013e1f1a9583d31a2d4458e9a361"
+      }
+    },
+    {
+      "year": "2026",
+      "version": "0.87.6.7",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2026.mzp",
+      "package_sha256": "baf67483d7f0beb22d2d6d970b65f179923a715e388726c6277ac6329982ebcb",
+      "inventory_sha256": "ada3d5880e110ade094035affd8c67377fab141669bda934aaf74d8deeccb79a",
+      "resource": "Cyrus.Payload.2026.mzp",
+      "external_content": {
+        "format": "cyrus.scatter.content",
+        "schema": 2,
+        "version": "0.86.7",
+        "max_year": 2024,
+        "hosts": {
+          "2024": 1,
+          "2026": 1,
+          "2027": 1
+        },
+        "manifest_sha256": "010f43f09172c084ba15407227f9776e359b013e1f1a9583d31a2d4458e9a361"
+      }
+    },
+    {
+      "year": "2027",
+      "version": "0.87.6.7",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Max2027.mzp",
+      "package_sha256": "92eb40e16751c0f3fdf4bef63001959e70f8b9290e77b9f45d93c3e05321eefa",
+      "inventory_sha256": "323f2b31ad894552027d67fca70f10ab0fcf1fd1fd4baa6991d98795bb8970e3",
+      "resource": "Cyrus.Payload.2027.mzp",
+      "external_content": {
+        "format": "cyrus.scatter.content",
+        "schema": 2,
+        "version": "0.86.7",
+        "max_year": 2024,
+        "hosts": {
+          "2024": 1,
+          "2026": 1,
+          "2027": 1
+        },
+        "manifest_sha256": "010f43f09172c084ba15407227f9776e359b013e1f1a9583d31a2d4458e9a361"
+      }
+    }
+  ],
+  "analyzer_packages": [],
+  "core_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+  "version": "0.87.6.7",
+  "max_years": [
+    2024,
+    2026,
+    2027
+  ],
+  "signed": false,
+  "runtime": ".NET Framework 4.8 (Windows)",
+  "compiler": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\Roslyn\\csc.exe",
+  "compiler_sha256": "2dcddd56ae586466b687af78c1cc70fc2d8109971f777b44387fbcb626e6cb27",
+  "sources": {
+    "AminScatter\\setup\\InstallEngine.cs": "c191822122c96a1381ac59d1893d39f411084114b4294d087b42cc88da77d5c8",
+    "AminScatter\\setup\\AnalyzerInstallEngine.cs": "2ea8cf56e35dcda3febdd68d9a6327db53fba0cd44c5b69260575a5d0e5d1c12",
+    "AminScatter\\setup\\VerifiedBackup.cs": "503586016e27afd070890202546d9bbd96377bb98c2672ab0e83bfdeb0b4fee6",
+    "AminScatter\\setup\\LibraryOptions.cs": "c5d87eecda3380a3edbefab18948d1bcfc31b593a9f4f03780c7732c891d0a51",
+    "AminScatter\\shared\\LibraryLocation.cs": "c80434a501c2640d92bd7abbd4d14ed152191dde7f67316b49d467558ea1fa2d",
+    "AminScatter\\shared\\ContentObjects.cs": "b71700035fa5289242fb3915042fe1be68db169af48cb84b625d7fdbdf2f0c3f",
+    "AminScatter\\setup\\Distribution.cs": "5ee317c45565a6e20fefd3f4986fbf39c4e96c718bbb51f759a5201cf2c98589",
+    "AminScatter\\setup\\Program.cs": "f45d768357e31b6d06afdd443d53197e3e9acbcf35cd5143e4c89b3e42eb104c",
+    "AminScatter\\setup\\app.manifest": "2f2c3e7084bb9282ea271230fd720bf66d426cf209afbc84545151b859671e33"
+  },
+  "references": {
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\mscorlib.dll": "94715f6991e2b9dc7481532c05aa99e74a5fff4ee147be541bca27f99e003fc7",
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.dll": "09787b4f38f4f020c6b8a3894146085d4df7b8ae337577ed42d9acf1419660e8",
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Core.dll": "d1bafee1a4dd7e7bd9adf6859e7b1b654d1b4e0d031a38795e33ba040508c09d",
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Drawing.dll": "182431d774d5b55f4c4eeda285fd61db39f49349e3673235bd9b3d5fbe865434",
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Windows.Forms.dll": "ce60e5fecf60f3f394988ca439084296ca099711d90a1e179fdaf4fb2d74ee50",
+    "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.IO.Compression.dll": "3aa72611a1fdc07e6f0057bbba031fa32b7db3b6d9ae0cbe9d1e4820b58180ad"
+  },
+  "core_producer": {
+    "receipt_sha256": "a247f97106439e78ba4946ad2dcf86b7973ebb34c72c89b08ea22e19f4f5c3dd",
+    "artifact_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+    "schema": "cyrus.managed-build/2",
+    "producer": "installer-core",
+    "input_manifest_sha256": "4a4dbfee4b0bb805ba54d67011dfd307d5bafab0912bd716d69338c7ea8e48dd"
+  }
+}

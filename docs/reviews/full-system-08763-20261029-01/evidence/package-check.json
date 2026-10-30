@@ -1,0 +1,145 @@
+{
+  "path": "dist\\CyrusScatter-0.87.6.3-20261029\\CyrusScatter-0.87.6.3-Max2027.mzp",
+  "sha256": "de3a2a17d0d4cf2237d8532901c494323495c9c1d4f4c1a4ca9547baf53ffacf",
+  "bytes": 2786754,
+  "archive_integrity": true,
+  "all_manifest_hashes": true,
+  "payload_matches_qualification": true,
+  "host_guard_2027": true,
+  "source_difference": {
+    "AminScatter/CMakeLists.txt": {
+      "qualified": "b03bf28eb9422fb166ff3f374d20666bd8217637bc4aa43ed3449497984ebc93",
+      "now": "7545e2f97ea3254f3889828c1a1c057369d4272d297a13725412536e2115e7f8"
+    },
+    "AminScatter/include/viewport_pick.h": {
+      "qualified": "444b39d482ad14c5ec0357ce879f233124d3305f3c01cd2e58781d3a596cacc4",
+      "now": "b188161d86d213247aed96f918528be89835614ff152bc1cd309b5ac44b0e3a6"
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "qualified": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+      "now": "4b246928b347ebb20ff2b37636fea94583481742a70c7e661a8321850bfd1341"
+    },
+    "AminScatter/src/cyrus_edit.cpp": {
+      "qualified": "e49b1010a0a6649a30a413fcf3628629e6d023767766384000fae58c0498d3d4",
+      "now": "73131107a03a114e0450dd0dac162b015df8d94dba1f36d2a3740ac384cdbd9a"
+    },
+    "AminScatter/src/point_display.cpp": {
+      "qualified": "d169fe04271ad387781a629a261c6dc7d018ae5b3d102451d3916e1c2e4bf71d",
+      "now": "9cb501ce6fe504ce229dc5f6dff809afcd00dc67a79e0e9a0c3ce47f0fba18c4"
+    },
+    "AminScatter/src/viewport_pick.inc": {
+      "qualified": "aae8deebaa68db9f037ecac1a65ccb84db6dd8d9de3840d45a4f4fd59fdd4ca2",
+      "now": "c33548e467d19318293375484ad5b2f50dd9144161e65ad3f6d3529adfba18d6"
+    },
+    "AminScatter/src/viewport_pick_bridge.inc": {
+      "qualified": "e0e8a1ed92d8e0a0d57d829314d4f85682d219cd3b8532fe217eb1e81d1b55a3",
+      "now": "dccff1acf4f5764a26feae65fb0a5c728ccbcc1ae0fdfc38d414f488ccacc1c1"
+    },
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+      "qualified": "d6c7e74f66f06c87a28100d613f6ec5f0d46920e2fd890633b38c85671199a84",
+      "now": "d4880386f7b70eaa00178245fb8c1e50549638c4ff428d7ff5fd861aeb0867d5"
+    },
+    "AminScatter/tools/ui/templates/interactions-authoring.ms": {
+      "qualified": "3836e6793880a1ac165de949b6162cb114d418b2f429470f595420672ab73c38",
+      "now": "544f89102779f5f7fdbb558725d61b0bc1bc14b81b1aaf33cd096a75e32f6a53"
+    },
+    "AminScatter/tools/ui/templates/recipes-authored.ms": {
+      "qualified": "3cf30d44e7ccf0201747de834d1cb44d3171cc1ec7f6188fd6199abc35b4d9ad",
+      "now": "3370c132a42633567b23eb62a9d109af223fe31985680cde153162e6056965bd"
+    },
+    "AminScatter/tools/ui/templates/recipes.ms": {
+      "qualified": "6c70874250fbbae9a058d11a6d4c8f6ef894f2cb553c7ad8c890ffe3f7abe94a",
+      "now": "03d7eaa4bbbdade99821c8c1ba0b94561d5e9fb4c713fb2332c6b86fbc6f13ff"
+    },
+    "AminScatter/tools/ui/templates/scene-presets.ms": {
+      "qualified": "e9ff738614d94b532cac823d50499ded92e0ae1c7b9ff471e3114e11b7a01407",
+      "now": "4272ca7c610d9eecef97a5c1fb75f3ebf2db78e2bb206dea89f32315c3c43268"
+    },
+    "AminScatter/tools/ui/templates/shared-library.ms": {
+      "qualified": "a996968013d7abd8f2590501f37efb02ec8370a67469ba2d76b503d3e5aa0686",
+      "now": "3a4c733728bf3ee5f39507fafa419d3230b084a9652c7f45796f41fc89d48145"
+    },
+    "AminScatter/tools/ui/templates/unified-core.ms": {
+      "qualified": "2201f7b74eb4ef905598b742e04fc7a2bf1b960cd5cbdde29683983cdbc2d7de",
+      "now": "d69b37fd493939ae82feeae7d2fc33e3a711368b5c52276f8898a6ab03541ed4"
+    },
+    "AminScatter/tools/ui/templates/viewport-memory.ms": {
+      "qualified": "3ed1d58555abab4bd39c65dcf9b25a8d06d0724797bb13b043e18741642d63b9",
+      "now": "4984abce37fa9ba28893b0cb4b8bd519d4481959a5403ff7affb796874d22b49"
+    },
+    "AminScatter/tools/ui/templates/viewport-selection.ms": {
+      "qualified": "b3bc89b464181d7ea6f8592a9817b96a097b0b4bda44ac6d9ae6ac199601f205",
+      "now": "6ff5dad740b8f34835bbb7b2eb057fbaa202f4adc60ca9289ed8a33f6ded6a3e"
+    }
+  },
+  "installed": false,
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.87.6.3",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "38a49ef76643",
+    "files": {
+      "AminScatter.dlx": "e93cc9c44c64c75f23845d1e0834386e2c820a2379b533938a3088705c743b0b",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+      "CyrusBrush.dlx": "afeecde9b857fe980d127811dcf179e484036a096774a60b6ff68daef0602fd1",
+      "CyrusBrushStorage.dlh": "d013eb141418d32cb2dd7bf00e18f7632458150c088423d8e7776653373b678f",
+      "CyrusGallery.dll": "efe7199d27e31bd101ad32ed1b8d934d7284813c064523ea0564c9a1484e0222",
+      "CyrusInstaller.dll": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+      "CyrusScatter.mcr": "2bc69dbefc7639927c1900736afc8740a8e5a007675d912d64717fac49269d68",
+      "CyrusScatter.ms": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+      "CyrusScatterEdit.dlm": "b348793740ea3d942bc4092b422df5e6ea8c0634a0b9c7ae7d881aa8fc8c0dd8",
+      "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+      "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+      "INSTALL.txt": "b4676a709e372d8f4f48783d0e9a85ef6b5f338addd7ea9b4dd6374474a80199",
+      "InstallInventory.txt": "3e6617d4152988a4fea484174f54f9f09bf3b51be21f7678bc72be88ba1ab6f5",
+      "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+      "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+      "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+      "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+      "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+      "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+      "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+      "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+      "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+      "Uninstall.ms": "8cba70077899000c5c2eba6c2e7d965f9d43d33dd588349cd7529f300f1fe72d",
+      "install.ms": "8af4f72e946221096f3d60f8c3245f246a32f22cc8e556fab599c00e0263a729",
+      "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+      "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+      "mzp.run": "33171c57b53f3a8db922a2cc189568b727e1249b01a477a6c68097578e4ddc5c",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "build_evidence_schema": "cyrus.package-inputs/2",
+    "producer_receipts": {
+      "native": {
+        "schema": "cyrus.native-build/2",
+        "receipt_sha256": "807d75d6a1fadc834d5646b600c0cfd65ac36cd734af3d0be88c1c15a9f1edd3",
+        "input_manifest_sha256": "8ada9b7f71cdcf611dfd4cc60a9fc1b022c833ffa9e0da7c46d5271039d0f363"
+      },
+      "installer": {
+        "receipt_sha256": "07f923e719ed5b10020ca677979d96f6eda6075604036481a0509e20b941571c",
+        "artifact_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+        "schema": "cyrus.managed-build/2",
+        "producer": "installer-core",
+        "input_manifest_sha256": "5dc383f454b958a002c57307d25a8aac1ea1e4aec28e3553cbd5dcbd64c6f170"
+      },
+      "gallery": {
+        "receipt_sha256": "2cb2f6e98203442c01cde6de4e99de47c60abdb194f405ec3426880f059d9cba",
+        "artifact_sha256": "efe7199d27e31bd101ad32ed1b8d934d7284813c064523ea0564c9a1484e0222",
+        "schema": "cyrus.managed-build/2",
+        "producer": "gallery",
+        "input_manifest_sha256": "087b13381a65d76ce024ac4454aeb3c0cd2ee0ebe58b7327dbb0ff892df11435"
+      }
+    },
+    "package_inputs_sha256": "1937f2bf5e1e53bbdc75b616e1e6db3f7b8cd3f3be63ae3091542200f7dcaf2f",
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  }
+}

@@ -19,6 +19,7 @@ text=require('./asset-adapters.cjs')({check})+'\n'+fs.readFileSync('tools/ui/tem
 text=fs.readFileSync('tools/ui/templates/preset-loading.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/shared-library.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/licensing.ms','utf8').replace(/\r/g,'')+'\n'+text;
+text+='\n'+fs.readFileSync('tools/ui/templates/viewport-selection.ms','utf8').replace(/\r/g,'');
 text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
 const hash=crypto.createHash('sha256').update(text,'utf8').digest('hex');
 // Explicit UTF-8 prevents localized Windows code pages from corrupting glyphs.

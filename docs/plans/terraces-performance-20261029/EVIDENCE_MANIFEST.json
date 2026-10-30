@@ -1,0 +1,214 @@
+{
+  "cleanup/clearance-performance-08681-20261020.json": {
+    "bytes": 361,
+    "sha256": "9c7841727f60644c5af4629fb0b48d035d8215630d7cadcee3cbf053f1b86d2f"
+  },
+  "cleanup/clearance-relax-08682-20261021.json": {
+    "bytes": 349,
+    "sha256": "01362500bb8bc9f1441e9d25d18002db6d9b6104b4004b98a23806665048a101"
+  },
+  "cleanup/combined-installer-08685-20261022.json": {
+    "bytes": 357,
+    "sha256": "4e1d281a09b3696f778e12bc1f07fe9f01ce226a674ef315215f924949fdd598"
+  },
+  "cleanup/compatibility-0862-20261019.json": {
+    "bytes": 343,
+    "sha256": "405dd3eaddd50dc4490f2d503ed5f23499aa6343e37c114bebd95a108f9f0c5d"
+  },
+  "cleanup/cpu-benchmark-v1-final.json": {
+    "bytes": 331,
+    "sha256": "5ff926e65bf9de21ef0d6485915a397838354d7a2b45530946c877d54d8c27f8"
+  },
+  "cleanup/cpu-benchmark-v1.json": {
+    "bytes": 319,
+    "sha256": "3c042c362336b82c839d76445eacbbf8a01ade9b7bfb3245fdfb0ade124f2d6f"
+  },
+  "cleanup/cpu-benchmark-v2-final.json": {
+    "bytes": 331,
+    "sha256": "b71a0089385fb011578eeacdd9320f0ef7425fc2a97522cc9ececd56c6e0a0ea"
+  },
+  "cleanup/cpu-benchmark-v2-regression-check.json": {
+    "bytes": 353,
+    "sha256": "f00e60455bcfc66c8d2fcbff69477059eec34ba217ff6e1b7a902a6a93644f29"
+  },
+  "cleanup/cpu-benchmark-v3-check.json": {
+    "bytes": 331,
+    "sha256": "c295f18ad7a5ac42a0ce09736672530c3148f0692dbf897d8d074c822dba7046"
+  },
+  "cleanup/cpu-benchmark-v4-check.json": {
+    "bytes": 331,
+    "sha256": "6933f61a3192dd9b5a05f222063a1a45ee3cb44f7d0d7a0559f67868259a03c5"
+  },
+  "cleanup/cpu-benchmark-v4-final.json": {
+    "bytes": 331,
+    "sha256": "772a19cf4b35b38d6bf4ff4e788d4c2a5192773a215019f5677fabe119e07f71"
+  },
+  "cleanup/eleven-phases-20261014-01.json": {
+    "bytes": 340,
+    "sha256": "991c1e4835cb2833612d68c23164e453d9e0c3f0e98c0db11db613d290fb9bf3"
+  },
+  "cleanup/final-08672-20261020.json": {
+    "bytes": 331,
+    "sha256": "df173c40f19b1a5f8731438306e2893d72362d8a27a9010949d45d20f9232477"
+  },
+  "cleanup/gallery-0851-20261016-01.json": {
+    "bytes": 341,
+    "sha256": "49dd91e738944a8240822ccbfb20bc7f9fe318326ac3d9cc050f1a648eb2f7a6"
+  },
+  "cleanup/installer-0862-20261019-01.json": {
+    "bytes": 341,
+    "sha256": "7ba3903a05aed6c0301c4ea6cb96202c29a3e5237e4f37ecafe00a0e0e8ea6fc"
+  },
+  "cleanup/installer-panels-08684-20261022.json": {
+    "bytes": 352,
+    "sha256": "2291c5fa97cd536df46721384456bcc767f1e65393da45bb22adc851a82fe291"
+  },
+  "cleanup/native-fields-0860-20261018-01.json": {
+    "bytes": 351,
+    "sha256": "641221d3ca67897bde481d55422b77bcd07129659a58d160516e7de0730c5e22"
+  },
+  "cleanup/playback-20261006.json": {
+    "bytes": 324,
+    "sha256": "87df2c7b9b0be081c0ef831251067c0bb3b05ad6ffcb57df4a17efd241beae07"
+  },
+  "cleanup/refinement-08683-20261022.json": {
+    "bytes": 341,
+    "sha256": "5f608866c1244d41b7a8442839c7bfe451976186bc340334fcb0328b336a44fc"
+  },
+  "cleanup/removed.json": {
+    "bytes": 7439,
+    "sha256": "deefbfb27eb6bfdc8fd2dcec55bacb970f0745615eaa8f82e0dc64e8a5f594c1"
+  },
+  "cleanup/spline-bands-20261012-01.json": {
+    "bytes": 339,
+    "sha256": "0317e033b3e9381f24fcc86452b02f5f221907985d4adecd811cdeb965557040"
+  },
+  "cleanup/summary.json": {
+    "bytes": 237,
+    "sha256": "cbc9969b74abbcad1aaa2e0dd24ac60cfd977f7336d17d8f3ff5153504df075c"
+  },
+  "cleanup/vector-brush-078.json": {
+    "bytes": 322,
+    "sha256": "ccdd4110694698841a9cba97e422208f0dd53cd059b9f02440f65e5c743a053a"
+  },
+  "generated-final/generated-check.json": {
+    "bytes": 464,
+    "sha256": "de506575ba4840b62b615d13ee7238a7699687f22469c48f07dbcec47962ec47"
+  },
+  "host-baseline/contact-sweep.json": {
+    "bytes": 332187,
+    "sha256": "e2fcce977d866ac02ee0cd55e2788bc41049d417f37108da15b74e67f0b59cad"
+  },
+  "host-baseline/inventory.json": {
+    "bytes": 188,
+    "sha256": "482176aeafe1e54f5d7c0b1c13db04ac3fe7c4e43e6119e01d64140493df2c8f"
+  },
+  "host-baseline/loaded-identity.json": {
+    "bytes": 1122,
+    "sha256": "d67911da97ec389cc34993554dd01c78c50c49f8aebd2813f18c9ae8b789ea80"
+  },
+  "host-baseline/palette.json": {
+    "bytes": 9278,
+    "sha256": "e380e3d179618272aeb7a9b7986dd7442935a0b906f4af413f6f4e35a686fd28"
+  },
+  "host-baseline/planting-design.json": {
+    "bytes": 6844,
+    "sha256": "0e00f6d2c067f6a75447494a7568cae876b8c7b029d0a40a0ab2760d6f6eedc2"
+  },
+  "host-baseline/ui-fixture.json": {
+    "bytes": 402,
+    "sha256": "29fa301c2b3f0e28aa8076d3a5907b93d88c5f0db23bab49c4517093fd8121a6"
+  },
+  "host-baseline/ui-warm.json": {
+    "bytes": 41423,
+    "sha256": "b388bcab6046710a383d935bd46c927f1f0b4077be70c6efdfc3a4da3bb8f7fb"
+  },
+  "host-candidate/contact-sweep.json": {
+    "bytes": 331353,
+    "sha256": "bc202083caae254cefd8241c70023ecd369441d3a182d60e3a36665855fa6b7d"
+  },
+  "host-candidate/edit-settings-check.json": {
+    "bytes": 4793,
+    "sha256": "88b467fbd2e3d1d172ef7f130ba1481939e722ded3d1adede1f68b4467f56269"
+  },
+  "host-candidate/garden-drag-attempt-duplicate-modifier.json": {
+    "bytes": 33037,
+    "sha256": "5f9459472f933d3624a5d29d870a6f3690335dd343aeb82d0034aa2c7664e0cc"
+  },
+  "host-candidate/garden-drag-attempt-stale-owner.json": {
+    "bytes": 31495,
+    "sha256": "1d80a57bbe97fdec710b4d12153017dca9c668b658fa1e64a759eddab1851a91"
+  },
+  "host-candidate/garden-drag-finish.json": {
+    "bytes": 32498,
+    "sha256": "3916bab8ff5573acea921c2d7c262a5834772cfcbe943e34e21464a249b7014a"
+  },
+  "host-candidate/garden-final-render.json": {
+    "bytes": 3533,
+    "sha256": "70cd46e9639a20e641b8098812d5292e4a18bdb3c697ac8c873fdbb49eff30de"
+  },
+  "host-candidate/garden-navigation.json": {
+    "bytes": 19007,
+    "sha256": "168ff8bfca9e4a32fae5b79a94a33d678aa15eae29a1a5c36c21c81185e6951b"
+  },
+  "host-candidate/garden-reload.json": {
+    "bytes": 1488,
+    "sha256": "e73c176b319cc6e146dcc64f9253aa49f5721bc40237b1e720403ee1a33fa11c"
+  },
+  "host-candidate/loaded-identity.json": {
+    "bytes": 1106,
+    "sha256": "bd1fdbd641d7f73d72ce6cf95689e0cee83c7d6d2cde097253eb47a082686537"
+  },
+  "host-candidate/locality-sweep.json": {
+    "bytes": 176946,
+    "sha256": "8d0f9c1194fd8bbe9fd99f83aa34a55969cb26b05ce71e36cdd6618823e37759"
+  },
+  "host-candidate/proxy-sweep.json": {
+    "bytes": 82005,
+    "sha256": "b23afbda8f3081750a9bc8718a01426b934fc7c660ce352471f6c26d321302c0"
+  },
+  "host-candidate/rapid-edit.txt": {
+    "bytes": 39898,
+    "sha256": "05a9b33bc607e330c318fe5b6de7146f5d68652ac05fa47c124fbdb32be8b45e"
+  },
+  "host-candidate/rapid-scene.txt": {
+    "bytes": 40733,
+    "sha256": "00164c793ae7814c5fc5fb93b14cf7a0fe236104a138105d2e0bcdded0a8f0b1"
+  },
+  "host-candidate/ui-final-check.json": {
+    "bytes": 450,
+    "sha256": "f37d30d2a87e79b5ad9bc044b413bb7b1351b3537827129aea9c29aab04c3811"
+  },
+  "host-ui-01/ui-fixture.json": {
+    "bytes": 391,
+    "sha256": "ddfb817cfbd27f7215dbfcb9bb49a7c45cd56ac75886f180157975b5eefc31d4"
+  },
+  "host-ui-01/ui-warm.json": {
+    "bytes": 8086,
+    "sha256": "14999b454047e9cc468849d18dd602dd1e110169dda199532d628b2f6282b61b"
+  },
+  "native-2024/receipt.json": {
+    "bytes": 2003784,
+    "sha256": "6a94b051b5de6b85f56f48bd7b210c920f434037e412709af2b5d6376931b9f3"
+  },
+  "native-2026/receipt.json": {
+    "bytes": 2006500,
+    "sha256": "6dcf7ff73ad7683f55290d1731288d04710c816b37d31b1bb03aa379fac63378"
+  },
+  "native-2027/receipt.json": {
+    "bytes": 2093819,
+    "sha256": "b6c6d66bf144e58c7de5af4d52ddf094b25d86f48e3b3f6e86bc243f38a30697"
+  },
+  "native-2027/tests.log": {
+    "bytes": 7421,
+    "sha256": "2ea470a783c7048e648eb05e30e9f19dd9ed917a4409ab6c0a43aa9fab0ead5d"
+  },
+  "packages/PACKAGE_VERIFICATION.json": {
+    "bytes": 2910,
+    "sha256": "f124fcd2872863cbbc9df169bacd0eb250ab50196b3ee5c7658e5f40baf103e9"
+  },
+  "packages/SHA256SUMS.txt": {
+    "bytes": 402,
+    "sha256": "3ed4fc421e5cd96abf876fddb22296fc883966c85bfc39f452abb0ea776f1b34"
+  }
+}

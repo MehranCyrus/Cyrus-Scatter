@@ -1,0 +1,95 @@
+{
+  "status": "pass",
+  "metric": "Maximum source ring-centre distance to guide polyline, each of 12 known six-sided flower stems",
+  "rows": [
+    {
+      "part": 1,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 5.176580418948885,
+      "detail_max_mm": 0.5702993930665728
+    },
+    {
+      "part": 2,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 5.418372504729655,
+      "detail_max_mm": 0.5715951611971014
+    },
+    {
+      "part": 3,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 6.100443480590087,
+      "detail_max_mm": 0.6174485753132289
+    },
+    {
+      "part": 4,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 7.680885932626902,
+      "detail_max_mm": 0.7313639056823141
+    },
+    {
+      "part": 6,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 5.273629749264558,
+      "detail_max_mm": 0.4698675041515723
+    },
+    {
+      "part": 7,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 5.809753903431293,
+      "detail_max_mm": 0.594833119539544
+    },
+    {
+      "part": 8,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 6.052113923484614,
+      "detail_max_mm": 0.49756368953825214
+    },
+    {
+      "part": 9,
+      "automatic_points": 5,
+      "detail_points": 16,
+      "automatic_max_mm": 5.59639273545876,
+      "detail_max_mm": 0.7214082750333264
+    },
+    {
+      "part": 11,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 6.675594009446069,
+      "detail_max_mm": 0.6203308776929117
+    },
+    {
+      "part": 12,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 7.257285592703847,
+      "detail_max_mm": 0.5800816771962753
+    },
+    {
+      "part": 13,
+      "automatic_points": 3,
+      "detail_points": 16,
+      "automatic_max_mm": 5.303328109413864,
+      "detail_max_mm": 0.5012153319226461
+    },
+    {
+      "part": 14,
+      "automatic_points": 5,
+      "detail_points": 16,
+      "automatic_max_mm": 6.025804384009262,
+      "detail_max_mm": 0.8016069450693272
+    }
+  ],
+  "worst_automatic_mm": 7.680885932626902,
+  "worst_detail_mm": 0.8016069450693272,
+  "baseline_bytes": 1467842,
+  "stem_detail_bytes": 1500821,
+  "combined_bytes": 1632518
+}

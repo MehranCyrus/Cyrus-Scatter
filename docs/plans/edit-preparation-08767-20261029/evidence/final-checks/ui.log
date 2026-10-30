@@ -1,0 +1,47 @@
+TAP version 13
+# node:fs:562
+#   return binding.open(
+#                  ^
+# Error: ENOENT: no such file or directory, open 'F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\ui\\layers-control-inventory.json'
+#     at Object.openSync (node:fs:562:18)
+#     at Object.readFileSync (node:fs:446:35)
+#     at Object.<anonymous> (F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\tools\\ui\\approved-layout.test.cjs:11:31)
+#     at Module._compile (node:internal/modules/cjs/loader:1554:14)
+#     at Object..js (node:internal/modules/cjs/loader:1706:10)
+#     at Module.load (node:internal/modules/cjs/loader:1289:32)
+#     at Function._load (node:internal/modules/cjs/loader:1108:12)
+#     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+#     at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+#     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5) {
+#   errno: -4058,
+#   code: 'ENOENT',
+#   syscall: 'open',
+#   path: 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\ui\\\\layers-control-inventory.json'
+# }
+# Node.js v22.14.0
+# Subtest: AminScatter\\tools\\ui\\approved-layout.test.cjs
+not ok 1 - AminScatter\\tools\\ui\\approved-layout.test.cjs
+  ---
+  duration_ms: 63.5237
+  location: 'F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\tools\\ui\\approved-layout.test.cjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# PASS: deterministic assembly, include failures and requested byte-parity baseline
+# Subtest: AminScatter\\tools\\ui\\assemble-template.test.cjs
+ok 2 - AminScatter\\tools\\ui\\assemble-template.test.cjs
+  ---
+  duration_ms: 54.0596
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 75.1151

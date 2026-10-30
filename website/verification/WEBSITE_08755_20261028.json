@@ -1,0 +1,58 @@
+{
+  "kind": "documentation-and-website-delivery",
+  "version": "0.87.5.5",
+  "date": "2026-10-28",
+  "scope": "Maintained Scatter documentation and existing website; corrected application callback; local upload only.",
+  "artifact": {
+    "archive": "CyrusScatter-website-0.87.5.5.zip",
+    "bytes": 27569689,
+    "sha256": "01f39961810cfd34eaffeab00bfb8e805bb21c7cb5d294e87599e73ead7ee004",
+    "fileCount": 90
+  },
+  "artifact_directory": "dist/website/cpanel-2026-10-28-_jsJhcdP",
+  "exe": {
+    "path": "downloads/CyrusScatter-0.87.5.5-Setup.exe",
+    "bytes": 8344576,
+    "sha256": "329dacb0d5fe3d6647c3e6d3abf6b79ed8e0571223194094b56866c58e1d46ac",
+    "payload_hosts": [
+      2024,
+      2026,
+      2027
+    ],
+    "runtime_tested_hosts": [
+      2027
+    ]
+  },
+  "completed_before_user_stop": {
+    "docs_sync": true,
+    "docs_check": true,
+    "typescript_vite_build": true,
+    "cpanel_package": true,
+    "controls": 375,
+    "ui_sections": 14,
+    "capability_families": 37,
+    "reviewed_source_fingerprints": 117,
+    "generated_guide_links": 54,
+    "static_navigation_destinations": 45,
+    "posters": 19,
+    "local_subfolder_http_exe": true,
+    "desktop_download": true,
+    "mobile_download_width": 390,
+    "mobile_document_width": 390,
+    "scene_colliders_sidebar_and_guide": true,
+    "search_results": "Scene collider"
+  },
+  "further_testing": "Stopped at user request; no additional tests run.",
+  "plugin_evidence": "docs/plans/scene-adaptation-08754-20261028/QUALIFICATION_08755.json",
+  "documentation_audit": "docs/DOCUMENTATION_REFRESH_08755_20261028.md",
+  "knowledge_generation": "Not rebuilt or activated; direct current-source review used.",
+  "deployment": false,
+  "git_commit_or_push": false,
+  "artist_install_or_restart": false,
+  "limits": [
+    "Older hosts build/package only",
+    "Focused browser checks only",
+    "No new full renderer, physical-drag or million-object performance campaign",
+    "Unsigned installer"
+  ]
+}

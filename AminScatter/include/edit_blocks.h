@@ -75,6 +75,12 @@ public:
         auto& word=words_.write(i/64);const auto mask=std::uint64_t(1)<<(i%64);if(value)word|=mask;else word&=~mask;
     }
     void clear()noexcept{words_=Blocks<std::uint64_t,64>{};}
+    template<class F> void each(std::size_t limit,F&& visit)const{
+        for(std::size_t word=0;word<words_.size()&&word*64<limit;++word){auto bits=words_.get(word);while(bits){
+            unsigned bit=0;auto first=bits;while(!(first&1)){first>>=1;++bit;}
+            const auto index=word*64+bit;if(index<limit)visit(index);bits&=bits-1;
+        }}
+    }
     std::size_t attributedBytes()const noexcept{return words_.attributedBytes();}
     std::size_t changedBytes(const Selection& other)const noexcept{return words_.changedBytes(other.words_);}
 };

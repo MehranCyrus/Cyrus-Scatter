@@ -1,0 +1,170 @@
+[
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v1",
+    "bytes": 519678382.0,
+    "files": 318,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v1-receipts.zip",
+    "retained_receipt_files": 17,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v1-final",
+    "bytes": 519669890.0,
+    "files": 318,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v1-final-receipts.zip",
+    "retained_receipt_files": 17,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v2-final",
+    "bytes": 489882808.0,
+    "files": 315,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v2-final-receipts.zip",
+    "retained_receipt_files": 16,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v4-final",
+    "bytes": 489888836.0,
+    "files": 315,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v4-final-receipts.zip",
+    "retained_receipt_files": 16,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v4-check",
+    "bytes": 210540710.0,
+    "files": 175,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v4-check-receipts.zip",
+    "retained_receipt_files": 12,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v3-check",
+    "bytes": 210536997.0,
+    "files": 175,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v3-check-receipts.zip",
+    "retained_receipt_files": 12,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v2-regression-check",
+    "bytes": 210536059.0,
+    "files": 175,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\cpu-benchmark-v2-regression-check-receipts.zip",
+    "retained_receipt_files": 12,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006",
+    "bytes": 521972448.0,
+    "files": 25445,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\playback-20261006-receipts.zip",
+    "retained_receipt_files": 922,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078",
+    "bytes": 681885854.0,
+    "files": 30855,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\vector-brush-078-receipts.zip",
+    "retained_receipt_files": 866,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\spline-bands-20261012-01",
+    "bytes": 1091707734.0,
+    "files": 23370,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\spline-bands-20261012-01-receipts.zip",
+    "retained_receipt_files": 584,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\eleven-phases-20261014-01",
+    "bytes": 600711930.0,
+    "files": 11424,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\eleven-phases-20261014-01-receipts.zip",
+    "retained_receipt_files": 226,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\final-08672-20261020",
+    "bytes": 2950803128.0,
+    "files": 7490,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\final-08672-20261020-receipts.zip",
+    "retained_receipt_files": 1254,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\gallery-0851-20261016-01",
+    "bytes": 2005337409.0,
+    "files": 34245,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\gallery-0851-20261016-01-receipts.zip",
+    "retained_receipt_files": 17931,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\installer-0862-20261019-01",
+    "bytes": 413384780.0,
+    "files": 1417,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\installer-0862-20261019-01-receipts.zip",
+    "retained_receipt_files": 517,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\combined-installer-08685-20261022",
+    "bytes": 1020672916.0,
+    "files": 9567,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\combined-installer-08685-20261022-receipts.zip",
+    "retained_receipt_files": 3088,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\installer-panels-08684-20261022",
+    "bytes": 436162918.0,
+    "files": 4813,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\installer-panels-08684-20261022-receipts.zip",
+    "retained_receipt_files": 1133,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\native-fields-0860-20261018-01",
+    "bytes": 1015016242.0,
+    "files": 12915,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\native-fields-0860-20261018-01-receipts.zip",
+    "retained_receipt_files": 327,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\refinement-08683-20261022",
+    "bytes": 693830225.0,
+    "files": 14050,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\refinement-08683-20261022-receipts.zip",
+    "retained_receipt_files": 1546,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\clearance-performance-08681-20261020",
+    "bytes": 430171775.0,
+    "files": 5119,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\clearance-performance-08681-20261020-receipts.zip",
+    "retained_receipt_files": 270,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\clearance-relax-08682-20261021",
+    "bytes": 305321546.0,
+    "files": 3527,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\clearance-relax-08682-20261021-receipts.zip",
+    "retained_receipt_files": 189,
+    "status": "removed"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\compatibility-0862-20261019",
+    "bytes": 500811267.0,
+    "files": 2770,
+    "receipt_archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\terraces0877-20261029-01\\cleanup\\compatibility-0862-20261019-receipts.zip",
+    "retained_receipt_files": 985,
+    "status": "removed"
+  }
+]

@@ -1,0 +1,176 @@
+{
+  "date_utc": "2026-10-29T11:44:25.569380+00:00",
+  "scope": "Website source, static content, server rendering and local production build; no plugin or browser visual qualification",
+  "source_version": "0.87.6.5",
+  "qualified_baseline": "0.87.6.4",
+  "qualification_pending": true,
+  "branch": "codex/workflow-0.75",
+  "head": "75c60d54dbfd736ffef135d211863516a63543a7",
+  "checks": {
+    "docs_sync": "PASS",
+    "docs_check": "PASS",
+    "typescript_vite_build": "PASS",
+    "server_render": {
+      "scope": "Server rendering and semantic content checks; no browser, Computer Use or layout qualification",
+      "results": [
+        {
+          "page": "release",
+          "status": "PASS",
+          "bytes": 5348
+        },
+        {
+          "page": "landing",
+          "status": "PASS",
+          "bytes": 22955
+        },
+        {
+          "page": "roadmap",
+          "status": "PASS",
+          "bytes": 7611
+        },
+        {
+          "page": "about",
+          "status": "PASS",
+          "bytes": 8036
+        }
+      ]
+    },
+    "enrolled_source_hashes": 140,
+    "source_drift": [],
+    "binary_archive_scene_payloads": 0,
+    "diff_whitespace": "PASS"
+  },
+  "static_verification": {
+    "scope": "Website static/content verification only; no plugin qualification",
+    "development_version": "0.87.6.5",
+    "documents": 5,
+    "semantic_controls": 379,
+    "capability_families_including_retired_and_experimental": 37,
+    "bundled_supporting_references": 0,
+    "public_markdown_files": 0,
+    "changelog_versions": 118,
+    "reviewed_local_sources": 140,
+    "resolved_generated_local_links": 56,
+    "source_catalog_sha256": "f41584a531b85d7f256e44d422b154844356b00e52c95a492341ef363531dbd8",
+    "editorial_sha256": "c9a84d59ddf42707763abb762492472230fd56695ac21e7241e9cd8a8d5637ef",
+    "status": "PASS",
+    "concept_posters_with_current_notes": 19,
+    "resolved_static_navigation_destinations": 46
+  },
+  "public_output": {
+    "files": 89,
+    "bytes": 20264804,
+    "index_sha256": "0601ac19c9a5f26fe60c76ef91bfb5d46356cd6c31149c240238144c21a3dbc6",
+    "entry_scripts": {
+      "index-B-BSt1Hd.js": "7cafa0c2b2828124a09ee409377b3d375b24ba77bf7d383fe7429b8db321afa3"
+    }
+  },
+  "website_changes": {
+    "website/CPANEL_UPLOAD.md": {
+      "before": "8c3c3d35b319a1f917e7f2c1b95fdc763bf941a0312aa90e4ca6d54f7d638398",
+      "after": "43ab9392ecac5543c3a042feb6af928237d41df02c76f7388c6f3f06395d6ebf"
+    },
+    "website/README.md": {
+      "before": "ceaa09b7b70f36a905847c2e66e7e4a02164cc16e6ed07bfb0bc88754cdf1c1c",
+      "after": "71350f2196b5b33904866edda104c9853ff3c7715081c420115e1a6b80f862cb"
+    },
+    "website/content/changelog.json": {
+      "before": "e4416ffda87e1a3186df451d542885cd627ff4ba84792c49e3f64483f352d8fa",
+      "after": "098f071b4e474a7300183cd28c6b479304e4fe343aaac1b163d59f1b2d7e3f6e"
+    },
+    "website/content/control-explanations.json": {
+      "before": "b76480a540a3d99372b95a41bef589f3cef99a19c8d0556ab2d5571a2a0a62ee",
+      "after": "c9a84d59ddf42707763abb762492472230fd56695ac21e7241e9cd8a8d5637ef"
+    },
+    "website/content/guide-chapters.json": {
+      "before": "1abd7da1f44e288c547aa21167e02784192614c89f40c6fe7c28ce7804d20be0",
+      "after": "36764e902984aa1e2758dbddbd7471a262bf176c9790a6e36101411ac9bc001f"
+    },
+    "website/content/README.md": {
+      "before": "1ac77f22b444bf5fdee6772665bebb458a516c8258ad90d0e0c4946315445894",
+      "after": "a92bb1a6459f18ea8e861bcdfada91e74130b456907ec6c0df982d59f8b24ff6"
+    },
+    "website/content/release.json": {
+      "before": "009d13b8e98e0acc6f0ba6bd69f14253cb1a5daebe9f2f8f34efcd8947ef92fc",
+      "after": "5547cbf5577a099bcfa01db9d8694e8e4f40f1e49817ca3745282a63b5a5eaf0"
+    },
+    "website/content/source-manifest.json": {
+      "before": "8f40b81a02ad51cb007fb9d831942aa546ab31f10a47b719755b1fcbbee059b4",
+      "after": "c33d234572f78819b3317b6e481df5c574b551a74f4d431d34c4b5cccfe31d19"
+    },
+    "website/content/WEBSITE_STATUS.md": {
+      "before": "fd7243e546d89e8765420d4a3b4558c0c833e11b522290082d64d5c06e4ce4da",
+      "after": "c145aea1bf2a13f6184d47d91c86021980172fa8fcabf46325f8f175df5521aa"
+    },
+    "website/src/App.tsx": {
+      "before": "4a78f02327f7a579d9b64fb556996ed19f0313954927b82b7a65f1e2a28ec1f2",
+      "after": "80255490d4e3d2eee34fad420d9cb73e53496da85aaf3c2fede3a92964596b48"
+    },
+    "website/src/components/DocsShell.tsx": {
+      "before": "d7efe8013ef41b21c8b7e1aa516d8966c94474bb56eb6a6dd0c67ce3a08f6429",
+      "after": "249f899ee518d5399085e7540f9fc473169589f3ca4f7c02a95c30e92df1591d"
+    },
+    "website/src/components/selected-landing.html": {
+      "before": "6c26c249efb644cfcb9dcf1d492157d2d4b75d60c46f7242c066d73c417578b5",
+      "after": "cbea5942c425eb7fe384a75d0344823331a2ba259da62f54f5fcf8ce5e8c3b22"
+    },
+    "website/src/components/SelectedLanding.tsx": {
+      "before": "652f7ab0fda49eab03e406e7f3ecd05693ca88ed01c43e8e896d54405d298fd3",
+      "after": "e949a757eaa46fd93fda21dedb57393c0a78d456ba1e7d7a1f18b68b47df5501"
+    },
+    "website/src/content/controlSections.ts": {
+      "before": "2146658033b01a0527f5c88115bb1cf842c9287b12c4cb4ec66ebeb023d03836",
+      "after": "d6b923f17aec343c708af6f779bfa17026d658030861c09420391747c8f02239"
+    },
+    "website/src/content/featureStories.ts": {
+      "before": "4c19392cbbef54ded0266b3f59f884b4ac34f5b4dff8b1cd00c12b58c8e0c96c",
+      "after": "64e779de1c49b97c33a5f3cf68bd1769bbc2f8b594d604fc367cfa8a6d463dee"
+    },
+    "website/src/content/reference.json": {
+      "before": "86a1977732c00010f3e5d49b0075337c4ea21e485fb2d69fca4314403fc37f72",
+      "after": "6b178a9bf9770011e097e23e010432e829ce5306bf6bbd506030494f51ca5c5e"
+    },
+    "website/src/content/release.ts": {
+      "before": "41862ce3cf8eb4ae2988c65415d8eadd36f8d4594af1a8ef5ac407cc7bdd35d0",
+      "after": "a4e738ae3645ca0840ab90ff2caa790f43a19fe5e2721c97553e660765b710d1"
+    },
+    "website/src/pages/Download.tsx": {
+      "before": "8e18374e631baa0b5108e79fc22776a772028572271e7ba5ca410a27a229d119",
+      "after": "6c4f7639db54cba74758bda26462c81d06713e9a58f91be9b56ea78972fe63c5"
+    },
+    "website/src/pages/Roadmap.tsx": {
+      "before": "d9dde5b170526ff2d94c69ed14a566cc1b9f00a74a9e79a197f39630d4e29d9d",
+      "after": "baf656b7ec67c9907a46afb00b416fef70e1f1c013c714fe5c25cc5926c02a4f"
+    },
+    "website/tools/import_reference.py": {
+      "before": "421a618bfc5022ca2a9f618dc3378e0f02e0cc03295cf7991733be8024815e8b",
+      "after": "b4d9693be7c3675d3160d21f0476e2bddcb8058400ec89c689ff974da04caadb"
+    },
+    "website/tools/package_site.py": {
+      "before": "4e3bb653b5462e05bca5c807fc15400a5f46f952ef09f6b9441e28d6827a795a",
+      "after": "1fe325506aaf90f122c5c2cea954edc0471dd62c20052ec1a351b8a363f4d738"
+    },
+    "website/tools/stage_release.py": {
+      "before": "f756d57f74b73bab212b087e1ee05dc4f6f904a2d53d7b4875a79e574c61efff",
+      "after": "1e29cf1fcff432fd12bd8b2702661ee99f1e7b85dd3574cef2e8f27f7373fc06"
+    },
+    "website/tools/verify_reference.py": {
+      "before": "b63f8760e1ea769b9083a4bb944247eced0d6458b96075a0ac22d27c08f996d0",
+      "after": "17d5f5dd01446c40d0849af82c434eb86dbb2d238280fe6a4d6d8d492f64cc97"
+    },
+    "website/verification/react-static-checks.json": {
+      "before": "486da1b75295e62a05c85f11546dcc4c2365a84372f2b448fd986a5ea8b4717d",
+      "after": "cc829f8d8c5057ef9eb67be1f3a0f88f15d4ea9879fa112045f6679d5c59d157"
+    }
+  },
+  "installer_added": false,
+  "zip_created": false,
+  "deployed": false,
+  "computer_use": false,
+  "plugin_sources_edited": false,
+  "notes": [
+    "Source advanced from 0.87.6.4 to 0.87.6.5 during the task; pending outline work is explicitly labeled.",
+    "Vite application chunk-size warning is nonblocking; no splitting or speedup claim.",
+    "Native/runtime tests are prior qualification only; this task did not launch Max."
+  ]
+}

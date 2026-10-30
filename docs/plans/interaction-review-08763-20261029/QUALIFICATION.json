@@ -1,0 +1,257 @@
+{
+  "version": "0.87.6.3",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "interactions": 16,
+  "viewport_selection_capability": 1,
+  "status": "scoped_pass",
+  "baseline": "0.87.5.6 artistic response; 0.87.6.2 selection/shared controls",
+  "native_tests": {
+    "passed": 62,
+    "total": 62,
+    "host": 2027
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.6.3",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 379,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "package": {
+    "status": "passed",
+    "version": "0.87.6.3",
+    "max_year": 2027,
+    "sha256": "de3a2a17d0d4cf2237d8532901c494323495c9c1d4f4c1a4ca9547baf53ffacf",
+    "bytes": 2786754,
+    "native_receipt_sha256": "807d75d6a1fadc834d5646b600c0cfd65ac36cd734af3d0be88c1c15a9f1edd3",
+    "payload": {
+      "AminScatter.dlx": "e93cc9c44c64c75f23845d1e0834386e2c820a2379b533938a3088705c743b0b",
+      "CyrusScatterEdit.dlm": "b348793740ea3d942bc4092b422df5e6ea8c0634a0b9c7ae7d881aa8fc8c0dd8",
+      "CyrusBrush.dlx": "afeecde9b857fe980d127811dcf179e484036a096774a60b6ff68daef0602fd1",
+      "CyrusBrushStorage.dlh": "d013eb141418d32cb2dd7bf00e18f7632458150c088423d8e7776653373b678f",
+      "CyrusScatter.ms": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+      "CyrusGallery.dll": "efe7199d27e31bd101ad32ed1b8d934d7284813c064523ea0564c9a1484e0222",
+      "CyrusInstaller.dll": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e"
+    },
+    "archive_integrity": true,
+    "manifest_hashes": true,
+    "host_guard": true,
+    "source_receipt_verified": true,
+    "loaded_payload_matches": true,
+    "artist_ini_unchanged": true,
+    "installed_in_artist_profile": false,
+    "exe_created": false,
+    "older_hosts_built": false
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interaction-review-08763-20261029-01\\payload-2027\\AminScatter.dlx",
+        "sha256": "e93cc9c44c64c75f23845d1e0834386e2c820a2379b533938a3088705c743b0b"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interaction-review-08763-20261029-01\\payload-2027\\CyrusBrush.dlx",
+        "sha256": "afeecde9b857fe980d127811dcf179e484036a096774a60b6ff68daef0602fd1"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interaction-review-08763-20261029-01\\payload-2027\\CyrusBrushStorage.dlh",
+        "sha256": "d013eb141418d32cb2dd7bf00e18f7632458150c088423d8e7776653373b678f"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interaction-review-08763-20261029-01\\payload-2027\\CyrusScatterEdit.dlm",
+        "sha256": "b348793740ea3d942bc4092b422df5e6ea8c0634a0b9c7ae7d881aa8fc8c0dd8"
+      }
+    },
+    "script_fingerprint": "2a230680593f56fc42d3ef671860c0349e4daccdced146da2afce39851b8e6ec"
+  },
+  "host_checks": {
+    "role_transitions": 5,
+    "hiding_combinations": 8,
+    "draw_budget_changes": 5,
+    "reactors_in_budget_fixture": 500,
+    "manual_pending_amount": 777,
+    "published_count": 500,
+    "shared_controls_and_picking": "smoke.json",
+    "garden": {
+      "controllers": 6,
+      "placements": 18229,
+      "rays": 77,
+      "median_pick_ms": 0.05079992115497589,
+      "unchanged_epochs_streams": true
+    },
+    "navigation": {
+      "samples": 24,
+      "median_cpu_submit_ms": 16.293799970299006,
+      "unchanged_epochs_streams": true
+    },
+    "posed_pick": {
+      "samples": 138,
+      "max_world_unit_error": 0.04833984375,
+      "world_units_per_metre": 100.0,
+      "unchanged_epochs_streams": true
+    },
+    "held_replay": {
+      "edit": {
+        "samples": 12,
+        "median_cpu_submit_ms": 63.23864997830242,
+        "presented_tickets": 12,
+        "first_work": {
+          "collider_cooks": 27,
+          "evaluations": 143,
+          "layouts": 44,
+          "plant_fits": 6002,
+          "source_captures": 35,
+          "source_preparations": 7
+        },
+        "last_work": {
+          "collider_cooks": 27,
+          "evaluations": 154,
+          "layouts": 44,
+          "plant_fits": 6586,
+          "source_captures": 35,
+          "source_preparations": 7
+        },
+        "median_native_fit_ms": 16.4277
+      },
+      "scene": {
+        "samples": 12,
+        "median_cpu_submit_ms": 66.42720010131598,
+        "presented_tickets": 12,
+        "first_work": {
+          "collider_cooks": 28,
+          "evaluations": 156,
+          "layouts": 45,
+          "plant_fits": 6739,
+          "source_captures": 36,
+          "source_preparations": 7
+        },
+        "last_work": {
+          "collider_cooks": 28,
+          "evaluations": 167,
+          "layouts": 45,
+          "plant_fits": 7323,
+          "source_captures": 36,
+          "source_preparations": 7
+        },
+        "median_native_fit_ms": 20.55775
+      },
+      "orbit": {
+        "samples": 6,
+        "median_cpu_submit_ms": 19.3703998811543,
+        "presented_tickets": 1,
+        "first_work": {
+          "collider_cooks": 28,
+          "evaluations": 167,
+          "layouts": 45,
+          "plant_fits": 7323,
+          "source_captures": 36,
+          "source_preparations": 7
+        },
+        "last_work": {
+          "collider_cooks": 28,
+          "evaluations": 167,
+          "layouts": 45,
+          "plant_fits": 7323,
+          "source_captures": 36,
+          "source_preparations": 7
+        }
+      }
+    },
+    "save_reload_undo_redo": "persistence-events.txt"
+  },
+  "development_notes": [
+    "Early garden replay drivers used an open collider mesh, incorrect proxy transform or incorrect callback/publication order. The final driver passes computation and presented-ticket assertions without production changes.",
+    "Earlier persistence drivers selected before reload publication, inspected the wrong layer, or included setup in the transport Undo hold. Separate timed MAXScript events pass the named move, Undo and Redo.",
+    "Earlier failed driver receipts remain in the owned build folder; final evidence is explicitly named here."
+  ],
+  "limits": [
+    "Max 2027 only; no EXE, Max 2024/2026 build/test or artist installation.",
+    "Scripted held-input and presentation-ticket checks are not physical mouse latency or GPU-presented FPS.",
+    "Native allocation probes isolate bookkeeping; the million-row view test is not a million-reactor Max scene.",
+    "The 13,087-pose limit example is arithmetic; the actual budget-change host fixture has 500 reactors.",
+    "Render-bound containment and fixed-visibility parity do not qualify all external renderers, representations or arbitrary plant topology.",
+    "Global pose bookkeeping, dense high-poly picking, exact peak memory/VRAM, device loss and long-session soak remain open.",
+    "The environment-only CPU posed-batch display route is unchanged; source capture/geometry preparation and render output retain separate costs.",
+    "No website build/publication or indexed-knowledge refresh; existing independent-product qualification is unchanged."
+  ],
+  "evidence": {
+    "baseline-probe-recheck.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/baseline-probe-recheck.json",
+      "sha256": "ad92ee5c5b6a8e0718c25ef7fec3227c5f3b8641a0ef763b07cb5d438ee01025"
+    },
+    "driver-hashes.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/driver-hashes.json",
+      "sha256": "e77f4eba6287e689e61aa1cadbb6f5173d11044ccb69c3bd7346b5ce8952f4f2"
+    },
+    "garden-drag.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/garden-drag.json",
+      "sha256": "1a6e708e85254a9a2a024ae059c4730dfe1dc12972364875009bb4e6de907110"
+    },
+    "garden-pick.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/garden-pick.json",
+      "sha256": "e7522709354c71319ea524d30c6d1fb67ba3d78ccf80f4b466ff0ab21020ffee"
+    },
+    "generated-check.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/generated-check.json",
+      "sha256": "2cde8f518579b5a459f8542ec22a233c21f22d52b0946bead11ed0b77c8c0c48"
+    },
+    "host-regressions.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/host-regressions.json",
+      "sha256": "744a0ce5023ea29baa678ded1843dcefca90fc5eed1f3cf5e7253bb75c9652e1"
+    },
+    "loaded-identity.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/loaded-identity.json",
+      "sha256": "986331f1d750e0bcc7bd967e917f1380f1311984fd7d8687550ae22c650f5426"
+    },
+    "native-source-hashes.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/native-source-hashes.json",
+      "sha256": "63917da39a156b5ec2ccbbbd0646ac22c7503c2cdb97fbd4d2c0e67fa5c52792"
+    },
+    "native-tests.log": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/native-tests.log",
+      "sha256": "3c8155e0b5f5f421a1cd82d752458e1dadc574c8ee22532f723637f496741212"
+    },
+    "navigation.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/navigation.json",
+      "sha256": "4556ce9e22ec3a1f96781a6edbb072d7323d86146477b40f8efbef53748a8fdb"
+    },
+    "package-manifest.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/package-manifest.json",
+      "sha256": "c2b4c57585bbd774f8350febe8834f0613546f899fddb8f360290c8b7cd7b23c"
+    },
+    "package-verification.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/package-verification.json",
+      "sha256": "5108eea1f1008654144d8a4cec9c0461774adaa0bd5a2eb2ea9b6b08ad9c2b12"
+    },
+    "persistence-events.txt": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/persistence-events.txt",
+      "sha256": "19c2109d692dbc3212999d562a497e5711b1cf0204b8dd6f6aae3ce3f802870e"
+    },
+    "posed-pick.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/posed-pick.json",
+      "sha256": "4d824505b856b8b863f8f28baa42b1df0719f2c8442956c9436487f75974f995"
+    },
+    "probe-results.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/probe-results.json",
+      "sha256": "8ead7d3812535c018e02129a6a4af7eb0d93c0b1d45362e0cd2d7b7b19e23af3"
+    },
+    "review-original.md": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/review-original.md",
+      "sha256": "815585122b11f1ec50aa62a8289373d938d41731a0aeb093ddea9d6eef16d034"
+    },
+    "smoke.json": {
+      "path": "docs/plans/interaction-review-08763-20261029/evidence/smoke.json",
+      "sha256": "4bf1ce928563d4116cfd9e9fdc35828982f5afd200f1e9171a91411dc274047e"
+    }
+  }
+}

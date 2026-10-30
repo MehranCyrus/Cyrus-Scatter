@@ -1,0 +1,453 @@
+{
+  "schema": "cyrus.independent-review-findings/1",
+  "product": "Cyrus Scatter",
+  "version": "0.87.6.3",
+  "max_year": 2027,
+  "build_identity": {
+    "branch": "codex/workflow-0.75",
+    "head": "75c60d54dbfd736ffef135d211863516a63543a7",
+    "current_native_sources": 638,
+    "changed_since_fresh_build": {
+      "AminScatter/CMakeLists.txt": {
+        "built": "b03bf28eb9422fb166ff3f374d20666bd8217637bc4aa43ed3449497984ebc93",
+        "now": "7545e2f97ea3254f3889828c1a1c057369d4272d297a13725412536e2115e7f8"
+      },
+      "AminScatter/include/viewport_pick.h": {
+        "built": "444b39d482ad14c5ec0357ce879f233124d3305f3c01cd2e58781d3a596cacc4",
+        "now": "b188161d86d213247aed96f918528be89835614ff152bc1cd309b5ac44b0e3a6"
+      },
+      "AminScatter/scripts/AminScatterObject.ms": {
+        "built": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+        "now": "4b246928b347ebb20ff2b37636fea94583481742a70c7e661a8321850bfd1341"
+      },
+      "AminScatter/src/cyrus_edit.cpp": {
+        "built": "e49b1010a0a6649a30a413fcf3628629e6d023767766384000fae58c0498d3d4",
+        "now": "73131107a03a114e0450dd0dac162b015df8d94dba1f36d2a3740ac384cdbd9a"
+      },
+      "AminScatter/src/point_display.cpp": {
+        "built": "d169fe04271ad387781a629a261c6dc7d018ae5b3d102451d3916e1c2e4bf71d",
+        "now": "9cb501ce6fe504ce229dc5f6dff809afcd00dc67a79e0e9a0c3ce47f0fba18c4"
+      },
+      "AminScatter/src/viewport_pick.inc": {
+        "built": "aae8deebaa68db9f037ecac1a65ccb84db6dd8d9de3840d45a4f4fd59fdd4ca2",
+        "now": "c33548e467d19318293375484ad5b2f50dd9144161e65ad3f6d3529adfba18d6"
+      },
+      "AminScatter/src/viewport_pick_bridge.inc": {
+        "built": "e0e8a1ed92d8e0a0d57d829314d4f85682d219cd3b8532fe217eb1e81d1b55a3",
+        "now": "dccff1acf4f5764a26feae65fb0a5c728ccbcc1ae0fdfc38d414f488ccacc1c1"
+      },
+      "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+        "built": "d6c7e74f66f06c87a28100d613f6ec5f0d46920e2fd890633b38c85671199a84",
+        "now": "d4880386f7b70eaa00178245fb8c1e50549638c4ff428d7ff5fd861aeb0867d5"
+      },
+      "AminScatter/tools/ui/templates/interactions-authoring.ms": {
+        "built": "3836e6793880a1ac165de949b6162cb114d418b2f429470f595420672ab73c38",
+        "now": "544f89102779f5f7fdbb558725d61b0bc1bc14b81b1aaf33cd096a75e32f6a53"
+      },
+      "AminScatter/tools/ui/templates/recipes-authored.ms": {
+        "built": "3cf30d44e7ccf0201747de834d1cb44d3171cc1ec7f6188fd6199abc35b4d9ad",
+        "now": "3370c132a42633567b23eb62a9d109af223fe31985680cde153162e6056965bd"
+      },
+      "AminScatter/tools/ui/templates/recipes.ms": {
+        "built": "6c70874250fbbae9a058d11a6d4c8f6ef894f2cb553c7ad8c890ffe3f7abe94a",
+        "now": "03d7eaa4bbbdade99821c8c1ba0b94561d5e9fb4c713fb2332c6b86fbc6f13ff"
+      },
+      "AminScatter/tools/ui/templates/scene-presets.ms": {
+        "built": "e9ff738614d94b532cac823d50499ded92e0ae1c7b9ff471e3114e11b7a01407",
+        "now": "4272ca7c610d9eecef97a5c1fb75f3ebf2db78e2bb206dea89f32315c3c43268"
+      },
+      "AminScatter/tools/ui/templates/shared-library.ms": {
+        "built": "a996968013d7abd8f2590501f37efb02ec8370a67469ba2d76b503d3e5aa0686",
+        "now": "3a4c733728bf3ee5f39507fafa419d3230b084a9652c7f45796f41fc89d48145"
+      },
+      "AminScatter/tools/ui/templates/unified-core.ms": {
+        "built": "2201f7b74eb4ef905598b742e04fc7a2bf1b960cd5cbdde29683983cdbc2d7de",
+        "now": "d69b37fd493939ae82feeae7d2fc33e3a711368b5c52276f8898a6ab03541ed4"
+      },
+      "AminScatter/tools/ui/templates/viewport-memory.ms": {
+        "built": "3ed1d58555abab4bd39c65dcf9b25a8d06d0724797bb13b043e18741642d63b9",
+        "now": "4984abce37fa9ba28893b0cb4b8bd519d4481959a5403ff7affb796874d22b49"
+      },
+      "AminScatter/tools/ui/templates/viewport-selection.ms": {
+        "built": "b3bc89b464181d7ea6f8592a9817b96a097b0b4bda44ac6d9ae6ac199601f205",
+        "now": "6ff5dad740b8f34835bbb7b2eb057fbaa202f4adc60ca9289ed8a33f6ded6a3e"
+      }
+    },
+    "changed_since_qualified_build": {
+      "AminScatter/CMakeLists.txt": {
+        "qualified": "b03bf28eb9422fb166ff3f374d20666bd8217637bc4aa43ed3449497984ebc93",
+        "now": "7545e2f97ea3254f3889828c1a1c057369d4272d297a13725412536e2115e7f8"
+      },
+      "AminScatter/include/viewport_pick.h": {
+        "qualified": "444b39d482ad14c5ec0357ce879f233124d3305f3c01cd2e58781d3a596cacc4",
+        "now": "b188161d86d213247aed96f918528be89835614ff152bc1cd309b5ac44b0e3a6"
+      },
+      "AminScatter/scripts/AminScatterObject.ms": {
+        "qualified": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+        "now": "4b246928b347ebb20ff2b37636fea94583481742a70c7e661a8321850bfd1341"
+      },
+      "AminScatter/src/cyrus_edit.cpp": {
+        "qualified": "e49b1010a0a6649a30a413fcf3628629e6d023767766384000fae58c0498d3d4",
+        "now": "73131107a03a114e0450dd0dac162b015df8d94dba1f36d2a3740ac384cdbd9a"
+      },
+      "AminScatter/src/point_display.cpp": {
+        "qualified": "d169fe04271ad387781a629a261c6dc7d018ae5b3d102451d3916e1c2e4bf71d",
+        "now": "9cb501ce6fe504ce229dc5f6dff809afcd00dc67a79e0e9a0c3ce47f0fba18c4"
+      },
+      "AminScatter/src/viewport_pick.inc": {
+        "qualified": "aae8deebaa68db9f037ecac1a65ccb84db6dd8d9de3840d45a4f4fd59fdd4ca2",
+        "now": "c33548e467d19318293375484ad5b2f50dd9144161e65ad3f6d3529adfba18d6"
+      },
+      "AminScatter/src/viewport_pick_bridge.inc": {
+        "qualified": "e0e8a1ed92d8e0a0d57d829314d4f85682d219cd3b8532fe217eb1e81d1b55a3",
+        "now": "dccff1acf4f5764a26feae65fb0a5c728ccbcc1ae0fdfc38d414f488ccacc1c1"
+      },
+      "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+        "qualified": "d6c7e74f66f06c87a28100d613f6ec5f0d46920e2fd890633b38c85671199a84",
+        "now": "d4880386f7b70eaa00178245fb8c1e50549638c4ff428d7ff5fd861aeb0867d5"
+      },
+      "AminScatter/tools/ui/templates/interactions-authoring.ms": {
+        "qualified": "3836e6793880a1ac165de949b6162cb114d418b2f429470f595420672ab73c38",
+        "now": "544f89102779f5f7fdbb558725d61b0bc1bc14b81b1aaf33cd096a75e32f6a53"
+      },
+      "AminScatter/tools/ui/templates/recipes-authored.ms": {
+        "qualified": "3cf30d44e7ccf0201747de834d1cb44d3171cc1ec7f6188fd6199abc35b4d9ad",
+        "now": "3370c132a42633567b23eb62a9d109af223fe31985680cde153162e6056965bd"
+      },
+      "AminScatter/tools/ui/templates/recipes.ms": {
+        "qualified": "6c70874250fbbae9a058d11a6d4c8f6ef894f2cb553c7ad8c890ffe3f7abe94a",
+        "now": "03d7eaa4bbbdade99821c8c1ba0b94561d5e9fb4c713fb2332c6b86fbc6f13ff"
+      },
+      "AminScatter/tools/ui/templates/scene-presets.ms": {
+        "qualified": "e9ff738614d94b532cac823d50499ded92e0ae1c7b9ff471e3114e11b7a01407",
+        "now": "4272ca7c610d9eecef97a5c1fb75f3ebf2db78e2bb206dea89f32315c3c43268"
+      },
+      "AminScatter/tools/ui/templates/shared-library.ms": {
+        "qualified": "a996968013d7abd8f2590501f37efb02ec8370a67469ba2d76b503d3e5aa0686",
+        "now": "3a4c733728bf3ee5f39507fafa419d3230b084a9652c7f45796f41fc89d48145"
+      },
+      "AminScatter/tools/ui/templates/unified-core.ms": {
+        "qualified": "2201f7b74eb4ef905598b742e04fc7a2bf1b960cd5cbdde29683983cdbc2d7de",
+        "now": "d69b37fd493939ae82feeae7d2fc33e3a711368b5c52276f8898a6ab03541ed4"
+      },
+      "AminScatter/tools/ui/templates/viewport-memory.ms": {
+        "qualified": "3ed1d58555abab4bd39c65dcf9b25a8d06d0724797bb13b043e18741642d63b9",
+        "now": "4984abce37fa9ba28893b0cb4b8bd519d4481959a5403ff7affb796874d22b49"
+      },
+      "AminScatter/tools/ui/templates/viewport-selection.ms": {
+        "qualified": "b3bc89b464181d7ea6f8592a9817b96a097b0b4bda44ac6d9ae6ac199601f205",
+        "now": "6ff5dad740b8f34835bbb7b2eb057fbaa202f4adc60ca9289ed8a33f6ded6a3e"
+      }
+    },
+    "product_source_edited_by_review": false,
+    "max_year": 2027,
+    "computer_use": false,
+    "host_authority": "Ephemeral unique test trust; same product source, different public-key configuration. Shipped owner-trust package was inspected, not installed or launched.",
+    "final_check_utc": "2026-10-29T10:08:20.623227+00:00",
+    "qualification_scope": "Fresh 0.87.6.3 build and recorded test payload; later concurrent workspace changes are not qualified by these passes.",
+    "fresh_vs_qualified_source_differences": {}
+  },
+  "source_manifest": "evidence/source-hashes.json",
+  "findings": [
+    {
+      "id": "FS-01",
+      "title": "Scene-load staging is never recognized as abandoned",
+      "subsystem": "Library / native Scene preset staging",
+      "type": [
+        "persistence",
+        "maintainability"
+      ],
+      "severity": "P2",
+      "confidence": "high",
+      "evidence_status": "reproduced",
+      "origin": "preexisting; not introduced by R1-R7",
+      "trigger": "Prepare a Scene preset, then lose its owning process before merge/cancel cleanup; run storage recovery.",
+      "expected": "Remove dead owned staging copies while retaining active or unverifiable directories.",
+      "actual": "No ownership marker is written; recovery retains the abandoned copy as unverified.",
+      "impact": "Disk accumulation on repeated interruptions; supported attachments can be up to 2 GiB each. No published-content loss observed.",
+      "cause": "PrepareScene creates a stage without MarkStage; conservative recovery intentionally retains unmarked folders.",
+      "references": [
+        {
+          "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+          "symbol": "PrepareScene",
+          "start": 61,
+          "end": 63,
+          "build_sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+          "final_workspace_sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+          "matches_tested_source": true
+        },
+        {
+          "path": "AminScatter/shared/SharedLibrary.Management.cs",
+          "symbol": "MarkStage / RecoverStaging",
+          "start": 135,
+          "end": 147,
+          "build_sha256": "b5a502c96c3437fa093879efad5344ea8a2910f9f98a0791ffbc773658e5712f",
+          "final_workspace_sha256": "b5a502c96c3437fa093879efad5344ea8a2910f9f98a0791ffbc773658e5712f",
+          "matches_tested_source": true
+        }
+      ],
+      "reproduction": {
+        "command": "python docs/reviews/full-system-08763-20261029-01/drivers/run_supplemental.py",
+        "driver": "drivers/library_probe.cs",
+        "fixture": "Disposable store, injected native validator, inert 524288-byte scene; child exits after PrepareScene without DiscardPreparedScene.",
+        "evidence": [
+          "evidence/library-probe.log",
+          "evidence/library-host.json"
+        ]
+      },
+      "measurement": {
+        "marker_written": false,
+        "recovered": 0,
+        "retained": 1,
+        "retained_bytes": 524288
+      },
+      "limits": "Reproduces file ownership lifecycle, not an actual Max crash. Real native Scene save/merge is independently covered.",
+      "minimal_repair": "Call existing MarkStage immediately after creating the load stage within cleanup-protected scope.",
+      "ownership_and_invalidation": "Stage owned by PID plus process-start identity; no scene schema, placement or catalog invalidation change.",
+      "risk": "Low if marker-write failure cleans only the private stage; never broaden deletion to unknown folders.",
+      "acceptance": [
+        "Dead child stage recovered",
+        "Live child and unmarked foreign directory retained",
+        "Normal merge/cancel cleanup works",
+        "Twenty interrupted cycles leave no owned copies and preserve published hashes"
+      ]
+    },
+    {
+      "id": "FS-02",
+      "title": "Saved provenance and licensing guidance identify obsolete versions",
+      "subsystem": "Scene writer / licensing UI",
+      "type": [
+        "usability",
+        "maintainability"
+      ],
+      "severity": "P3",
+      "confidence": "high",
+      "evidence_status": "reproduced",
+      "component_status": {
+        "scene_metadata": "reproduced in managed and actual Max",
+        "licensing_strings": "statically demonstrated"
+      },
+      "origin": "preexisting",
+      "trigger": "Save a Scene preset or open licensing guidance in the tested 0.87.6.3 build.",
+      "expected": "Current verified writer identity or deliberately version-neutral guidance.",
+      "actual": "New Scene metadata says 0.87.5.5; licensing text says 0.80.0.",
+      "impact": "Misleading support/provenance. No incompatible-load failure demonstrated; metadata currently validates as text.",
+      "cause": "Hardcoded product versions independent of verified build identity.",
+      "references": [
+        {
+          "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+          "symbol": "SaveScene metadata",
+          "start": 44,
+          "end": 46,
+          "build_sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+          "final_workspace_sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+          "matches_tested_source": true
+        },
+        {
+          "path": "AminScatter/tools/ui/templates/licensing.ms",
+          "symbol": "dialog / missing-native guidance",
+          "start": 3,
+          "end": 22,
+          "build_sha256": "87140848c827d63d3aa5bf2fc2bc0937657a7a899d72923a4c735cd7939d54a5",
+          "final_workspace_sha256": "87140848c827d63d3aa5bf2fc2bc0937657a7a899d72923a4c735cd7939d54a5",
+          "matches_tested_source": true
+        },
+        {
+          "path": "AminScatter/include/scene_preset.h",
+          "symbol": "metadata validation",
+          "start": 20,
+          "end": 20,
+          "build_sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+          "final_workspace_sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+          "matches_tested_source": true
+        }
+      ],
+      "reproduction": {
+        "driver": "drivers/host_library.py",
+        "command": "Use the private Max 2027 launcher sequence in 06_TEST_REPORT.md; host_library.py saves and reads the manifest.",
+        "evidence": [
+          "evidence/library-host.json",
+          "evidence/library-probe.log"
+        ]
+      },
+      "minimal_repair": "Pass verified writer identity through an existing bounded interface; share it or remove unnecessary release wording from licensing messages.",
+      "ownership_and_invalidation": "Product build metadata, not independent licensing-foundation version; keep historical preset provenance unchanged.",
+      "risk": "Low. Avoid changing schema/host compatibility rules or rewriting old metadata.",
+      "acceptance": [
+        "New metadata equals loaded version",
+        "Old presets still load under existing rules",
+        "Generator/script/package identities agree",
+        "No obsolete package guidance"
+      ]
+    },
+    {
+      "id": "OPT-01",
+      "title": "Local interactions still copy and scan retained state",
+      "subsystem": "Native interaction snapshots",
+      "type": [
+        "performance"
+      ],
+      "severity": "P2",
+      "confidence": "high",
+      "evidence_status": "measured opportunity",
+      "origin": "preexisting; consolidates previous global-bookkeeping observation, not a new correctness regression",
+      "trigger": "Move one collider slightly while all distant plants already have retained poses.",
+      "expected": "Optimization goal: unchanged pose/obstacle metadata reused where justified, local work remains local.",
+      "actual": "One affected plant / two contact queries; total time and allocation grow with retained population.",
+      "impact": "Avoidable CPU/allocation pressure; not established as the dominant artist frame cost.",
+      "cause": "Copies retained pose/count/warning containers, rebuilds worldObstacles, rescans pose statistics and reuse.",
+      "references": [
+        {
+          "path": "AminScatter/src/interactions_engine.cpp",
+          "symbol": "snapshot successor / worldObstacles",
+          "start": 156,
+          "end": 163,
+          "build_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "final_workspace_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "matches_tested_source": true
+        },
+        {
+          "path": "AminScatter/src/interactions_engine.cpp",
+          "symbol": "retained statistics / reuse",
+          "start": 285,
+          "end": 298,
+          "build_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "final_workspace_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "matches_tested_source": true
+        }
+      ],
+      "reproduction": {
+        "command": "python docs/reviews/full-system-08763-20261029-01/drivers/run_native_probe.py --benchmark",
+        "driver": "drivers/extra_probe.cpp",
+        "fixture": "local-posed; SI units; one warm-up, eight ordinary samples, separate allocation sample; fixed input.",
+        "evidence": [
+          "evidence/benchmark.csv",
+          "evidence/benchmark-summary.json"
+        ]
+      },
+      "measurement": [
+        {
+          "posed_plants": 128,
+          "separate_colliders": 128,
+          "median_ms": 0.0287,
+          "allocations": 208,
+          "cumulative_bytes": 27547
+        },
+        {
+          "posed_plants": 1024,
+          "separate_colliders": 1024,
+          "median_ms": 0.1457,
+          "allocations": 1104,
+          "cumulative_bytes": 192450
+        },
+        {
+          "posed_plants": 8192,
+          "separate_colliders": 8192,
+          "median_ms": 1.36645,
+          "allocations": 8272,
+          "cumulative_bytes": 1511362,
+          "instrumented_fit_ms": 0.0142
+        }
+      ],
+      "limits": "Both posed plants and obstacles grow. Ordinary new allocation traffic is not peak RSS/VRAM. Timings exclude instrumented sample; no matched optimized implementation exists.",
+      "minimal_repair": "First reuse unchanged obstacle slots and maintain statistic deltas; consider shared/chunked pose metadata only after remeasurement.",
+      "ownership_and_invalidation": "Immutable previous snapshots, deterministic merge order and complete failure rollback remain required.",
+      "risk": "Medium; stale metadata or mutation of old snapshots can corrupt preview/render/Undo ownership.",
+      "acceptance": [
+        "Equivalent full recomputation including disable/restore",
+        "At least 50 percent less cumulative allocation in 8192 fixture",
+        "No small-batch regression",
+        "Unchanged evaluation returns prior snapshot",
+        "Measure real garden separately"
+      ]
+    },
+    {
+      "id": "GAP-01",
+      "title": "Pose-payload ceiling does not qualify construction peak",
+      "subsystem": "Interaction resource admission",
+      "type": [
+        "test gap"
+      ],
+      "severity": "P2",
+      "confidence": "high about boundary; failure frequency unknown",
+      "evidence_status": "statically demonstrated",
+      "origin": "open in previous review; not new",
+      "trigger": "Unusually heavy prepared plants and contact populations produce many simultaneous successor poses.",
+      "expected": "Account for old/new/result/scratch lifetimes and retain previous complete result on predictable admission failure.",
+      "actual": "256 MiB aggregate pose payload is checked after per-job construction and merge; other generations and scratch have separate lifetimes.",
+      "impact": "Construction peak may exceed payload limit. No OOM, leak or crash reproduced in this review.",
+      "cause": "A result-payload guard is not a pre-allocation process-memory reservation.",
+      "references": [
+        {
+          "path": "AminScatter/src/interactions_engine.cpp",
+          "symbol": "worker results / merge / payload check",
+          "start": 253,
+          "end": 298,
+          "build_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "final_workspace_sha256": "82f0ab3da21e218321444e76ce7e29485720565de375649e97fb56bbb1355fa4",
+          "matches_tested_source": true
+        }
+      ],
+      "reproduction": {
+        "method": "Static reachable path: results construction, successor merge with old snapshot retained, aggregate guard.",
+        "evidence": [
+          "03_PERFORMANCE.md",
+          "evidence/native-tests.log"
+        ]
+      },
+      "minimal_repair": "Instrument exact lifetimes, then add predictable reservations and controlled allocation-failure tests in an isolated build.",
+      "ownership_and_invalidation": "Separate CPU old/new/scratch/render and GPU owners; preserve last complete publication.",
+      "risk": "Medium; overconservative admission can reject valid work; do not silently reduce authored Count or merely raise limits.",
+      "acceptance": [
+        "Bounded repeated-edit soak",
+        "Injected allocation rejection retains previous complete result",
+        "Report peak and cumulative memory separately",
+        "Modest scene output and latency unchanged"
+      ]
+    }
+  ],
+  "previous_findings": [
+    {
+      "id": "R1",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "Off/Collider/React transitions no longer require a missing neighbor rig; native and five Max transitions pass."
+    },
+    {
+      "id": "R2",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "All four responses with Inside margin and Under reach pass; incremental movement/restore matrix passes."
+    },
+    {
+      "id": "R3",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "Overrides borrowed and indices built once; 1024-neighbor allocation witness is 39856 calls / 1358775 bytes."
+    },
+    {
+      "id": "R4",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "Shared draw-aware admission and five bounded host limits pass; extreme memory/device-loss cases remain unqualified."
+    },
+    {
+      "id": "R5",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "Mixed fixture retains eight fixed vertices and twelve fixed triangles; CPU/compact math agrees."
+    },
+    {
+      "id": "R6",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "Numerical envelope contains distant fixed geometry; small render succeeds but is not the entire distant-fixed fixture."
+    },
+    {
+      "id": "R7",
+      "evidence_status": "already fixed/not applicable",
+      "scope": "Recorded tested snapshot only",
+      "conclusion": "One patch into one million rows uses 208 tracked bytes; 500 cumulative edits/select/compact/receipt cases pass."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "initial_authoring_denied": true,
+  "malformed_import_denied": true,
+  "synthetic_grant_admitted": true,
+  "host_regressions.py": "executed",
+  "selection_smoke.py": "executed",
+  "status": "complete"
+}

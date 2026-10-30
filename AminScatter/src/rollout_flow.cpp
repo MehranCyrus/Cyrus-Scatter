@@ -53,3 +53,27 @@ Value* cyrusSetRolloutVisible_cf(Value** args, int count) {
     rollup->UpdateLayout();
     return &true_value;
 }
+
+// Qt command-panel reflow can erase the transparent captions of hosted Win32
+// check/radio buttons without invalidating those children. Queue their own
+// paint after layout settles; no scene work, owner rebinding or synchronous
+// nested painting. The script coalesces resize/rollup requests into one tick.
+def_visible_primitive(cyrusRepaintRolloutButtons, "cyrusRepaintRolloutButtons");
+Value* cyrusRepaintRolloutButtons_cf(Value** args, int count) {
+    check_arg_count(cyrusRepaintRolloutButtons, 1, count);
+    const auto page = reinterpret_cast<HWND>(args[0]->to_intptr());
+    if (!IsWindow(page) || GetWindowThreadProcessId(page, nullptr) != GetCurrentThreadId())
+        return Integer::intern(0);
+    unsigned painted=0;
+    EnumChildWindows(page, [](HWND child, LPARAM context)->BOOL {
+        auto& count=*reinterpret_cast<unsigned*>(context);
+        if(count>=2048)return FALSE;
+        wchar_t name[32]{};
+        if(IsWindowVisible(child) && GetClassNameW(child,name,32) && wcscmp(name,L"Button")==0) {
+            RedrawWindow(child,nullptr,nullptr,RDW_INVALIDATE|RDW_ERASE);
+            ++count;
+        }
+        return TRUE;
+    }, reinterpret_cast<LPARAM>(&painted));
+    return Integer::intern(int(painted));
+}

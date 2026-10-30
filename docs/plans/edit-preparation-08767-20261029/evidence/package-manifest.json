@@ -1,0 +1,69 @@
+{
+  "product": "Cyrus Scatter",
+  "version": "0.87.6.7",
+  "max_year": 2027,
+  "toolset": "14.38.33130",
+  "windows_sdk": "10.0.19041.0",
+  "configuration": "Release",
+  "native_id": "91c81b0d368e",
+  "files": {
+    "AminScatter.dlx": "0f133728457e18cac499307e94f0141fd6ac7ec2e1bbfc1d1cd8cd0e42423a20",
+    "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+    "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+    "CyrusBrush.dlx": "f7bda93ebedb800d91d771cbb3311fcaf01e4fdc0379bfe0de7988af66a22183",
+    "CyrusBrushStorage.dlh": "c79464a787c0b33f0adfd771e86c12a3389357bca975e0f61a694aab0c02670b",
+    "CyrusGallery.dll": "475c170730e92d18be72bd79783cba9c6ba7d3a7c2ea5ff12889ad136e0e91f1",
+    "CyrusInstaller.dll": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+    "CyrusScatter.mcr": "22ab2d7d2194e53d5bbd41fbebf5384a48b0a0193b4c7cc8bb78074a06323f37",
+    "CyrusScatter.ms": "abf0091215234fda569160951554af60181029cf4fdcd88f2768fc9c649beeee",
+    "CyrusScatterEdit.dlm": "d8c638ba9bd54d247bccb3ea945e26f883abe86ddf7d6a4abda817b9d2fc8804",
+    "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+    "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+    "INSTALL.txt": "feb9e1191ac89e475b34a2372170b1dbfdbc0a56638c4d3b284d594d9ee1f883",
+    "InstallInventory.txt": "323f2b31ad894552027d67fca70f10ab0fcf1fd1fd4baa6991d98795bb8970e3",
+    "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+    "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+    "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+    "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+    "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+    "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+    "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+    "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+    "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+    "Uninstall.ms": "8cba70077899000c5c2eba6c2e7d965f9d43d33dd588349cd7529f300f1fe72d",
+    "install.ms": "38465d6c49a017b836875d6afc795a274d65117d25299d80e94ab8b17dc9d2c6",
+    "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+    "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+    "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+    "mzp.run": "551a5f42d0c7ae1ef80adae8edfefbc2f34a35b7eecd5cb017f4ba32f4c55d48",
+    "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+  },
+  "build_evidence_schema": "cyrus.package-inputs/2",
+  "producer_receipts": {
+    "native": {
+      "schema": "cyrus.native-build/2",
+      "receipt_sha256": "d95a00481a9902f384ed59ceca4833053e775cfacd63072d087fa8dee142a8fc",
+      "input_manifest_sha256": "e8675c4744eddbfced2c39a75228211ca3c6620d6d8c97e1ceec7e6197260b2c"
+    },
+    "installer": {
+      "receipt_sha256": "a247f97106439e78ba4946ad2dcf86b7973ebb34c72c89b08ea22e19f4f5c3dd",
+      "artifact_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+      "schema": "cyrus.managed-build/2",
+      "producer": "installer-core",
+      "input_manifest_sha256": "4a4dbfee4b0bb805ba54d67011dfd307d5bafab0912bd716d69338c7ea8e48dd"
+    },
+    "gallery": {
+      "receipt_sha256": "f977bf8582cc7d6ed806d8aaf3efbad236bbd9afee41d68a4de9a317a77c3ea2",
+      "artifact_sha256": "475c170730e92d18be72bd79783cba9c6ba7d3a7c2ea5ff12889ad136e0e91f1",
+      "schema": "cyrus.managed-build/2",
+      "producer": "gallery",
+      "input_manifest_sha256": "4f13c10b69cb16be1b1d52ffbde7ae6604f1ac02daac8855a58826e8aa9ea9f6"
+    }
+  },
+  "package_inputs_sha256": "5c3e2d87fe2d26c208d3e87d871e027db20a00f2638c501e9ed13a661290634d",
+  "licensing": {
+    "mode": "offline-team",
+    "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+    "term_days": 30
+  }
+}

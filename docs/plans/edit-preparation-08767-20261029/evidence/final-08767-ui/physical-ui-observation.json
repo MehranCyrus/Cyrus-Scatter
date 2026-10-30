@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "loaded_version": "0.87.6.7",
+  "actions": [
+    "maximize owned Max window",
+    "collapse Viewport & render",
+    "expand Viewport & render"
+  ],
+  "observed": [
+    "all four Layout radio captions remain visible without hovering",
+    "Layers Enabled and Visible captions remain visible without hovering",
+    "single-model band badge matches pink source badge",
+    "two-model band displays pink/yellow split",
+    "unassigned third band has no badge"
+  ],
+  "evidence": "band-swatches-and-labels.png",
+  "legacy_label_pixels_note": "ui_campaign.py retained fixed coordinates for a different window layout; those zero pixel counts are not a pass/fail assertion. Actual final pixels were inspected through Computer Use."
+}

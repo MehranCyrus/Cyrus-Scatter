@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "version": "0.87.6.3",
+  "max_year": 2027,
+  "sha256": "de3a2a17d0d4cf2237d8532901c494323495c9c1d4f4c1a4ca9547baf53ffacf",
+  "bytes": 2786754,
+  "native_receipt_sha256": "807d75d6a1fadc834d5646b600c0cfd65ac36cd734af3d0be88c1c15a9f1edd3",
+  "payload": {
+    "AminScatter.dlx": "e93cc9c44c64c75f23845d1e0834386e2c820a2379b533938a3088705c743b0b",
+    "CyrusScatterEdit.dlm": "b348793740ea3d942bc4092b422df5e6ea8c0634a0b9c7ae7d881aa8fc8c0dd8",
+    "CyrusBrush.dlx": "afeecde9b857fe980d127811dcf179e484036a096774a60b6ff68daef0602fd1",
+    "CyrusBrushStorage.dlh": "d013eb141418d32cb2dd7bf00e18f7632458150c088423d8e7776653373b678f",
+    "CyrusScatter.ms": "95265649f3147d73c105ba6403849c8b9c106d15c3799aa1c431f021627e158e",
+    "CyrusGallery.dll": "efe7199d27e31bd101ad32ed1b8d934d7284813c064523ea0564c9a1484e0222",
+    "CyrusInstaller.dll": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e"
+  },
+  "archive_integrity": true,
+  "manifest_hashes": true,
+  "host_guard": true,
+  "source_receipt_verified": true,
+  "loaded_payload_matches": true,
+  "artist_ini_unchanged": true,
+  "installed_in_artist_profile": false,
+  "exe_created": false,
+  "older_hosts_built": false
+}

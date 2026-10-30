@@ -1,0 +1,178 @@
+{
+  "version": "0.87.6.5",
+  "status": "scoped_pass",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "interactions": 16,
+  "viewport_selection_capability": 2,
+  "native_tests": {
+    "passed": 62,
+    "total": 62
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.6.5",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 379,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "a32cf8ae569470d21f6bc8dc50c49f5d74eaafa816f3530da42e95f26f7c7b91",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "package": {
+    "status": "passed",
+    "version": "0.87.6.5",
+    "exe_sha256": "c2d248deafdfa71fad8b486a23d422f8b5bf4f126b07cd264d89b9b6d9dc1abe",
+    "exe_bytes": 8484864,
+    "packages": {
+      "CyrusScatter-0.87.6.5-Max2024.mzp": "241695a7aebc4e6ccba9fef185009417a66212eb31e3310488b97275e4dc08c9",
+      "CyrusScatter-0.87.6.5-Max2026.mzp": "85f38ffe4498855c213361ab8036dcedbfc57d41b4cdc4d0e5d45a3c3027fefd",
+      "CyrusScatter-0.87.6.5-Max2027.mzp": "b594666eb26ce2a8029856d70c5b5e2a9958e59d78d93b741526d7508717aab3"
+    },
+    "embedded_resources": {
+      "Cyrus.Payload.2024.mzp": "241695a7aebc4e6ccba9fef185009417a66212eb31e3310488b97275e4dc08c9",
+      "Cyrus.Payload.2026.mzp": "85f38ffe4498855c213361ab8036dcedbfc57d41b4cdc4d0e5d45a3c3027fefd",
+      "Cyrus.Payload.2027.mzp": "b594666eb26ce2a8029856d70c5b5e2a9958e59d78d93b741526d7508717aab3"
+    },
+    "builds": {
+      "2024": {
+        "receipt_sha256": "481632da80fdd1909c085ddb0c496c314050b9c71d329cd2f747d633fc2eef15",
+        "native": {
+          "AminScatter.dlx": "6403a5f2b2d88ae7e3d8ef3788d18a226c42fe87cf6f6760fc5405d7fc9e43da",
+          "CyrusScatterEdit.dlm": "77eb74b5a1fcf9f00cdc23886625e9cefd1cbcd197a56b4798bfdc557e0c31bb",
+          "CyrusBrush.dlx": "fdc9aca125c5f1eb4199552799571fcf671b2ea8301569801bcbdc0f17f466bd",
+          "CyrusBrushStorage.dlh": "3beefe8abb8caa883f31d6b3e093a8a3bc07620a95550a30609d151bb62964a1"
+        },
+        "host_tested": false
+      },
+      "2026": {
+        "receipt_sha256": "490c573e8f63047f842c7e3cce9607adb8d01b9580d014de35d70cbc385d4e79",
+        "native": {
+          "AminScatter.dlx": "df80c265766148dae050fe6c689cfe960adbb2fa23aa23e30f50fef962beddf3",
+          "CyrusScatterEdit.dlm": "37b5edec88d4529ad38a989e784a1e95029d6cdf4422a6a6f98d9d8592de8545",
+          "CyrusBrush.dlx": "a57da9f9b628d45376a2f813d74977855cfb4b0b93a471bd3a61c18d61808e0b",
+          "CyrusBrushStorage.dlh": "35277484a881275c6919d0e81f35f859c8e17bfa2233785ab9b3c209c1f57a33"
+        },
+        "host_tested": false
+      },
+      "2027": {
+        "receipt_sha256": "e33c23228dde8156c8cdb5b33380fa31fde41adaf08980f0df474992442bd590",
+        "native": {
+          "AminScatter.dlx": "d921edcfcd1182e7ac735fcb290d016a9fdd5952c26a5d42d0298dbd2cca07bc",
+          "CyrusScatterEdit.dlm": "f3eee15776ae8bf0c7df27d4bdddf6366b36466c5cce40b955183bea57248af0",
+          "CyrusBrush.dlx": "84752ff402bb23c10871eaf63f08115ae37574fe6f0a5709c3f252678c451659",
+          "CyrusBrushStorage.dlh": "e37d35f7d5df13262896d7a6879fe6cb2bdbe14e651acfd81b40aebeb5814136"
+        },
+        "host_tested": true
+      }
+    },
+    "scope": "Exact-source native SDK builds and ZIP/EXE payload integrity. Max 2027 native and owned-host evidence is separate. Max 2024/2026 were not launched. Installer was not executed in artist profiles.",
+    "content": "Existing shared library and independently installed Surface Analyzer are retained; optional content ZIP is not embedded."
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-selection-08765-20261029-02\\payload-2027\\AminScatter.dlx",
+        "sha256": "d921edcfcd1182e7ac735fcb290d016a9fdd5952c26a5d42d0298dbd2cca07bc"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-selection-08765-20261029-02\\payload-2027\\CyrusBrush.dlx",
+        "sha256": "84752ff402bb23c10871eaf63f08115ae37574fe6f0a5709c3f252678c451659"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-selection-08765-20261029-02\\payload-2027\\CyrusBrushStorage.dlh",
+        "sha256": "e37d35f7d5df13262896d7a6879fe6cb2bdbe14e651acfd81b40aebeb5814136"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-selection-08765-20261029-02\\payload-2027\\CyrusScatterEdit.dlm",
+        "sha256": "f3eee15776ae8bf0c7df27d4bdddf6366b36466c5cce40b955183bea57248af0"
+      }
+    },
+    "script_fingerprint": "c1c2c764ff166978d9e6f857cc8afd375619c0d82f5effd4eb964699e06707bd"
+  },
+  "host_checks": {
+    "selection": "Actual SDK viewport mouse messages: one mesh cue, correct layer/identity, persistent outline after pointer exit.",
+    "gesture": "Native TransformStart/Move/TransformFinish across host events: selected outline hidden while held, restored after finish; Undo/Redo and exit Edit.",
+    "retained": "Manual pending Count remains pending on new/existing Edit entry; warm cue redraw does not change placement epoch or geometry streams.",
+    "posed": "Two prepared blades, one posed instance: all 20 visible triangle outlines, persistent selected cue, warm reuse and clear selection.",
+    "timings": {
+      "warm_redraw_submission_samples": 24,
+      "median_ms": 18.329799990169704,
+      "max_ms": 54.70340000465512,
+      "scope": "CPU scripted redraw submission, not physical input-to-present latency or GPU FPS."
+    }
+  },
+  "bounds": {
+    "hover_face_samples": 1024,
+    "selected_total_lines": 4096,
+    "selected_outlined_instances": 128,
+    "selection_limit": false,
+    "other_selected_instances": "Existing center markers; all remain transformable."
+  },
+  "evidence": {
+    "after-drag.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/after-drag.png",
+      "sha256": "5dde0d631b5e9aa535a533e029557e9d3501b8c7e69a53628eae943ec2506a11"
+    },
+    "during-drag.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/during-drag.png",
+      "sha256": "a627bd2711202d60d37b80075ddb4d5413e76d717b8d1fdb3616c22063871081"
+    },
+    "generated-check.json": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/generated-check.json",
+      "sha256": "b30aa2f888ee355794546f899c9b0a55d54da05f9ccf4efa41ef3deadf1f46fb"
+    },
+    "loaded-identity.json": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/loaded-identity.json",
+      "sha256": "1c090cb53fc647662163b141bdd8689515de592e6966136460426aff42c61d76"
+    },
+    "mesh-hover.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/mesh-hover.png",
+      "sha256": "802dc6b482ac082cecad0cb7ed349ef3f3c0c380bfad76699b3716c9eb37d620"
+    },
+    "native-2027-tests.log": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/native-2027-tests.log",
+      "sha256": "39f4996edba149acf93869975ae8ef9c7c9a7d24ec6e5d007acd5863fd928172"
+    },
+    "outlines.json": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/outlines.json",
+      "sha256": "e8de55ae56548913c027e8f6d44c9ee7fe6196c9046c745b05a78a8646d2ff04"
+    },
+    "posed-hover.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/posed-hover.png",
+      "sha256": "7fe063312ded8ab2a0b9c26424ed2b41cf9133b0190d0c09e94048d070045f1c"
+    },
+    "posed-selected.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/posed-selected.png",
+      "sha256": "0f7dab63265857e99803fe2d82ad3697bfe1fa0052072a40f5b96071c4b80f43"
+    },
+    "posed.json": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/posed.json",
+      "sha256": "3e1833d88550368d1400b40295695b30e0430d186dd04b19a590bbd0b22a359a"
+    },
+    "selected-pointer-away.png": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/selected-pointer-away.png",
+      "sha256": "10a14608e5c9573fff54f6bb663ef48bb373e510a966078eb32a9da27c8a3a54"
+    },
+    "workflow.json": {
+      "path": "docs/plans/instance-selection-08765-20261029/evidence/workflow.json",
+      "sha256": "06f653e7556e0e74a92b70510cab9054cdf7648cb69ea1c52e7daf200cf7c22d"
+    }
+  },
+  "development_notes": [
+    "Run 01 compiled and passed native tests but was rejected because generated version inputs changed during its build. Only frozen run 02 is delivered.",
+    "Posed fixture first missed contact after random placement rotation; the obstacle footprint was widened. A sub-unit viewport framing failure was corrected using centimetre coordinates, explicit unhide/frame and in-viewport sample checks. Neither required a solver change."
+  ],
+  "limits": [
+    "Max 2024/2026 SDK-build/package only; neither host was launched.",
+    "No renderer output, arbitrary plant corpus, device-loss, physical mouse latency or million-instance FPS claim.",
+    "Outline samples are bounded; dense meshes show sampled edges. Exact surface picking retains its separate geometry cost.",
+    "No artist profile installation, restart, scene overwrite or Git push. Website and indexed knowledge are not rebuilt."
+  ]
+}

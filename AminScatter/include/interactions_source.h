@@ -70,6 +70,8 @@ std::shared_ptr<const MeshGeometry> branchProxy(const Source&,std::shared_ptr<co
 Vec posePoint(const Source&,const Pose&,unsigned vertex);
 Vec poseDirection(const Source&,const Pose&,unsigned vertex,Vec);
 bool visibleFace(const Source&,const Pose&,unsigned face);
+bool visibleVertex(const Source&,const Pose&,unsigned vertex);
+Bounds poseEnvelope(const Source&); // Fixed geometry and conservative guide reach.
 unsigned nearestSourceVertex(const Source&,Vec);
 Json auditSource(const Source&,const Pose&,const std::vector<Shape>&,std::size_t triangleBudget=2000000,double deliveryUnit=0);
 }

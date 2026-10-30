@@ -1,0 +1,26 @@
+{
+  "status": "pass",
+  "exe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-packages\\CyrusScatter-0.87.6.7-Setup.exe",
+  "exe_sha256": "c61f75989442fecbdf2042336eaf3e5993310f91fb2b632bfc551a72b2f47235",
+  "core_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+  "installed": {
+    "2024": {
+      "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2024\\runtime\\r\\3dae1788c5ce",
+      "startup": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2024\\startup",
+      "macros": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2024\\macros",
+      "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2024\\profile"
+    },
+    "2026": {
+      "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2026\\runtime\\r\\1f13ba68c05c",
+      "startup": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2026\\startup",
+      "macros": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2026\\macros",
+      "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2026\\profile"
+    },
+    "2027": {
+      "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2027\\runtime\\r\\423b717ef49e",
+      "startup": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2027\\startup",
+      "macros": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2027\\macros",
+      "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\edit-size-review-20261029-01\\compat-installer-data\\2027\\profile"
+    }
+  }
+}

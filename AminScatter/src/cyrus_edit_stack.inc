@@ -12,16 +12,7 @@ static ep::View applyStableNative(CSEdit* m,int key,const ep::View& input,const 
     auto derived=nativeEditInput(input);
     auto& l=m->layers[key];bindStable(l,signature,std::move(derived));
     if(l.invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
-    ep::Builder output(input.token().owner,ep::Stage::Edited,input.sources(),std::min(l.rows.size(),ep::maxRecords),input.sourceCohort(),input.receiverCohort());
-    for(auto i:activeEditOrder(l)){const auto& row=l.rows.get(i);const auto source=l.source(row);
-        auto record=input.at(source);const auto tm=editMatrix(input,source)*row.delta;
-        for(int j=0;j<4;++j)for(int k=0;k<3;++k)record.transform[j*3+k]=tm.GetRow(j)[k];
-        record.flags&=~ep::Authored;
-        if(row.inputId!=row.outputId||hasEditTransform(row.delta))record.flags|=ep::Protected;
-        if(row.outputId.authored){const auto& text=*row.outputId.authored;output.appendAuthored(record,receiverUTF8(std::wstring(text.begin(),text.end())));}
-        else {record.identity=row.outputId.candidate;output.appendGenerated(record);}
-    }
-    m->status();return output.freeze();
+    auto output=editedNativeView(l);m->status();return output;
 }
 // The source-list command captures legacy ownership before removing a model.
 // This uses only the previously bound exact input, never the pending recipe.
@@ -148,7 +139,7 @@ Value* cyrusEditLocalRevision_cf(Value** a,int count){check_arg_count(cyrusEditL
 Value* cyrusEditRequiredCandidates_cf(Value** a,int count){
     check_arg_count(cyrusEditRequiredCandidates,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();std::uint64_t required=0;
     for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
-        for(std::size_t i=0;i<found->second.rows.size();++i){const auto& row=found->second.rows.get(i);if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&!row.inputId.authored){
+        for(std::size_t i=0;i<found->second.rows.size();++i){const auto& row=found->second.rows.get(i);if(!row.deleted&&(row.pin||row.inputId!=row.outputId||hasEditTransform(row.delta))&&!row.inputId.authored){
             try{const auto ordinal=row.inputId.candidate;if(ordinal>=cyrus::receivers::limit)throw std::invalid_argument("ordinal");required=std::max(required,ordinal+1);}catch(...){throw RuntimeError(_T("Saved Edit candidate exceeds the procedural pool limit"));}
         }}
     }
@@ -160,7 +151,7 @@ Value* cyrusEditReceiverRequirements_cf(Value** a,int count){
     check_arg_count(cyrusEditReceiverRequirements,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();
     std::array<unsigned,cyrus::receivers::slots> required{};
     for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
-        for(std::size_t i=0;i<found->second.rows.size();++i){const auto& row=found->second.rows.get(i);if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&!row.inputId.authored){
+        for(std::size_t i=0;i<found->second.rows.size();++i){const auto& row=found->second.rows.get(i);if(!row.deleted&&(row.pin||row.inputId!=row.outputId||hasEditTransform(row.delta))&&!row.inputId.authored){
             try{const auto id=row.inputId.candidate;unsigned slot=0;std::uint64_t ordinal=0;
                 if(!cyrus::receivers::decodeCandidate(id,slot,ordinal))throw std::invalid_argument("Old identity");
                 // A grid already admits its complete cell schedule; there is no

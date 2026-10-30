@@ -146,11 +146,13 @@ public:
 InteractionRender* output(INode* n){auto* object=n?n->GetObjectRef():nullptr;return object&&object->ClassID()==renderID?static_cast<InteractionRender*>(object):nullptr;}
 std::shared_ptr<const RenderPacket> packet(const std::shared_ptr<InteractionRuntime>& runtime,const std::shared_ptr<const ci::Snapshot>& snapshot,unsigned layer,unsigned slot){
     auto result=std::make_shared<RenderPacket>();result->snapshot=snapshot;result->layer=layer;result->slot=slot;const auto& source=*runtime->sources[layer][slot];result->source={source.mesh,source.rig,source.cornerNormals,source.memory};result->bounds.Init();
+    const auto localBounds=ci::poseEnvelope(*result->source.rig);
     std::size_t matching=0;for(const auto& [index,pose]:snapshot->poses){const auto& p=snapshot->layout->instances[index];matching+=p.layer==layer&&p.source==slot&&!pose->allHidden&&!snapshot->disabled.contains(index);}
     result->indexMemory=reserveSourceMetadataMemory(sizeof(RenderPacket)+matching*sizeof(std::size_t));result->instances.reserve(matching);
     for(const auto& [index,pose]:snapshot->poses){const auto& p=snapshot->layout->instances[index];if(p.layer!=layer||p.source!=slot||pose->allHidden||snapshot->disabled.contains(index))continue;
         result->instances.push_back(index);
-        const double reach=result->source.rig->reach*transform(*snapshot,index).scale();auto centre=transform(*snapshot,index).rows[3];result->bounds+=host(ci::sub(centre,{reach,reach,reach}),snapshot->layout->metresPerUnit);result->bounds+=host(ci::add(centre,{reach,reach,reach}),snapshot->layout->metresPerUnit);}
+        const auto bounds=transform(*snapshot,index).bounds(localBounds);
+        for(unsigned corner=0;corner<8;++corner)result->bounds+=host({corner&1?bounds.hi.x:bounds.lo.x,corner&2?bounds.hi.y:bounds.lo.y,corner&4?bounds.hi.z:bounds.lo.z},snapshot->layout->metresPerUnit);}
     std::sort(result->instances.begin(),result->instances.end());result->sizing=renderSizing(*result->source.mesh,bool(result->source.cornerNormals));result->indexMemory->commit();return result;
 }
 }

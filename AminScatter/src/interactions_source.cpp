@@ -227,19 +227,34 @@ std::shared_ptr<const Source> prepareSource(const prep::Snapshot& snapshot,prep:
     workCounters().preparations.fetch_add(1,std::memory_order_relaxed);
     auto start=std::chrono::steady_clock::now();prep::validate(snapshot,settings);auto p=std::make_shared<Source>();p->limits=settings.limits;p->fingerprint=prep::fingerprint(snapshot);prep::Analysis analyzed;
     if(saved){
-        if((saved->at("format")!=1&&saved->at("format")!=2)||saved->at("fingerprint")!=p->fingerprint)throw std::runtime_error("Prepared interaction source is stale or incompatible");
+        if((saved->at("format")!=1&&saved->at("format")!=2&&saved->at("format")!=3)||saved->at("fingerprint")!=p->fingerprint)throw std::runtime_error("Prepared interaction source is stale or incompatible");
         p->authoring=saved->value("authoring",Json::object());
         if(!p->authoring.empty()){std::atomic_bool cancel=false;p->authoring=prep::canonicalAuthoring(snapshot,prep::inspectPieces(snapshot,settings,cancel),p->authoring);}
+        if((saved->at("format")==3)!=(p->authoring.value("version",1)==2))throw std::runtime_error("Prepared detail format and authored intent disagree");
         analyzed.metadata=saved->at("metadata");analyzed.report=saved->at("report");analyzed.labels=saved->at("labels").get<std::vector<unsigned>>();
         if(analyzed.labels.size()!=snapshot.positions.size()||analyzed.metadata.at("source_geometry_sha256")!=prep::geometryHash(snapshot,analyzed.labels,unsigned(analyzed.metadata.at("parts").size())))throw std::runtime_error("Saved interaction source geometry/binding hash differs");
     }else{
         std::atomic_bool localCancel=false;const auto& cancel=requestedCancel?*requestedCancel:localCancel;std::atomic_int progress=0;
         if(authored){auto pieces=prep::inspectPieces(snapshot,settings,cancel);p->authoring=prep::canonicalAuthoring(snapshot,pieces,*authored);}
-        if(authored&&!p->authoring["parts"].empty())analyzed=prep::analyzeTopology(snapshot,settings,cancel,progress,p->authoring);
-        else try{analyzed=prep::analyze(snapshot,settings,cancel,progress);}
-        catch(const std::exception& e){if(std::string(e.what()).find("No supported ordered tube stems found")==std::string::npos)throw;
-            try{analyzed=blades(snapshot,settings);}catch(const std::exception& b){if(std::string(b.what()).find("Blade ")!=0)throw;analyzed=prep::analyzeTopology(snapshot,settings,cancel,progress);}}
-        if(!analyzed.report.value("can_prepare",false)&&(!authored||p->authoring["parts"].empty()))analyzed=prep::analyzeTopology(snapshot,settings,cancel,progress);
+        auto automatic=[&](){prep::Analysis result;
+            try{result=prep::analyze(snapshot,settings,cancel,progress);}
+            catch(const std::exception& e){if(std::string(e.what()).find("No supported ordered tube stems found")==std::string::npos)throw;
+                try{result=blades(snapshot,settings);}catch(const std::exception& b){if(std::string(b.what()).find("Blade ")!=0)throw;result=prep::analyzeTopology(snapshot,settings,cancel,progress);}}
+            if(!result.report.value("can_prepare",false))result=prep::analyzeTopology(snapshot,settings,cancel,progress);return result;
+        };
+        if(authored&&!p->authoring["parts"].empty()){
+            prep::Analysis base;const prep::Analysis* preserved=nullptr;
+            if(p->authoring.value("version",1)==2){try{base=automatic();if(base.report.value("can_prepare",false)){
+                // The baseline is only a guide/attachment constraint. Release
+                // its preview mesh before the successor's topology scratch.
+                base.metadata.erase("preview_triangles");base.metadata.erase("preview_materials");base.labels={};
+                std::uint64_t retained=base.metadata.at("parts").size()*512;for(const auto& guide:base.metadata.at("guides"))retained+=1024+guide.at("nodes").size()*256+guide.at("root_ring_vertices").size()*32;
+                const std::uint64_t scratch=std::uint64_t(snapshot.positions.size())*256+std::uint64_t(snapshot.faces.size())*160+std::uint64_t(settings.limits.guides)*1024;
+                if(retained+scratch>std::uint64_t(settings.limits.memoryMiB)*1024*1024)throw std::runtime_error("Preserved guide/detail staging exceeds Preparation memory allowance");
+                preserved=&base;
+            }}catch(const std::exception& e){if(std::string(e.what()).find("No reliable tube or ribbon guides were found")==std::string::npos)throw;}}
+            analyzed=prep::analyzeTopology(snapshot,settings,cancel,progress,p->authoring,preserved);
+        }else analyzed=automatic();
     }
     if(!analyzed.report.value("can_prepare",false))throw PreparationFailure(std::move(analyzed));
     if(analyzed.metadata.at("guides").size()>settings.limits.guides||analyzed.metadata.at("parts").size()>settings.limits.parts)throw std::runtime_error("Prepared definition exceeds the current Preparation limits; raise the corresponding limit or analyze again.");
@@ -323,7 +338,7 @@ std::shared_ptr<const Source> prepareSource(const prep::Snapshot& snapshot,prep:
     p->report["delivered_preview_triangles"]=p->previewFaces.size();
     p->report["source_payload_bytes"]=p->bytes;p->report["cache_realization_ms"]=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();return p;
 }
-Json saveSource(const Source& source){const bool edited=source.authoring.is_object()&&!source.authoring.empty()&&!source.authoring.value("parts",Json::array()).empty();Json out={{"format",edited?2:1},{"fingerprint",source.fingerprint},{"metadata",source.metadata},{"report",source.report},{"labels",source.labels}};if(edited)out["authoring"]=source.authoring;return out;}
+Json saveSource(const Source& source){const bool edited=source.authoring.is_object()&&!source.authoring.empty()&&!source.authoring.value("parts",Json::array()).empty();Json out={{"format",edited?(source.authoring.value("version",1)==2?3:2):1},{"fingerprint",source.fingerprint},{"metadata",source.metadata},{"report",source.report},{"labels",source.labels}};if(edited)out["authoring"]=source.authoring;return out;}
 Pose fitSource(const Source& source,const std::vector<Shape>& obstacles,double clearance,double stiffness,bool cover,std::uint64_t generation,Vec worldUpInSource,double hideMargin,bool hideUnder){
     workCounters().plantFits.fetch_add(1,std::memory_order_relaxed);
     if(!std::isfinite(hideMargin)||hideMargin<0||hideMargin>1000)throw std::runtime_error("Hide margin must be 0..1000 metres in source space");
@@ -490,7 +505,23 @@ Vec posePoint(const Source& source,const Pose& pose,unsigned vertex){
     if(!pose.guides[part.guide])return p.positions[vertex];const auto& guide=*pose.guides[part.guide];const bool smooth=part.guide<pose.smoothedRoots.size()&&pose.smoothedRoots[part.guide];auto q=skinFrame(p.guides[part.guide],guide.material_frames,binding.span,binding.u,smooth);
     if(!q)throw std::runtime_error("Invalid interaction material frame");return add(f::lerp(guide.nodes[binding.span],guide.nodes[binding.span+1],binding.u),f::rotate(*q,binding.offset));
 }
-bool visibleFace(const Source& source,const Pose& pose,unsigned face){if(pose.allHidden)return false;const auto& t=source.rig->triangles.at(face);for(auto v:t){const auto& part=source.rig->parts[source.labels[v]];if(!part.fixed&&(pose.hiddenRoots[source.partRoot[source.labels[v]]]||(!pose.hiddenGuides.empty()&&pose.hiddenGuides.at(part.guide))))return false;}return true;}
+bool visibleVertex(const Source& source,const Pose& pose,unsigned vertex){
+    if(pose.allHidden)return false;
+    const auto label=source.labels.at(vertex);const auto& part=source.rig->parts[label];
+    return part.fixed||(!pose.hiddenRoots.at(source.partRoot[label])&&
+        (pose.hiddenGuides.empty()||!pose.hiddenGuides.at(part.guide)));
+}
+bool visibleFace(const Source& source,const Pose& pose,unsigned face){
+    const auto& triangle=source.rig->triangles.at(face);
+    for(auto vertex:triangle)if(!visibleVertex(source,pose,vertex))return false;
+    return true;
+}
+Bounds poseEnvelope(const Source& source){
+    Bounds bounds=source.bounds;
+    const double reach=source.reach;
+    bounds.include(Vec{-reach,-reach,-reach});bounds.include(Vec{reach,reach,reach});
+    return bounds;
+}
 Vec poseDirection(const Source& source,const Pose& pose,unsigned vertex,Vec direction){
     const auto& p=*source.rig;if(source.anchors.at(vertex))return direction;const auto& binding=p.bindings.at(vertex);const auto& part=p.parts[binding.part];
     if(part.fixed)return direction;

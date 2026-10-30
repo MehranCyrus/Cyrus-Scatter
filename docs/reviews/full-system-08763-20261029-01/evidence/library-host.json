@@ -1,0 +1,23 @@
+{
+  "save": {
+    "format": "cyrus.scene-preset",
+    "writer_version": "0.87.5.5",
+    "nodes": 5,
+    "assets": 0
+  },
+  "units_mismatch_retains_scene": true,
+  "merge": {
+    "original_rows": [
+      1,
+      500
+    ],
+    "imported_rows": [
+      1,
+      500
+    ],
+    "fresh_layer_identities": true,
+    "old_scene_retained": true
+  },
+  "save_reload": true,
+  "status": "complete"
+}

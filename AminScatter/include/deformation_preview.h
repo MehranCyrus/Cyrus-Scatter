@@ -17,6 +17,7 @@ struct DeformationPreview {
     double metresPerUnit=.01;
     Box3 worldBounds;
     std::size_t posed=0;
+    std::size_t drawAdmission=0,poseAdmission=0;
     std::uint64_t fingerprint=1469598103934665603ULL;
 };
 }

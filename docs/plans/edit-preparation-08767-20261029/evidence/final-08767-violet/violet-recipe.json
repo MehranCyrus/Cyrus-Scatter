@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "checks": [
+    "full recipe capture accepts prepared envelope 3",
+    "captured source retains intent 2, Leaf and Flower head profiles, and all 74 guides",
+    "native recipe validation accepts the final serialized document"
+  ],
+  "definition_format": 3,
+  "guides": 74
+}

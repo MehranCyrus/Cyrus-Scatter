@@ -1,10 +1,11 @@
 #include <windows.h>
-101 DIALOGEX 0,0,160,108
+101 DIALOGEX 0,0,160,130
 STYLE DS_SETFONT | WS_CHILD
 FONT 8,"MS Shell Dlg"
 BEGIN
  LTEXT "Select Instances to edit the scatter.",1001,6,6,148,30
  PUSHBUTTON "Instances",1004,6,40,148,16
  PUSHBUTTON "Delete selected",1003,6,61,148,16
- PUSHBUTTON "Reset all edits",1002,6,82,148,16
+ PUSHBUTTON "Reset selected edits",1005,6,82,148,16
+ PUSHBUTTON "Reset all edits",1002,6,103,148,16
 END

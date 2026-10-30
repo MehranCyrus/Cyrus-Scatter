@@ -24,8 +24,11 @@ using EditKeySet=std::unordered_set<EditKey,EditKeyHash,std::equal_to<EditKey>,c
 using EditIncoming=std::unordered_map<EditKey,unsigned,EditKeyHash,std::equal_to<EditKey>,ce::Allocator<std::pair<const EditKey,unsigned>>>;
 // savedSource remains a legacy candidate-row index, never a model identity.
 // Variants of one base ID share order, but have independent saved source lineage.
-struct EditRow {EditKey inputId,outputId;unsigned savedSource=0,lineage=0;std::uint64_t order=0;Matrix3 delta{1};bool deleted=false,recipeLocal=false;};
-static bool authoredEdit(const EditRow& r){return r.deleted||r.inputId!=r.outputId||hasEditTransform(r.delta);}
+// A sparse authored base, shared across Undo/COW snapshots. Face is local to
+// its receiver when receiverBound; no node or publication pointer is retained.
+struct EditPin {ep::Record base;bool receiverBound=false;};
+struct EditRow {EditKey inputId,outputId;unsigned savedSource=0,lineage=0;std::uint64_t order=0;Matrix3 delta{1};bool deleted=false,recipeLocal=false,recipePinned=false;std::shared_ptr<const EditPin> pin;};
+static bool authoredEdit(const EditRow& r){return r.pin||r.recipePinned||r.deleted||r.inputId!=r.outputId||hasEditTransform(r.delta);}
 struct EditVariant {EditKey id;unsigned lineage=0;bool operator==(const EditVariant& b)const noexcept{return id==b.id&&lineage==b.lineage;}};
 struct EditVariantHash{std::size_t operator()(const EditVariant& v)const noexcept{return EditKeyHash{}(v.id)^(std::size_t(v.lineage)*0x9e3779b9u);}};
 struct EditOriginals {
@@ -41,12 +44,16 @@ struct EditLineages {
 static EditKey editKey(const ep::View& view,std::size_t i){const auto& r=view.at(i);if(!(r.flags&ep::Authored))return EditKey(r.identity);const auto key=view.authored(i);return EditKey(std::wstring(key.begin(),key.end()));}
 static Matrix3 editMatrix(const ep::View& view,std::size_t i){Matrix3 tm(1);const auto& a=view.at(i).transform;for(int k=0;k<4;++k)tm.SetRow(k,Point3(a[k*3],a[k*3+1],a[k*3+2]));return tm;}
 struct EditDerived {
+    std::shared_ptr<const EditDerived> lookupBase; // Sparse feedback shares immutable correspondence.
+    const EditDerived& correspondence()const{return lookupBase?*lookupBase:*this;}
     std::optional<ep::View> native;
     ce::Vector<Matrix3> matrices;
     ce::Vector<EditKey> order; // comparison route only; native IDs stay in its View
     EditIncoming incoming;
     ce::Vector<unsigned> sourceLineages; // bounded SourceCohort ordinal -> lineage
     ce::Vector<EditText> sourceIDs;
+    EditKeySet pinnedOutputs;
+    std::unordered_map<EditKey,Matrix3,EditKeyHash,std::equal_to<EditKey>,ce::Allocator<std::pair<const EditKey,Matrix3>>> pinRecipeBases;
     std::size_t size()const{return native?native->size():matrices.size();}
     Matrix3 matrix(std::size_t i)const{return native?editMatrix(*native,i):matrices.at(i);}
     unsigned lineage(std::size_t i)const{if(!native||sourceLineages.empty())return 0;const auto source=native->at(i).source;return source&&source<=sourceLineages.size()?sourceLineages[source-1]:0;}
@@ -56,6 +63,8 @@ struct EditDerived {
         std::size_t texts=sourceIDs.capacity()*sizeof(EditText);for(const auto& id:sourceIDs)texts+=id.capacity()*sizeof(wchar_t);
         return sizeof(*this)+texts+matrices.capacity()*sizeof(Matrix3)+order.capacity()*sizeof(EditKey)+incoming.bucket_count()*sizeof(void*)+
             incoming.size()*(sizeof(EditIncoming::value_type)+3*sizeof(void*))+
+            (pinnedOutputs.bucket_count()+pinRecipeBases.bucket_count())*sizeof(void*)+
+            pinnedOutputs.size()*(sizeof(EditKey)+3*sizeof(void*))+pinRecipeBases.size()*(sizeof(decltype(pinRecipeBases)::value_type)+3*sizeof(void*))+
             sourceLineages.capacity()*sizeof(unsigned)+(native?native->baseBytes()+native->selectionBytes():0);
     }
 };
@@ -114,10 +123,12 @@ struct EditLayer {
         return !presentation->final->native||!shown->final->native||!(presentation->final->native->token()==shown->final->native->token());
     }
     std::size_t textBytes=0;
-    static std::size_t keyBytes(const EditRow& row){std::size_t bytes=0;for(const auto* id:{&row.inputId,&row.outputId})if(id->authored)bytes+=sizeof(EditText)+id->authored->capacity()*sizeof(wchar_t);return bytes;}
+    static std::size_t keyBytes(const EditRow& row){std::size_t bytes=row.pin?sizeof(EditPin):0;for(const auto* id:{&row.inputId,&row.outputId})if(id->authored)bytes+=sizeof(EditText)+id->authored->capacity()*sizeof(wchar_t);return bytes;}
     void append(const EditRow& row){if(rows.size()>=10000000)throw std::length_error("Saved Edit record limit exceeded");rows.append(row);textBytes+=keyBytes(row);}
     unsigned sourceIn(const EditRow& r,const std::shared_ptr<const EditDerived>& data)const{
-        if(!data)return UINT_MAX;const auto found=data->incoming.find(r.inputId);if(found==data->incoming.end())return UINT_MAX;
+        if(!data)return UINT_MAX;auto found=data->incoming.find(r.pin?r.outputId:r.inputId);
+        if(found==data->incoming.end()&&r.pin)found=data->incoming.find(r.inputId);
+        if(found==data->incoming.end())return UINT_MAX;
         if(sourceAware){if(!r.lineage||!lineages||r.lineage>lineages->ids.size()||!data->native)return UINT_MAX;
             const auto source=data->native->at(found->second).source;
             if(!source||source>data->sourceIDs.size()||data->sourceIDs[source-1]!=lineages->ids[r.lineage-1])return UINT_MAX;}
@@ -125,10 +136,10 @@ struct EditLayer {
     }
     unsigned source(const EditRow& r)const{return sourceIn(r,input);}
     unsigned presented(const EditRow& r)const{
-        const auto& displayed=feedback();if(!displayed||!displayed->final)return UINT_MAX;const auto& final=*displayed->final;const auto found=final.incoming.find(r.outputId);if(found==final.incoming.end())return UINT_MAX;
+        const auto& displayed=feedback();if(!displayed||!displayed->final)return UINT_MAX;const auto& final=*displayed->final;const auto& lookup=final.correspondence();const auto found=lookup.incoming.find(r.outputId);if(found==lookup.incoming.end())return UINT_MAX;
         if(sourceAware){if(!r.lineage||!lineages||r.lineage>lineages->ids.size()||!final.native)return UINT_MAX;
             const auto& record=final.native->at(found->second);
-            if(!record.source||record.source>final.sourceIDs.size()||final.sourceIDs[record.source-1]!=lineages->ids[r.lineage-1])return UINT_MAX;}
+            if(!record.source||record.source>lookup.sourceIDs.size()||lookup.sourceIDs[record.source-1]!=lineages->ids[r.lineage-1])return UINT_MAX;}
         return found->second;
     }
     bool shown(const EditRow& r)const{return viewportVisible&&(published?presented(r)!=UINT_MAX:!r.deleted&&input&&source(r)<input->size());}
@@ -137,6 +148,25 @@ struct EditLayer {
     Point3 color(const EditRow& r)const{const auto at=presented(r);const auto& displayed=feedback();if(at!=UINT_MAX&&displayed->palette&&displayed->final->native){const auto& p=displayed->final->native->at(at);return displayed->palette->color(p.source,p.band);}return Point3(1.f,.55f,0.f);}
     bool hasAuthored()const{for(std::size_t i=0;i<rows.size();++i)if(authoredEdit(rows.get(i)))return true;return false;}
 };
+static std::shared_ptr<const EditPin> editPinFor(const EditLayer& layer,const EditRow& row){
+    if(row.pin)return row.pin;
+    if(!layer.sourceAware||!row.lineage||row.recipeLocal||!layer.input||!layer.input->native)return {};
+    auto source=layer.source(row);
+    if(row.recipePinned){const auto found=layer.input->incoming.find(row.inputId);if(found!=layer.input->incoming.end())source=found->second;}
+    if(source>=layer.input->size())return {};
+    auto pin=ce::make<EditPin>();pin->base=layer.input->native->at(source);
+    if(const auto& receivers=layer.input->native->receiverCohort()){
+        const auto found=std::find_if(receivers->receivers().begin(),receivers->receivers().end(),[&](const auto& r){return r.slot==pin->base.receiver;});
+        if(found==receivers->receivers().end()||pin->base.face<=found->begin||pin->base.face>found->begin+found->faces)throw std::invalid_argument("Pinned Edit receiver provenance differs");
+        pin->base.face-=found->begin;pin->receiverBound=true;
+    }
+    return pin;
+}
+static bool captureEditPin(EditLayer& layer,std::size_t index){
+    if(layer.rows.get(index).pin)return true;
+    auto pin=editPinFor(layer,layer.rows.get(index));if(!pin)return false;
+    auto& row=layer.rows.write(index);row.pin=std::move(pin);row.recipePinned=false;layer.textBytes+=sizeof(EditPin);return true;
+}
 static std::size_t editAttributedBytes(const std::map<int,EditLayer>& layers){
     std::size_t total=sizeof(layers);
     for(const auto& [key,l]:layers){(void)key;total+=sizeof(l)+(l.signature.capacity()+l.legacyProof.capacity())*sizeof(wchar_t)+l.rows.attributedBytes()+l.selection.attributedBytes();

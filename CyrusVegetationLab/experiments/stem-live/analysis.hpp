@@ -20,7 +20,7 @@ void validate(const Snapshot&,Settings);
 void validateLimits(Limits);
 struct Analysis { stem::Json metadata,report;std::vector<unsigned> labels;std::string fingerprint; };
 Analysis analyze(const Snapshot&,Settings,const std::atomic_bool& cancel,std::atomic_int& progress);
-Analysis analyzeTopology(const Snapshot&,Settings,const std::atomic_bool& cancel,std::atomic_int& progress,const stem::Json& authoring=stem::Json::object());
+Analysis analyzeTopology(const Snapshot&,Settings,const std::atomic_bool& cancel,std::atomic_int& progress,const stem::Json& authoring=stem::Json::object(),const Analysis* automatic=nullptr);
 std::string fingerprint(const Snapshot&);
 std::string textHash(std::string_view);
 std::string geometryHash(const Snapshot&,const std::vector<unsigned>&,unsigned components);

@@ -1,0 +1,341 @@
+{
+  "panels": [
+    {
+      "name": "Layers",
+      "median_ms": 302.34359996393323,
+      "max_ms": 340.98330000415444,
+      "samples_ms": [
+        304.0197999216616,
+        282.76300011202693,
+        290.4793000780046,
+        300.66740000620484,
+        340.98330000415444,
+        336.04390011169016
+      ]
+    },
+    {
+      "name": "Surfaces",
+      "median_ms": 360.96335004549474,
+      "max_ms": 399.67720001004636,
+      "samples_ms": [
+        380.53229986689985,
+        399.67720001004636,
+        347.9619000572711,
+        352.19980007968843,
+        369.72690001130104,
+        316.56010006554425
+      ]
+    },
+    {
+      "name": "Models & Points",
+      "median_ms": 308.2946001086384,
+      "max_ms": 313.0375000182539,
+      "samples_ms": [
+        261.6166998632252,
+        305.25850015692413,
+        313.0375000182539,
+        311.7869000416249,
+        307.354100048542,
+        309.2351001687348
+      ]
+    },
+    {
+      "name": "Source containers",
+      "median_ms": 182.38325009588152,
+      "max_ms": 212.95029995962977,
+      "samples_ms": [
+        212.95029995962977,
+        180.1568998489529,
+        181.4830000512302,
+        163.81840012036264,
+        194.10439999774098,
+        183.28350014053285
+      ]
+    },
+    {
+      "name": "Layout",
+      "median_ms": 413.06005010847,
+      "max_ms": 444.9740999843925,
+      "samples_ms": [
+        403.7200000602752,
+        399.01819988153875,
+        444.9740999843925,
+        435.7608000282198,
+        417.22370008938015,
+        408.8964001275599
+      ]
+    },
+    {
+      "name": "Amount",
+      "median_ms": 268.1260498939082,
+      "max_ms": 277.61340001598,
+      "samples_ms": [
+        244.7949000634253,
+        253.08489985764027,
+        264.66179988346994,
+        271.59029990434647,
+        273.57159997336566,
+        277.61340001598
+      ]
+    },
+    {
+      "name": "Painting",
+      "median_ms": 254.85874980222434,
+      "max_ms": 259.14729991927743,
+      "samples_ms": [
+        253.20979999378324,
+        258.4814999718219,
+        255.20119979046285,
+        259.14729991927743,
+        235.26110011152923,
+        254.51629981398582
+      ]
+    },
+    {
+      "name": "Include / exclude",
+      "median_ms": 283.0285000381991,
+      "max_ms": 296.0769000928849,
+      "samples_ms": [
+        290.791800012812,
+        296.0769000928849,
+        269.66130011714995,
+        289.43050000816584,
+        267.76729989796877,
+        276.6265000682324
+      ]
+    },
+    {
+      "name": "Transforms",
+      "median_ms": 276.24299994204193,
+      "max_ms": 285.5956999119371,
+      "samples_ms": [
+        283.0534998793155,
+        285.5956999119371,
+        264.9753000587225,
+        272.82939990982413,
+        279.65659997425973,
+        265.69400005973876
+      ]
+    },
+    {
+      "name": "Spacing & cleanup",
+      "median_ms": 271.9782000640407,
+      "max_ms": 279.79580010287464,
+      "samples_ms": [
+        245.84949994459748,
+        268.255100119859,
+        277.5242000352591,
+        265.4595000203699,
+        279.79580010287464,
+        275.70130000822246
+      ]
+    },
+    {
+      "name": "Viewport & render",
+      "median_ms": 256.6122498828918,
+      "max_ms": 276.4047000091523,
+      "samples_ms": [
+        246.90399994142354,
+        266.32049982436,
+        276.4047000091523,
+        246.77389999851584,
+        267.21610012464225,
+        230.1881001330912
+      ]
+    },
+    {
+      "name": "Stats & diagnostics",
+      "median_ms": 215.05190001334995,
+      "max_ms": 227.7671000920236,
+      "samples_ms": [
+        227.44509996846318,
+        227.7671000920236,
+        202.4731000419706,
+        208.16110004670918,
+        205.35929990001023,
+        221.94269997999072
+      ]
+    },
+    {
+      "name": "Interactions",
+      "median_ms": 249.5611000340432,
+      "max_ms": 265.13479999266565,
+      "samples_ms": [
+        251.3680001720786,
+        249.01030003093183,
+        265.13479999266565,
+        244.06159995123744,
+        250.11190003715456,
+        212.28539990261197
+      ]
+    },
+    {
+      "name": "Scene colliders",
+      "median_ms": 186.9936001021415,
+      "max_ms": 251.6562999226153,
+      "samples_ms": [
+        251.6562999226153,
+        249.75189985707402,
+        145.48720000311732,
+        172.23650007508695,
+        186.473400099203,
+        187.51380010508
+      ]
+    }
+  ],
+  "diagnostics": {
+    "schema": "cyrus.diagnostic-page/1.0",
+    "purpose": "engineering",
+    "session_id": "warm-panels-only",
+    "started_unix_ms": 1793226693985,
+    "elapsed_ms": 37870,
+    "active": false,
+    "expired": false,
+    "limits": {
+      "events": 4000,
+      "bytes": 4194304,
+      "duration_ms": 120000
+    },
+    "health": {
+      "retained": 1,
+      "retained_bytes": 276,
+      "high_water_bytes": 276,
+      "evicted": 0,
+      "lock_drops": 0,
+      "failures": 0,
+      "truncated": 0
+    },
+    "oldest_sequence": 1,
+    "last_sequence": 1,
+    "measurements": {
+      "units": "microseconds",
+      "inclusive": true,
+      "stages": [
+        {
+          "stage": "geometry_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mesh_channel_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "candidates",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mask_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "surface_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "attributes_radii",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "spacing",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "preview_prepare",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "buffer_upload",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "publication",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "map_bake",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_create",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_bind",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_layout",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_lists",
+          "calls": 1,
+          "total_us": 591,
+          "max_us": 591,
+          "failed": 0
+        }
+      ]
+    },
+    "events": [
+      {
+        "sequence": 1,
+        "elapsed_ms": 980,
+        "epoch": 2,
+        "action_id": 0,
+        "name": "ui_lists",
+        "origin": "stage",
+        "owner_id": "9a412657-a3b4-4f6d-afc7-1e5d535dd041",
+        "detail": "duration_us=591; color_lists"
+      }
+    ],
+    "next_sequence": 1,
+    "has_more": false,
+    "training_eligible": false
+  },
+  "epoch_before": 2,
+  "epoch_after": 2,
+  "closed_page_current": true,
+  "status": "complete"
+}

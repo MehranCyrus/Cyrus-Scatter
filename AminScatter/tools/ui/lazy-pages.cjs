@@ -29,7 +29,7 @@ module.exports=function(page,index){
  body=body.replace(new RegExp('        on '+name+' rolledUp[^\\n]*'), '');
  body=body.replace(name+'.open,#(', '(if hostPage==undefined then false else hostPage.open),#(');
  body=body.replace(name+'.open=state[1]', 'if state[2]==undefined do return true');
- body=body.replace(name+'.height=y+4;',name+'.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));');
+ body=body.replace(name+'.height=y+4;',name+'.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));if panel!=undefined do panel.requestRepaint();');
  body=measured(measured(body,'layout',14,name),'bind',13,name);
  const shell=`    rollout ${slot} ${JSON.stringify(page.title)} width:#cmdPanel height:4 category:${index*10} autoLayoutOnResize:false (
         local view=undefined,headerInset=0
@@ -37,7 +37,7 @@ module.exports=function(page,index){
         on ${slot} open do view=this
         on ${slot} close do view=undefined
         on ${slot} rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
-            view.mainUI.bindSection view.mainUI.editors[${index}]
+            view.mainUI.bindSection view.mainUI.editors[${index}] refresh:false
             view.mainUI.rememberViews()
         )
         on ${slot} resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection ${index}

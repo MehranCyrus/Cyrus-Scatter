@@ -5,6 +5,40 @@ static std::shared_ptr<EditDerived> nativeEditInput(const ep::View& input){
     if(input.sourceCohort())for(const auto& source:input.sourceCohort()->sources()){const auto id=receiverWide(source.id);result->sourceIDs.emplace_back(id.begin(),id.end());}
     return result;
 }
+static std::shared_ptr<const EditDerived> pinnedEditInput(const EditLayer& layer,std::shared_ptr<const EditDerived> input){
+    if(!input->native||!layer.lineages)return input;
+    const auto& view=*input->native;
+    std::unordered_map<EditKey,ep::Record,EditKeyHash,std::equal_to<EditKey>,ce::Allocator<std::pair<const EditKey,ep::Record>>> pins;
+    for(std::size_t i=0;i<layer.rows.size();++i){const auto& row=layer.rows.get(i);if(!row.pin||!row.lineage)continue;
+        const auto& id=layer.lineages->ids.at(row.lineage-1);const auto source=std::find(input->sourceIDs.begin(),input->sourceIDs.end(),id);if(source==input->sourceIDs.end())continue;
+        auto record=row.pin->base;record.source=unsigned(source-input->sourceIDs.begin())+1;
+        if(row.pin->receiverBound){
+            if(!view.receiverCohort())continue;const auto& receivers=view.receiverCohort()->receivers();
+            const auto receiver=std::find_if(receivers.begin(),receivers.end(),[&](const auto& r){return r.slot==record.receiver;});
+            if(receiver==receivers.end())continue;
+            if(record.face>receiver->faces)throw std::invalid_argument("Pinned Edit face exceeds its receiver");record.face+=receiver->begin;
+        }
+        if(!pins.emplace(row.outputId,record).second)throw std::invalid_argument("Multiple pinned histories claim one instance; restore its matching source setup");
+    }
+    if(pins.empty())return input;
+    const auto append=[](ep::Builder& builder,ep::Record record,const EditKey& key){
+        record.flags&=~ep::Authored;
+        if(key.authored)builder.appendAuthored(record,receiverUTF8(key.text()));else{record.identity=key.candidate;builder.appendGenerated(record);}
+    };
+    ep::Builder builder(view.token().owner,ep::Stage::Edited,view.sources(),view.size(),view.sourceCohort(),view.receiverCohort());
+    EditKeySet seen;seen.reserve(pins.size());
+    for(std::size_t i=0;i<view.size();++i){const auto id=editKey(view,i);const auto pin=pins.find(id);
+        append(builder,pin==pins.end()?view.at(i):pin->second,id);if(pin!=pins.end())seen.insert(id);
+    }
+    // Saved row order, rather than hash iteration, makes absent pins/clones deterministic.
+    for(std::size_t i=0;i<layer.rows.size();++i){const auto& id=layer.rows.get(i).outputId;const auto pin=pins.find(id);if(pin!=pins.end()&&seen.insert(id).second)append(builder,pin->second,id);}
+    auto result=nativeEditInput(builder.freeze());result->sourceLineages=input->sourceLineages;result->pinnedOutputs=std::move(seen);
+    for(std::size_t i=0;i<layer.rows.size();++i){const auto& row=layer.rows.get(i);if(!row.pin)continue;
+        const auto existing=input->pinRecipeBases.find(row.outputId);
+        if(existing!=input->pinRecipeBases.end()){result->pinRecipeBases.emplace(row.outputId,existing->second);continue;}
+        const auto raw=input->incoming.find(row.inputId);if(raw!=input->incoming.end())result->pinRecipeBases.emplace(row.outputId,input->matrix(raw->second));}
+    return result;
+}
 static Matrix3 recipeEditInverse(const Matrix3& a){
     const auto x=a.GetRow(0),y=a.GetRow(1),z=a.GetRow(2);const double d=double(x.x)*(double(y.y)*z.z-double(y.z)*z.y)-double(x.y)*(double(y.x)*z.z-double(y.z)*z.x)+double(x.z)*(double(y.x)*z.y-double(y.y)*z.x);
     if(!std::isfinite(d)||std::abs(d)<1e-30)throw std::invalid_argument("Recipe instance frame is singular");Matrix3 m(1);
@@ -12,6 +46,13 @@ static Matrix3 recipeEditInverse(const Matrix3& a){
     m.SetRow(1,Point3(float((double(y.z)*z.x-double(y.x)*z.z)/d),float((double(x.x)*z.z-double(x.z)*z.x)/d),float((double(x.z)*y.x-double(x.x)*y.z)/d)));
     m.SetRow(2,Point3(float((double(y.x)*z.y-double(y.y)*z.x)/d),float((double(x.y)*z.x-double(x.x)*z.y)/d),float((double(x.x)*y.y-double(x.y)*y.x)/d)));
     Point3 t;for(int k=0;k<3;++k)t[k]=float(-double(a.GetRow(3).x)*m.GetRow(0)[k]-double(a.GetRow(3).y)*m.GetRow(1)[k]-double(a.GetRow(3).z)*m.GetRow(2)[k]);m.SetRow(3,t);return m;
+}
+static std::pair<Matrix3,bool> recipeEditTransform(const EditLayer& layer,const EditRow& row){
+    auto matrix=row.delta;bool local=row.recipeLocal;const auto index=layer.input?layer.source(row):UINT_MAX;
+    if(!local&&index!=UINT_MAX){const auto base=layer.input->matrix(index);auto target=base;
+        if(row.pin){const auto found=layer.input->pinRecipeBases.find(row.outputId);if(found!=layer.input->pinRecipeBases.end())target=found->second;}
+        matrix=base*matrix*recipeEditInverse(target);local=true;
+    }return {matrix,local};
 }
 static void bindStable(EditLayer&,const std::wstring&,std::shared_ptr<EditDerived>);
 static void bindRecipeLayer(EditLayer& layer,const std::wstring& signature,std::shared_ptr<EditDerived> input){
@@ -34,9 +75,11 @@ static void bindStable(EditLayer& layer,const std::wstring& signature,std::share
     const bool sourceAware=cyrus::editbinding::isSourceAware(text);
     if(sourceAware){
         if(!input->native||!input->native->sourceCohort())throw std::invalid_argument("Source-aware Edit requires the native source correspondence");
-        const auto current=cyrus::editbinding::parse(text);const bool authored=l.hasAuthored();
+        const auto current=cyrus::editbinding::parse(text);const bool authored=l.hasAuthored();bool pinned=authored;
+        for(std::size_t i=0;i<l.rows.size();++i)if(authoredEdit(l.rows.get(i))&&!captureEditPin(l,i))pinned=false;
         cyrus::editbinding::Descriptor merged;
         if(l.signature.empty()||!authored)merged=current;
+        else if(pinned&&l.sourceAware&&current.basis.find("|EditOwner:")!=std::string::npos)merged=cyrus::editbinding::mergePinned(receiverUTF8(l.signature),text).descriptor;
         else merged=cyrus::editbinding::merge(receiverUTF8(l.signature),text).descriptor;
         bool hydrate=l.signature.empty();
         if(!l.sourceAware&&!l.signature.empty()){
@@ -89,7 +132,9 @@ static void bindStable(EditLayer& layer,const std::wstring& signature,std::share
         else if(l.signature!=signature)l.signature=receiverWide(cyrus::receivers::mergeBinding(receiverUTF8(l.signature),text));
     }
     l.invalid=false;l.input=std::move(input);
-    for(std::size_t i=0;i<l.rows.size();++i)if(l.rows.get(i).recipeLocal){auto row=l.rows.get(i);const auto source=l.source(row);if(source==UINT_MAX)continue;const auto base=l.input->matrix(source);row.delta=recipeEditInverse(base)*row.delta*base;row.recipeLocal=false;if(!finiteEditMatrix(row.delta))throw std::invalid_argument("Invalid rebound recipe transform");l.rows.write(i)=row;}
+    for(std::size_t i=0;i<l.rows.size();++i)if(l.rows.get(i).recipeLocal){auto row=l.rows.get(i);auto source=l.source(row);if(row.recipePinned){auto raw=l.input->incoming.find(row.inputId);if(raw!=l.input->incoming.end())source=raw->second;}if(source==UINT_MAX)continue;const auto base=l.input->matrix(source);row.delta=recipeEditInverse(base)*row.delta*base;row.recipeLocal=false;if(!finiteEditMatrix(row.delta))throw std::invalid_argument("Invalid rebound recipe transform");l.rows.write(i)=row;}
+    for(std::size_t i=0;i<l.rows.size();++i)if(authoredEdit(l.rows.get(i)))captureEditPin(l,i);
+    l.input=pinnedEditInput(l,l.input);
     auto originals=l.originals;std::shared_ptr<EditOriginals> writable;
     if(!originals){writable=ce::make<EditOriginals>();originals=writable;}
     if(!l.originals)for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);l.observeOrder(r.order);if(r.inputId==r.outputId){
@@ -97,6 +142,7 @@ static void bindStable(EditLayer& layer,const std::wstring& signature,std::share
         const auto old=writable->order.find(r.inputId);if(old==writable->order.end())writable->order.emplace(r.inputId,r.order);else if(old->second!=r.order)throw std::invalid_argument("Inconsistent saved Edit ordering");}}
     for(unsigned i=0;i<l.input->size();++i){
         const auto id=l.input->native?editKey(*l.input->native,i):l.input->order[i];const auto lineage=l.input->lineage(i);
+        if(l.input->pinnedOutputs.count(id))continue;
         if(originals->variants.count({id,lineage}))continue;
         if(!writable){writable=ce::make<EditOriginals>(*originals);originals=writable;}writable->variants.insert({id,lineage});
         EditRow row;row.savedSource=i;row.inputId=row.outputId=id;row.lineage=lineage;
@@ -110,4 +156,15 @@ static ce::Vector<unsigned> activeEditOrder(const EditLayer& l){
     for(unsigned i=0;i<l.rows.size();++i)if(!l.rows.get(i).deleted&&l.source(l.rows.get(i))<l.input->size())result.push_back(i);
     const auto less=[&](unsigned a,unsigned b){return l.rows.get(a).order<l.rows.get(b).order;};if(!std::is_sorted(result.begin(),result.end(),less))std::sort(result.begin(),result.end(),less);
     EditKeySet seen;seen.reserve(result.size());for(auto i:result)if(!seen.insert(l.rows.get(i).outputId).second)throw std::invalid_argument("Duplicate active Edit output identity");return result;
+}
+static ep::View editedNativeView(const EditLayer& layer){
+    if(!layer.input||!layer.input->native)throw std::invalid_argument("Edit native input is unavailable");
+    const auto& input=*layer.input->native;
+    ep::Builder output(input.token().owner,ep::Stage::Edited,input.sources(),std::min(layer.rows.size(),ep::maxRecords),input.sourceCohort(),input.receiverCohort());
+    for(auto i:activeEditOrder(layer)){const auto& row=layer.rows.get(i);const auto source=layer.source(row);
+        auto record=input.at(source);const auto matrix=editMatrix(input,source)*row.delta;
+        for(int r=0;r<4;++r)for(int c=0;c<3;++c)record.transform[r*3+c]=matrix.GetRow(r)[c];
+        record.flags&=~ep::Authored;if(row.pin||row.inputId!=row.outputId||hasEditTransform(row.delta))record.flags|=ep::Protected;
+        if(row.outputId.authored)output.appendAuthored(record,receiverUTF8(row.outputId.text()));else{record.identity=row.outputId.candidate;output.appendGenerated(record);}
+    }return output.freeze();
 }

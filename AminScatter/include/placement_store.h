@@ -39,6 +39,10 @@ void noteReadback(std::size_t) noexcept; // Once per explicit bounded host page.
 std::uint64_t newOwner(); // Session-local, never serialized or reused.
 
 class Builder;
+struct TransformPatch {
+    std::uint32_t row=0; // Logical row in the receiving view, never an identity.
+    std::array<float,12> transform{};
+};
 struct PreparationReceipt {
     const std::string key,binding;
     PreparationReceipt(const std::string& k,const std::string& b):key(k),binding(b){}
@@ -46,8 +50,10 @@ struct PreparationReceipt {
 class View {
     struct Data;
     struct Selection;
+    struct Transforms;
     std::shared_ptr<const Data> data_;
     std::shared_ptr<const Selection> selection_;
+    std::shared_ptr<const Transforms> transforms_;
     Stage stage_{};
     std::uint64_t view_=0;
     std::shared_ptr<const PreparationReceipt> preparation_;
@@ -76,6 +82,10 @@ public:
     std::vector<Record> page(std::size_t offset,std::size_t count,Token) const;
     // Arbitrary unique order, flattened directly to the base; no view chains.
     View select(const std::vector<std::uint32_t>&) const;
+    // At most 4096 transient changes, flattened to the immutable physical base.
+    // Does not copy population rows or change identities/source correspondence.
+    View withTransforms(const std::vector<TransformPatch>&) const;
+    std::size_t transformBytes() const;
     // No-modifier identity normalization changes interpretation, not records.
     // It preserves the immutable base and gives the view a distinct token.
     View edited() const;

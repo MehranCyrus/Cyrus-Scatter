@@ -4,7 +4,8 @@ global CyrusPresetBinding,CyrusPresetBrowser,CyrusPresetOpenBinding,CyrusOpenPre
 global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply,CyrusPresetTransactionVersion
 global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries,CyrusPresetSameValues
 struct CyrusPresetBinding (root,node,owner,ownerID,category,peer=undefined,peerID="",editor=undefined)
-fn CyrusPresetTransactionVersion = 1
+-- Contract 2 includes exact paired-range restoration through native Undo/Redo.
+fn CyrusPresetTransactionVersion = 2
 
 fn CyrusPresetMakeBinding root owner category peer:undefined editor:undefined = (
     if root==undefined or owner==undefined do throw "Select a layer before opening presets."
